@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<ThingDef ParentName="BasePawn">
+		<defName>FlyingHed</defName>
+		<label>飛頭蛮</label>
+		<description>空を飛ぶ不気味な頭。\n見たものに確かな恐怖心を与える</description>
+		<tradeability>None</tradeability>
+		<hiddenWhileUndiscovered>true</hiddenWhileUndiscovered>
+		<race>
+			<baseHealthScale>1</baseHealthScale>
+			<body>QuadrupedAnimalWithPaws</body>
+			<baseBodySize>0.1</baseBodySize>
+			<leatherDef>Leather_Human</leatherDef>
+			<needsRest>false</needsRest>
+			<fleshType>EntityFlesh</fleshType>
+			<isImmuneToInfections>true</isImmuneToInfections>
+			<specificMeatDef>Meat_Human</specificMeatDef>
+			<foodType>None</foodType>
+			<bloodDef>Filth_DarkBlood</bloodDef>
+			<bleedRateFactor>0.5</bleedRateFactor>
+			<thinkTreeMain>Metalhorror</thinkTreeMain>
+			<thinkTreeConstant>MetalhorrorConstant</thinkTreeConstant>
+			<trainability>None</trainability>
+			<canBecomeShambler>true</canBecomeShambler>
+			<lifeStageAges>
+				<li>
+					<def>EntityFullyFormed</def>
+					<soundCall>Pawn_Sightstealer_Call</soundCall>
+					<soundWounded>Pawn_Sightstealer_Wounded</soundWounded>
+					<soundDeath>Pawn_Sightstealer_Death</soundDeath>
+				</li>
+			</lifeStageAges>
+			<hediffGiverSets>
+				<li>AnomalyEntity</li>
+			</hediffGiverSets>
+			<soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+			<soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+			<soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+			<headPosPerRotation>
+				<li>(0.0, 0, 0.2)</li>
+				<li>(0.3, 0, 0.1)</li>
+				<li>(0.0, 0, -0.06)</li>
+				<li>(-0.3, 0, 0.1)</li>
+			</headPosPerRotation>
+			<hasGenders>false</hasGenders>
+			<corpseHiddenWhileUndiscovered>true</corpseHiddenWhileUndiscovered>
+		</race>
+		<statBases>
+			<MoveSpeed>3.6</MoveSpeed>
+			<MinimumContainmentStrength>70</MinimumContainmentStrength>
+			<ComfyTemperatureMin>-40</ComfyTemperatureMin>
+			<ComfyTemperatureMax>60</ComfyTemperatureMax>
+			<LeatherAmount>20</LeatherAmount>
+			<MeatAmount>70</MeatAmount>
+			<ToxicResistance>0.5</ToxicResistance>
+		</statBases>
+		<uiIconScale>1.15</uiIconScale>
+		<tools>
+			<li>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>23.6</power>
+				<cooldownTime>2.6</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+				<chanceFactor>0.5</chanceFactor>
+				<surpriseAttack>
+					<extraMeleeDamages>
+						<li>
+							<def>Stun</def>
+							<amount>14</amount>
+						</li>
+					</extraMeleeDamages>
+				</surpriseAttack>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>11</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+	</ThingDef>
+
+	<PawnKindDef>
+		<defName>FlyingHed</defName>
+		<label>飛頭蛮</label>
+		<race>FlyingHed</race>
+		<overrideDeathOnDownedChance>0.25</overrideDeathOnDownedChance>
+		<overrideDebugActionCategory>Entity</overrideDebugActionCategory>
+		<combatPower>25</combatPower>
+		<ecoSystemWeight>0.5</ecoSystemWeight>
+		<defaultFactionDef>Entities</defaultFactionDef>
+		<alternateGraphicChance>0.75</alternateGraphicChance>
+		<alternateGraphics>
+			<li>
+				<texPath>UI/Entities/Test</texPath>
+				<dessicatedTexPath>UI/Entities/Test</dessicatedTexPath>
+				<dessicatedGraphicData>
+					<attachPoints>
+						<li>
+							<offset>(-.2, 0, .7)</offset>
+							<type>PlatformRestraint0</type>
+						</li>
+						<li>
+							<offset>(.2, 0, .7)</offset>
+							<type>PlatformRestraint1</type>
+						</li>
+						<li>
+							<offset>(.3, 0, -.8)</offset>
+							<type>PlatformRestraint2</type>
+						</li>
+						<li>
+							<offset>(-.3, 0, -.8)</offset>
+							<type>PlatformRestraint3</type>
+						</li>
+					</attachPoints>
+				</dessicatedGraphicData>
+				<attachPoints>
+					<li>
+						<offset>(-.3, 0, .75)</offset>
+						<type>PlatformRestraint0</type>
+					</li>
+					<li>
+						<offset>(.2, 0, .75)</offset>
+						<type>PlatformRestraint1</type>
+					</li>
+					<li>
+						<offset>(.2, 0, -.6)</offset>
+						<type>PlatformRestraint2</type>
+					</li>
+					<li>
+						<offset>(-.2, 0, -.6)</offset>
+						<type>PlatformRestraint3</type>
+					</li>
+				</attachPoints>
+			</li>
+		</alternateGraphics>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>UI/Entities/Test</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>2.7</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>UI/Entities/Test</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>2.7</drawSize>
+					<attachPoints>
+						<li>
+							<offset>(-.5, 0, .5)</offset>
+							<type>PlatformRestraint0</type>
+						</li>
+						<li>
+							<offset>(.5, 0, .5)</offset>
+							<type>PlatformRestraint1</type>
+						</li>
+						<li>
+							<offset>(.4, 0, -.5)</offset>
+							<type>PlatformRestraint2</type>
+						</li>
+						<li>
+							<offset>(-.4, 0, -.5)</offset>
+							<type>PlatformRestraint3</type>
+						</li>
+					</attachPoints>
+				</dessicatedBodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+
+</Defs>
+	

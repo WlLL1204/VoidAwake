@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<EntityCodexEntryDef>
+		<defName>TestAnomaly_DefName</defName><!--名前-->
+		<label>TeatAnomaly_LabelCodex</label><!--表示名-->
+		<useDescriptionFrom>TestAnomaly_DefName</useDescriptionFrom><!--ここに記述したDefNameのエンティティの説明-->
+		<uiIconPath>UI/Entities/Test</uiIconPath><!--UIアイコンのパッチ、-->
+		<category>Basic</category><!--カテゴリ、基礎とか上級とか究極とか-->
+		<discoveryType>BecameVisible</discoveryType>
+		<linkedThings>
+			<li>TestAnomaly_DefName</li>
+		</linkedThings>
+
+	</EntityCodexEntryDef>
+</Defs>
