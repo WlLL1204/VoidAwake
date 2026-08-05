@@ -2,3 +2,7 @@ c:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\VoidAwake\Source\Cla
 c:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\VoidAwake\Source\ClassLibrary1\obj\Debug\ClassLibrary1.csproj.AssemblyReference.cache
 c:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\VoidAwake\Source\ClassLibrary1\obj\Debug\ClassLibrary1.csproj.CoreCompileInputs.cache
 c:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\VoidAwake\Source\ClassLibrary1\obj\Debug\ClassLibrary1.dll
+E:\School\VoidAwake\Source\ClassLibrary1\bin\Debug\ClassLibrary1.dll
+E:\School\VoidAwake\Source\ClassLibrary1\obj\Debug\ClassLibrary1.csproj.AssemblyReference.cache
+E:\School\VoidAwake\Source\ClassLibrary1\obj\Debug\ClassLibrary1.csproj.CoreCompileInputs.cache
+E:\School\VoidAwake\Source\ClassLibrary1\obj\Debug\ClassLibrary1.dll
