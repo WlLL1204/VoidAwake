@@ -3,43 +3,29 @@
   "WorkspaceRootPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|c:\\program files (x86)\\steam\\steamapps\\common\\rimworld\\mods\\voidawake\\source\\classlibrary1\\entitys\\basic\\flyinghed\\flyinghed.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\entitys\\basic\\flyinghed\\flyinghed.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|c:\\program files (x86)\\steam\\steamapps\\common\\rimworld\\mods\\voidawake\\source\\classlibrary1\\core\\worlderosion\\voiderosion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\core\\worlderosion\\voiderosion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\ThingDefs\\Entities\\FlyingHed.xml||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|c:\\program files (x86)\\steam\\steamapps\\common\\rimworld\\mods\\voidawake\\source\\classlibrary1\\core\\worlderosion\\voidtile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\core\\worlderosion\\voidtile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\classlibrary1\\entitys\\basic\\chainoftragedy\\chainoftragedy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\entitys\\basic\\chainoftragedy\\chainoftragedy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\WorldErosion\\VoidTilePatch.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\classlibrary1\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\WorldErosion\\ErosionMarker.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PsychicRitualDefs\\PsychicRituals.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|c:\\program files (x86)\\steam\\steamapps\\common\\rimworld\\mods\\voidawake\\source\\classlibrary1\\core\\worlderosion\\worlderosionmarker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\core\\worlderosion\\worlderosionmarker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PawnRenderTreeDefs\\PawnRenderTreeDefs.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|c:\\program files (x86)\\steam\\steamapps\\common\\rimworld\\mods\\voidawake\\source\\classlibrary1\\core\\worlderosion\\voiderosion_jumpbutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\core\\worlderosion\\voiderosion_jumpbutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PawnKindDefs\\PawnKinds_Player.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\ThingDefs_Races\\PokerSoldier.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2297729625\\1.6\\Defs\\Antylike\\body\\AlienRaceSettings.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2297729625\\1.6\\Defs\\Antylike\\body\\BodyParts_Anty.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Anomaly\\Defs\\ThingDefs_Races\\Races_Entities_Misc.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Anomaly\\Defs\\PawnKinds\\PawnKinds_Entities.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\JumpButton.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     }
   ],
   "DocumentGroupContainers": [
@@ -49,155 +35,99 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Class1.cs",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Class1.cs",
-              "RelativeDocumentMoniker": "ClassLibrary1\\Class1.cs",
-              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Class1.cs",
-              "RelativeToolTip": "ClassLibrary1\\Class1.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAATAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "VoidErosion.cs",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\VoidErosion.cs",
+              "RelativeDocumentMoniker": "ClassLibrary1\\Core\\WorldErosion\\VoidErosion.cs",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\VoidErosion.cs",
+              "RelativeToolTip": "ClassLibrary1\\Core\\WorldErosion\\VoidErosion.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAA4AAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-03T05:12:15.284Z",
-              "IsPinned": true
+              "WhenOpened": "2026-08-05T11:33:42.03Z",
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "ChainOfTragedy.cs",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Entitys\\Basic\\ChainOfTragedy\\ChainOfTragedy.cs",
-              "RelativeDocumentMoniker": "ClassLibrary1\\Entitys\\Basic\\ChainOfTragedy\\ChainOfTragedy.cs",
-              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Entitys\\Basic\\ChainOfTragedy\\ChainOfTragedy.cs",
-              "RelativeToolTip": "ClassLibrary1\\Entitys\\Basic\\ChainOfTragedy\\ChainOfTragedy.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-03T07:48:32.168Z",
-              "IsPinned": true
+              "Title": "VoidTilePatch.xml",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\WorldErosion\\VoidTilePatch.xml",
+              "RelativeDocumentMoniker": "..\\Defs\\WorldErosion\\VoidTilePatch.xml",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\WorldErosion\\VoidTilePatch.xml",
+              "RelativeToolTip": "..\\Defs\\WorldErosion\\VoidTilePatch.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2026-08-05T12:07:01.415Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "FlyingHed.xml",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\ThingDefs\\Entities\\FlyingHed.xml",
-              "RelativeDocumentMoniker": "..\\Defs\\ThingDefs\\Entities\\FlyingHed.xml",
-              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\ThingDefs\\Entities\\FlyingHed.xml",
-              "RelativeToolTip": "..\\Defs\\ThingDefs\\Entities\\FlyingHed.xml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
-              "WhenOpened": "2026-05-03T14:53:48.294Z",
-              "IsPinned": true
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "FlyingHed.cs",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Entitys\\Basic\\FlyingHed\\FlyingHed.cs",
-              "RelativeDocumentMoniker": "ClassLibrary1\\Entitys\\Basic\\FlyingHed\\FlyingHed.cs",
-              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Entitys\\Basic\\FlyingHed\\FlyingHed.cs",
-              "RelativeToolTip": "ClassLibrary1\\Entitys\\Basic\\FlyingHed\\FlyingHed.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAPAAAAAAAAAA==",
+              "Title": "VoidTile.cs",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\VoidTile.cs",
+              "RelativeDocumentMoniker": "ClassLibrary1\\Core\\WorldErosion\\VoidTile.cs",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\VoidTile.cs",
+              "RelativeToolTip": "ClassLibrary1\\Core\\WorldErosion\\VoidTile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-04T01:18:31.641Z",
+              "WhenOpened": "2026-08-05T12:01:13.275Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "PsychicRituals.xml",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PsychicRitualDefs\\PsychicRituals.xml",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PsychicRitualDefs\\PsychicRituals.xml",
-              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PsychicRitualDefs\\PsychicRituals.xml",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PsychicRitualDefs\\PsychicRituals.xml",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Title": "WorldErosionMarker.cs",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\WorldErosionMarker.cs",
+              "RelativeDocumentMoniker": "ClassLibrary1\\Core\\WorldErosion\\WorldErosionMarker.cs",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\WorldErosionMarker.cs",
+              "RelativeToolTip": "ClassLibrary1\\Core\\WorldErosion\\WorldErosionMarker.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-05T11:38:48.082Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ErosionMarker.xml",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\WorldErosion\\ErosionMarker.xml",
+              "RelativeDocumentMoniker": "..\\Defs\\WorldErosion\\ErosionMarker.xml",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\WorldErosion\\ErosionMarker.xml",
+              "RelativeToolTip": "..\\Defs\\WorldErosion\\ErosionMarker.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
-              "WhenOpened": "2026-05-03T15:20:59.853Z"
+              "WhenOpened": "2026-08-05T11:38:03.45Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "PawnRenderTreeDefs.xml",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PawnRenderTreeDefs\\PawnRenderTreeDefs.xml",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PawnRenderTreeDefs\\PawnRenderTreeDefs.xml",
-              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PawnRenderTreeDefs\\PawnRenderTreeDefs.xml",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PawnRenderTreeDefs\\PawnRenderTreeDefs.xml",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
-              "WhenOpened": "2026-05-03T15:20:52.055Z"
+              "Title": "VoidErosion_JumpButton.cs",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\VoidErosion_JumpButton.cs",
+              "RelativeDocumentMoniker": "ClassLibrary1\\Core\\WorldErosion\\VoidErosion_JumpButton.cs",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\VoidErosion_JumpButton.cs",
+              "RelativeToolTip": "ClassLibrary1\\Core\\WorldErosion\\VoidErosion_JumpButton.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-05T11:33:41.525Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "PawnKinds_Player.xml",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PawnKindDefs\\PawnKinds_Player.xml",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PawnKindDefs\\PawnKinds_Player.xml",
-              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PawnKindDefs\\PawnKinds_Player.xml",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\PawnKindDefs\\PawnKinds_Player.xml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "JumpButton.xml",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\JumpButton.xml",
+              "RelativeDocumentMoniker": "..\\Defs\\JumpButton.xml",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\JumpButton.xml",
+              "RelativeToolTip": "..\\Defs\\JumpButton.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
-              "WhenOpened": "2026-05-03T15:20:38.098Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "PokerSoldier.xml",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\ThingDefs_Races\\PokerSoldier.xml",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\ThingDefs_Races\\PokerSoldier.xml",
-              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\ThingDefs_Races\\PokerSoldier.xml",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\workshop\\content\\294100\\3293914637\\1.6\\Defs\\ThingDefs_Races\\PokerSoldier.xml",
-              "ViewState": "AgIAADkAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
-              "WhenOpened": "2026-05-03T15:20:12.708Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "BodyParts_Anty.xml",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2297729625\\1.6\\Defs\\Antylike\\body\\BodyParts_Anty.xml",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\workshop\\content\\294100\\2297729625\\1.6\\Defs\\Antylike\\body\\BodyParts_Anty.xml",
-              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2297729625\\1.6\\Defs\\Antylike\\body\\BodyParts_Anty.xml",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\workshop\\content\\294100\\2297729625\\1.6\\Defs\\Antylike\\body\\BodyParts_Anty.xml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC0AAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
-              "WhenOpened": "2026-05-03T15:18:24.606Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "AlienRaceSettings.xml",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2297729625\\1.6\\Defs\\Antylike\\body\\AlienRaceSettings.xml",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\workshop\\content\\294100\\2297729625\\1.6\\Defs\\Antylike\\body\\AlienRaceSettings.xml",
-              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2297729625\\1.6\\Defs\\Antylike\\body\\AlienRaceSettings.xml",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\workshop\\content\\294100\\2297729625\\1.6\\Defs\\Antylike\\body\\AlienRaceSettings.xml",
-              "ViewState": "AgIAAEIAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
-              "WhenOpened": "2026-05-03T15:18:20.107Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Races_Entities_Misc.xml",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Anomaly\\Defs\\ThingDefs_Races\\Races_Entities_Misc.xml",
-              "RelativeDocumentMoniker": "..\\..\\..\\Data\\Anomaly\\Defs\\ThingDefs_Races\\Races_Entities_Misc.xml",
-              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Anomaly\\Defs\\ThingDefs_Races\\Races_Entities_Misc.xml",
-              "RelativeToolTip": "..\\..\\..\\Data\\Anomaly\\Defs\\ThingDefs_Races\\Races_Entities_Misc.xml",
-              "ViewState": "AgIAAOoAAAAAAAAAAAAAAPkAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
-              "WhenOpened": "2026-05-03T14:55:26.021Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "PawnKinds_Entities.xml",
-              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Anomaly\\Defs\\PawnKinds\\PawnKinds_Entities.xml",
-              "RelativeDocumentMoniker": "..\\..\\..\\Data\\Anomaly\\Defs\\PawnKinds\\PawnKinds_Entities.xml",
-              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Data\\Anomaly\\Defs\\PawnKinds\\PawnKinds_Entities.xml",
-              "RelativeToolTip": "..\\..\\..\\Data\\Anomaly\\Defs\\PawnKinds\\PawnKinds_Entities.xml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFwAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
-              "WhenOpened": "2026-05-03T14:55:22.456Z"
+              "WhenOpened": "2026-08-05T11:33:40.591Z",
+              "EditorCaption": ""
             }
           ]
         }

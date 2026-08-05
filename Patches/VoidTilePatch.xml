@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/PlanetLayerDef[defName="Surface"]/worldDrawLayers</xpath>
+		<value>
+			<!-- Terrain より手前に出したいのでリスト前方寄りでも可。末尾追加でも動作確認は可 -->
+			<li>VoidAwake.VoidAwake_VoidTile</li>
+		</value>
+	</Operation>
+</Patch>

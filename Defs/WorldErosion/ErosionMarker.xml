@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<WorldObjectDef ParentName="StaticWorldObjectBase">
+		<defName>VoidAwake_ErosionOrigin</defName>
+		<label>虚無浸食の基点</label>
+		<description>世界浸食が始まった地点（仮マーカー）。</description>
+		<worldObjectClass>VoidAwake.VoidAwake_WorldErosionMarker</worldObjectClass>
+		<!-- 仮テクスチャ: バニラ流用 -->
+		<texture>World/WorldObjects/JourneyDestination</texture>
+		<expandingIcon>true</expandingIcon>
+		<expandingIconTexture>World/WorldObjects/Expanding/JourneyDestination</expandingIconTexture>
+		<expandingIconPriority>200</expandingIconPriority>
+		<expandMore>true</expandMore>
+		<canHaveMap>false</canHaveMap>
+	</WorldObjectDef>
+</Defs>
