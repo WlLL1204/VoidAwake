@@ -358,6 +358,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Core\ErosionEvent\ErosionLevel3.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion_JumpButton.cs" />
     <Compile Include="Core\WorldErosion\VoidTile.cs" />

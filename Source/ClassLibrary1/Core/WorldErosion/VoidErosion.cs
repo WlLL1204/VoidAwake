@@ -22,8 +22,8 @@ namespace VoidAwake
         private int cachedErodedCount;
 
         // --- バランス（確認用の大きめ値。本番で戻す） ---
-        public const float StartRadius = 1f;
-        public const float TilesPerDay = 1.0f;
+        public const float StartRadius = 1f;//開始時の浸食範囲
+        public const float TilesPerDay = 1.0f;//浸食の進行速度
 
         private VoidAwake_WorldErosionMarker marker;
 
@@ -134,6 +134,7 @@ namespace VoidAwake
 
             cachedErodedCount = ErodedTiles.Count;
             NotifyDrawLayerDirty();
+            ApplyVoidSettlementDestruction();
         }
 
         private void NotifyDrawLayerDirty()
@@ -145,12 +146,32 @@ namespace VoidAwake
             Find.World.renderer.SetDirty<VoidAwake_VoidTile>(layer);
         }
 
+        //タイルごとの浸食レベル
+        public enum VoidErosionLevel { None, Light, Medium, Heavy, Extreme }
+
+        public VoidErosionLevel GetErosionLevel(PlanetTile tile)
+        {
+            if (!originTile.Valid || radiusInTiles <= 0f)
+                return VoidErosionLevel.None;
+
+            float dist = Find.WorldGrid.ApproxDistanceInTiles(originTile, tile);
+            if (dist > radiusInTiles)
+                return VoidErosionLevel.None;
+
+            float ratio = dist / radiusInTiles;
+            if (ratio <= 0.25f) return VoidErosionLevel.Extreme;
+            if (ratio <= 0.50f) return VoidErosionLevel.Heavy;
+            if (ratio <= 0.75f) return VoidErosionLevel.Medium;
+            return VoidErosionLevel.Light;
+        }
+        //基点へのジャンプボタン
         public void JumpToOrigin()
         {
             if (!originTile.Valid) return;
             CameraJumper.TryJump(originTile, CameraJumper.MovementMode.Pan);
         }
 
+        //基点マーカー
         private void EnsureMarker()
         {
             if (!originTile.Valid) return;
@@ -178,5 +199,83 @@ namespace VoidAwake
             marker.Tile = originTile;
             Find.WorldObjects.Add(marker);
         }
+
+        //浸食による派閥の破壊
+        private HashSet<PlanetTile> prevHeavyExtreme = new HashSet<PlanetTile>();
+
+        private void ApplyVoidSettlementDestruction()
+        {
+            var nowHeavy = new HashSet<PlanetTile>();
+            foreach (PlanetTile t in ErodedTiles)
+            {
+                VoidErosionLevel lvl = GetErosionLevel(t);
+                if (lvl >= VoidErosionLevel.Heavy) // Heavy, Extreme
+                    nowHeavy.Add(t);
+            }
+
+            // 新規に Heavy 以上になったタイルだけ
+            List<Settlement> victims = new List<Settlement>();
+            foreach (Settlement s in Find.WorldObjects.Settlements)
+            {
+                if (!nowHeavy.Contains(s.Tile)) continue;
+                if (prevHeavyExtreme.Contains(s.Tile)) continue; // 既に処理済み帯
+                if (s.Faction == null || s.Faction.IsPlayer) continue;
+                if (s.Destroyed) continue;
+                victims.Add(s);
+            }
+
+            foreach (Settlement s in victims)
+                DestroyNpcSettlementByVoid(s);
+
+            prevHeavyExtreme = nowHeavy;
+        }
+
+        private void DestroyNpcSettlementByVoid(Settlement settlement)
+        {
+            PlanetTile tile = settlement.Tile;
+            Faction faction = settlement.Faction;
+            string label = settlement.Label;
+
+            // プレイヤーが今そのマップにいる場合は一旦スキップ（任意）
+            if (settlement.HasMap && settlement.Map.mapPawns.AnyColonistSpawned)
+                return;
+
+            bool hasOtherBase = false;
+            foreach (Settlement other in Find.WorldObjects.Settlements)
+            {
+                if (other != settlement && other.Faction == faction)
+                {
+                    hasOtherBase = true;
+                    break;
+                }
+            }
+
+            // 廃墟マーカー（拠点が破壊された見た目）
+            var ruined = (DestroyedSettlement)WorldObjectMaker.MakeWorldObject(
+                tile.LayerDef.DestroyedSettlementWorldObjectDef);
+            ruined.Tile = tile;
+            ruined.SetFaction(faction);
+            Find.WorldObjects.Add(ruined);
+
+            if (settlement.HasMap)
+                settlement.Map.info.parent = ruined;
+
+            string body = "LetterFactionBaseDefeatedNoRaids".Translate(label);
+            if (!hasOtherBase)
+            {
+                faction.defeated = true;
+                body += "\n\n" + "LetterFactionBaseDefeated_FactionDestroyed".Translate(faction.Name);
+            }
+
+            Find.LetterStack.ReceiveLetter(
+                "LetterLabelFactionBaseDefeated".Translate(),
+                body,
+                LetterDefOf.NeutralEvent, 
+                new GlobalTargetInfo(tile),
+                faction);
+
+            settlement.Destroy();
+        }
+
     }
 }
