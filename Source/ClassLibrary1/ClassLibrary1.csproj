@@ -358,7 +358,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Core\ErosionEvent\ErosionLevel1.cs" />
+    <Compile Include="Core\ErosionEvent\ErosionLevel2.cs" />
     <Compile Include="Core\ErosionEvent\ErosionLevel3.cs" />
+    <Compile Include="Core\ErosionEvent\ErosionLevel4.cs" />
     <Compile Include="Core\VoidAwakeSettings.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion.cs" />
     <Compile Include="Core\WorldErosion\VoidErosionMap.cs" />

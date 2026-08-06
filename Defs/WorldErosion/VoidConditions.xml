@@ -4,10 +4,9 @@
 	<!-- LV1: Light -->
 	<GameConditionDef>
 		<defName>VoidAwake_Erosion_Light</defName>
-		<conditionClass>GameCondition</conditionClass>
+		<conditionClass>VoidAwake.VoidAwake_ErosionLevel1</conditionClass>
 		<label>ヴォイドの浸食LV１</label>
-		<description>ヴォイドによる浸食が始まっています、影響は軽微ですが浸食が進むにつれより異常な出来事が発生します。</description>
-		<endMessage>虚無浸食がこの地から退きました。</endMessage>
+		<description>ヴォイドによる浸食の初期段階、フレッシュビーストやシャンブラーなどの下位の存在が出現し始めます。</description>
 		<canBePermanent>true</canBePermanent>
 		<exclusiveConditions>
 			<li>VoidAwake_Erosion_Medium</li>
@@ -19,10 +18,9 @@
 	<!-- LV2: Medium -->
 	<GameConditionDef>
 		<defName>VoidAwake_Erosion_Medium</defName>
-		<conditionClass>GameCondition</conditionClass>
+		<conditionClass>VoidAwake.VoidAwake_ErosionLevel2</conditionClass>
 		<label>ヴォイドの浸食LV２</label>
-		<description>ヴォイドの影響が強まっています</description>
-		<endMessage>虚無浸食がこの地から退きました。</endMessage>
+		<description>ヴォイドの浸食が進んでいます、上位の存在が出現する可能性があります</description>
 		<canBePermanent>true</canBePermanent>
 		<exclusiveConditions>
 			<li>VoidAwake_Erosion_Light</li>
@@ -34,10 +32,9 @@
 	<!-- LV3: Heavy（既存 ErosionLevel3 と対応） -->
 	<GameConditionDef>
 		<defName>VoidAwake_Erosion_Heavy</defName>
-		<conditionClass>GameCondition</conditionClass>
+		<conditionClass>VoidAwake.VoidAwake_ErosionLevel3</conditionClass>
 		<label>ヴォイドの浸食LV３</label>
-		<description>ヴォイドが強く影響を及ぼしています</description>
-		<endMessage>虚無浸食がこの地から退きました。</endMessage>
+		<description>この地域はヴォイドによって支配されています、野生動物はキメラに、植物は先触れの木へと変貌します</description>
 		<canBePermanent>true</canBePermanent>
 		<exclusiveConditions>
 			<li>VoidAwake_Erosion_Light</li>
@@ -49,10 +46,9 @@
 	<!-- LV4: Extreme -->
 	<GameConditionDef>
 		<defName>VoidAwake_Erosion_Extreme</defName>
-		<conditionClass>GameCondition</conditionClass>
+		<conditionClass>VoidAwake.VoidAwake_ErosionLevel4</conditionClass>
 		<label>ヴォイドの浸食LV４</label>
-		<description>ヴォイドによって完全に支配された区域です</description>
-		<endMessage>虚無浸食がこの地から退きました。</endMessage>
+		<description>ヴォイドの浸食が完了しこの地はメタルヘルに変化しました</description>
 		<canBePermanent>true</canBePermanent>
 		<exclusiveConditions>
 			<li>VoidAwake_Erosion_Light</li>

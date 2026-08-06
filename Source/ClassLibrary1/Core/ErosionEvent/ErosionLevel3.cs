@@ -1,38 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
-using RimWorld.Planet;
 using Verse;
 
 namespace VoidAwake
 {
-    public class VoidAwake_ErosionLevel3 : MapComponent
+    public class VoidAwake_ErosionLevel3 : GameCondition
     {
         private bool didInitialConvert;
 
-        public VoidAwake_ErosionLevel3(Map map) : base(map) { }
-
-        public override void MapComponentTick()
+        public override void GameConditionTick()
         {
+            Map map = SingleMap;
+            if (map == null) return;
+
             if (!ModsConfig.AnomalyActive) return;
             if (!map.IsPlayerHome) return;
 
-            var erosion = Find.World.GetComponent<VoidAwake_VoidErosion>();
-            if (erosion == null) return;
-            if (erosion.GetErosionLevel(map.Tile) < VoidAwake_VoidErosion.VoidErosionLevel.Heavy)
-            {
-                didInitialConvert = false;
-                return;
-            }
 
-            // 250 tick ごと程度で十分
             if (Find.TickManager.TicksGame % 250 != 0) return;
 
-            ConvertWildAnimals();
+            ConvertWildAnimals(map);
             didInitialConvert = true;
         }
 
-        private void ConvertWildAnimals()
+        private void ConvertWildAnimals(Map map)
         {
             List<Pawn> list = map.mapPawns.AllPawnsSpawned.ToList();
             foreach (Pawn p in list)
@@ -49,13 +41,18 @@ namespace VoidAwake
             Map m = animal.MapHeld;
             if (m == null) return;
 
-            // 演出は任意（MeatExplosion など）
             if (animal.Corpse != null) animal.Corpse.Destroy();
             else animal.Destroy();
 
             Pawn chimera = PawnGenerator.GeneratePawn(
                 new PawnGenerationRequest(PawnKindDefOf.Chimera, Faction.OfEntities));
             GenSpawn.Spawn(chimera, pos, m);
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref didInitialConvert, "didInitialConvert", false);
         }
     }
 }
