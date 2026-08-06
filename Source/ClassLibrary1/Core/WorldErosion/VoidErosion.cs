@@ -153,7 +153,7 @@ namespace VoidAwake
         //タイルごとの浸食レベル
         public enum VoidErosionLevel { None, Light, Medium, Heavy, Extreme }
 
-        public VoidErosionLevel GetErosionLevel(PlanetTile tile)
+        public VoidErosionLevel GetErosionLevel(PlanetTile tile)//タイルの浸食レベルを調べる
         {
 
             if (!originTile.Valid || radiusInTiles <= 0f)
@@ -163,11 +163,12 @@ namespace VoidAwake
             if (dist > radiusInTiles)
                 return VoidErosionLevel.None;
 
+            //浸食範囲と、そのタイルの基点からの距離の比率からレベルを算出
             float ratio = dist / radiusInTiles;
-            if (ratio <= 0.25f) return VoidErosionLevel.Extreme;
-            if (ratio <= 0.50f) return VoidErosionLevel.Heavy;
-            if (ratio <= 0.75f) return VoidErosionLevel.Medium;
-            return VoidErosionLevel.Light;
+            if (ratio <= 0.25f) return VoidErosionLevel.Extreme;//黒
+            if (ratio <= 0.50f) return VoidErosionLevel.Heavy;//濃い紫
+            if (ratio <= 0.75f) return VoidErosionLevel.Medium;//紫
+            return VoidErosionLevel.Light;//薄い紫
         }
         //基点へのジャンプボタン
         public void JumpToOrigin()

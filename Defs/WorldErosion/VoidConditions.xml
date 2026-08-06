@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- LV1: Light -->
+	<GameConditionDef>
+		<defName>VoidAwake_Erosion_Light</defName>
+		<conditionClass>GameCondition</conditionClass>
+		<label>ヴォイドの浸食LV１</label>
+		<description>ヴォイドによる浸食が始まっています、影響は軽微ですが浸食が進むにつれより異常な出来事が発生します。</description>
+		<endMessage>虚無浸食がこの地から退きました。</endMessage>
+		<canBePermanent>true</canBePermanent>
+		<exclusiveConditions>
+			<li>VoidAwake_Erosion_Medium</li>
+			<li>VoidAwake_Erosion_Heavy</li>
+			<li>VoidAwake_Erosion_Extreme</li>
+		</exclusiveConditions>
+	</GameConditionDef>
+
+	<!-- LV2: Medium -->
+	<GameConditionDef>
+		<defName>VoidAwake_Erosion_Medium</defName>
+		<conditionClass>GameCondition</conditionClass>
+		<label>ヴォイドの浸食LV２</label>
+		<description>ヴォイドの影響が強まっています</description>
+		<endMessage>虚無浸食がこの地から退きました。</endMessage>
+		<canBePermanent>true</canBePermanent>
+		<exclusiveConditions>
+			<li>VoidAwake_Erosion_Light</li>
+			<li>VoidAwake_Erosion_Heavy</li>
+			<li>VoidAwake_Erosion_Extreme</li>
+		</exclusiveConditions>
+	</GameConditionDef>
+
+	<!-- LV3: Heavy（既存 ErosionLevel3 と対応） -->
+	<GameConditionDef>
+		<defName>VoidAwake_Erosion_Heavy</defName>
+		<conditionClass>GameCondition</conditionClass>
+		<label>ヴォイドの浸食LV３</label>
+		<description>ヴォイドが強く影響を及ぼしています</description>
+		<endMessage>虚無浸食がこの地から退きました。</endMessage>
+		<canBePermanent>true</canBePermanent>
+		<exclusiveConditions>
+			<li>VoidAwake_Erosion_Light</li>
+			<li>VoidAwake_Erosion_Medium</li>
+			<li>VoidAwake_Erosion_Extreme</li>
+		</exclusiveConditions>
+	</GameConditionDef>
+
+	<!-- LV4: Extreme -->
+	<GameConditionDef>
+		<defName>VoidAwake_Erosion_Extreme</defName>
+		<conditionClass>GameCondition</conditionClass>
+		<label>ヴォイドの浸食LV４</label>
+		<description>ヴォイドによって完全に支配された区域です</description>
+		<endMessage>虚無浸食がこの地から退きました。</endMessage>
+		<canBePermanent>true</canBePermanent>
+		<exclusiveConditions>
+			<li>VoidAwake_Erosion_Light</li>
+			<li>VoidAwake_Erosion_Medium</li>
+			<li>VoidAwake_Erosion_Heavy</li>
+		</exclusiveConditions>
+	</GameConditionDef>
+
+</Defs>

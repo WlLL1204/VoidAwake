@@ -361,6 +361,7 @@
     <Compile Include="Core\ErosionEvent\ErosionLevel3.cs" />
     <Compile Include="Core\VoidAwakeSettings.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion.cs" />
+    <Compile Include="Core\WorldErosion\VoidErosionMap.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion_JumpButton.cs" />
     <Compile Include="Core\WorldErosion\VoidProtect\VoidErosion_WorldProtect_Patch.cs" />
     <Compile Include="Core\WorldErosion\VoidProtect\VoidErosion_WorldProtect.cs" />
@@ -369,6 +370,9 @@
     <Compile Include="Entitys\Basic\ChainOfTragedy\ChainOfTragedy.cs" />
     <Compile Include="Entitys\Basic\FlyingHed\FlyingHed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\WorldErosion\Level\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
