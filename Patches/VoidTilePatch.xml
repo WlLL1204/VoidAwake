@@ -3,8 +3,8 @@
 	<Operation Class="PatchOperationAdd">
 		<xpath>Defs/PlanetLayerDef[defName="Surface"]/worldDrawLayers</xpath>
 		<value>
-			<!-- Terrain より手前に出したいのでリスト前方寄りでも可。末尾追加でも動作確認は可 -->
 			<li>VoidAwake.VoidAwake_VoidTile</li>
+			<li>VoidAwake.VoidAwake_WorldProtect</li>
 		</value>
 	</Operation>
 </Patch>

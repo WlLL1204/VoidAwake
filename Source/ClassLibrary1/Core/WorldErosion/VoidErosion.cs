@@ -113,6 +113,8 @@ namespace VoidAwake
         /// <summary>浸食タイル集合を作り直し、描画レイヤを dirty にする。</summary>
         private void RecalculateErodedTiles()
         {
+            //タイルの保護パッチ
+            var purified = Find.World.GetComponent<VoidAwake_VoidProtect_Path>();
             ErodedTiles.Clear();
 
             if (!originTile.Valid)
@@ -131,6 +133,8 @@ namespace VoidAwake
                     ErodedTiles.Add(other);
                 }
             }
+
+
 
             cachedErodedCount = ErodedTiles.Count;
             NotifyDrawLayerDirty();
@@ -151,6 +155,7 @@ namespace VoidAwake
 
         public VoidErosionLevel GetErosionLevel(PlanetTile tile)
         {
+
             if (!originTile.Valid || radiusInTiles <= 0f)
                 return VoidErosionLevel.None;
 
