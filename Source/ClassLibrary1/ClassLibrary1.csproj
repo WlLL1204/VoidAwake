@@ -369,6 +369,7 @@
     <Compile Include="Core\WorldErosion\VoidProtect\VoidErosion_WorldProtect_Patch.cs" />
     <Compile Include="Core\WorldErosion\VoidProtect\VoidErosion_WorldProtect.cs" />
     <Compile Include="Core\WorldErosion\VoidTile.cs" />
+    <Compile Include="Core\WorldErosion\VoidTile_Effect.cs" />
     <Compile Include="Core\WorldErosion\WorldErosionMarker.cs" />
     <Compile Include="Entitys\Basic\ChainOfTragedy\ChainOfTragedy.cs" />
     <Compile Include="Entitys\Basic\FlyingHed\FlyingHed.cs" />

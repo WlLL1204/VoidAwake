@@ -86,9 +86,20 @@ namespace VoidAwake
             lastDay = day;
             radiusInTiles = StartRadius + day * TilesPerDay;
             RecalculateErodedTiles();
+
         }
 
-        // ★ 円描画の WorldComponentUpdate は削除（レイヤに任せる）
+        public override void WorldComponentUpdate()
+        {
+            if (ErodedTiles == null || ErodedTiles.Count == 0)
+                return;
+            // ワールド画面を開いているときだけスクロール
+            if (Find.World == null || !WorldRendererUtility.WorldRendered)
+                return;
+
+            VoidAwake_VoidTile.UpdateSwirlScroll();
+            VoidAwake_VoidTileEffect.UpdateCloudScroll();
+        }
 
         private void ChooseOriginTile()
         {
@@ -148,6 +159,7 @@ namespace VoidAwake
             if (layer == null || Find.World?.renderer == null) return;
 
             Find.World.renderer.SetDirty<VoidAwake_VoidTile>(layer);
+            Find.World.renderer.SetDirty<VoidAwake_VoidTileEffect>(layer);
         }
 
         //タイルごとの浸食レベル
