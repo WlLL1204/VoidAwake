@@ -3,11 +3,19 @@
   "WorkspaceRootPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\classlibrary1\\core\\worlderosion\\voiderosion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|c:\\program files (x86)\\steam\\steamapps\\common\\rimworld\\mods\\voidawake\\source\\classlibrary1\\core\\worlderosion\\voiderosion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\core\\worlderosion\\voiderosion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|c:\\program files (x86)\\steam\\steamapps\\common\\rimworld\\mods\\voidawake\\source\\classlibrary1\\core\\worlderosion\\voidtile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|c:\\program files (x86)\\steam\\steamapps\\common\\rimworld\\mods\\voidawake\\source\\classlibrary1\\core\\voidawake_playsettings_patch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\core\\voidawake_playsettings_patch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|c:\\program files (x86)\\steam\\steamapps\\common\\rimworld\\mods\\voidawake\\source\\classlibrary1\\core\\voidawakesettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\core\\voidawakesettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\classlibrary1\\core\\worlderosion\\voidtile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\core\\worlderosion\\voidtile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -25,11 +33,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
+              "Title": "VoidAwake_PlaySettings_Patch.cs",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\VoidAwake_PlaySettings_Patch.cs",
+              "RelativeDocumentMoniker": "ClassLibrary1\\Core\\VoidAwake_PlaySettings_Patch.cs",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\VoidAwake_PlaySettings_Patch.cs",
+              "RelativeToolTip": "ClassLibrary1\\Core\\VoidAwake_PlaySettings_Patch.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-08T15:01:43.028Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "VoidAwakeSettings.cs",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\VoidAwakeSettings.cs",
+              "RelativeDocumentMoniker": "ClassLibrary1\\Core\\VoidAwakeSettings.cs",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\VoidAwakeSettings.cs",
+              "RelativeToolTip": "ClassLibrary1\\Core\\VoidAwakeSettings.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-08T14:58:55.557Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "VoidTile_Effect.cs",
               "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\VoidTile_Effect.cs",
               "RelativeDocumentMoniker": "ClassLibrary1\\Core\\WorldErosion\\VoidTile_Effect.cs",
@@ -41,7 +75,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "VoidTilePatch.xml",
               "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Patches\\VoidTilePatch.xml",
               "RelativeDocumentMoniker": "..\\Patches\\VoidTilePatch.xml",
@@ -59,14 +93,14 @@
               "RelativeDocumentMoniker": "ClassLibrary1\\Core\\WorldErosion\\VoidErosion.cs",
               "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\VoidErosion.cs",
               "RelativeToolTip": "ClassLibrary1\\Core\\WorldErosion\\VoidErosion.cs",
-              "ViewState": "AgIAAGAAAAAAAAAAAAAzwFoAAAA8AAAAAAAAAA==",
+              "ViewState": "AgIAAGIBAAAAAAAAAAAcwHABAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-08T13:26:48.909Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "VoidTile.cs",
               "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\VoidTile.cs",
               "RelativeDocumentMoniker": "ClassLibrary1\\Core\\WorldErosion\\VoidTile.cs",
@@ -74,8 +108,7 @@
               "RelativeToolTip": "ClassLibrary1\\Core\\WorldErosion\\VoidTile.cs",
               "ViewState": "AgIAAKgAAAAAAAAAAAAcwK4AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-08T12:57:26.086Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-08T12:57:26.086Z"
             }
           ]
         }

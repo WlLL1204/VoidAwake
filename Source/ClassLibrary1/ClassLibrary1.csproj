@@ -31,8 +31,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HarmonyMod">
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\HarmonyMod.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -363,6 +371,7 @@
     <Compile Include="Core\ErosionEvent\ErosionLevel3.cs" />
     <Compile Include="Core\ErosionEvent\ErosionLevel4.cs" />
     <Compile Include="Core\VoidAwakeSettings.cs" />
+    <Compile Include="Core\VoidAwake_PlaySettings_Patch.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion.cs" />
     <Compile Include="Core\WorldErosion\VoidErosionMap.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion_JumpButton.cs" />

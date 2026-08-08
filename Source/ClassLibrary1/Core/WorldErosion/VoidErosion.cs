@@ -23,6 +23,9 @@ namespace VoidAwake
         private int cachedErodedCount;
         private int cachedLandTileCount;
 
+        private bool erosionUiDragging;
+        private Vector2 erosionUiDragOffset;
+
         // --- バランス（確認用の大きめ値。本番で戻す） ---
         public const float StartRadius = 1f;//開始時の浸食範囲
         public const float TilesPerDay = 1.0f;//浸食の進行速度
@@ -316,25 +319,57 @@ namespace VoidAwake
         {
             if (Find.ScreenshotModeHandler != null && Find.ScreenshotModeHandler.Active)
                 return;
-
-            string label = "世界浸食率: " + ErosionRatePercentLabel;
-            string tip = "浸食タイル " + ErodedTileCount + " / 全タイル " + TotalTiles;
-
+            if (VoidAwakeMod.Settings == null || !VoidAwakeMod.Settings.showErosionRateUI)
+                return;
             float width = 220f;
             float height = 28f;
-            Rect rect = new Rect(
-                (float)UI.screenWidth - width - 16f,
-                80f,
-                width,
-                height);
-
+            float x = VoidAwakeMod.Settings.erosionUiX;
+            float y = VoidAwakeMod.Settings.erosionUiY;
+            if (x < 0f || y < 0f)
+            {
+                x = (float)UI.screenWidth - width - 16f;
+                y = 80f;
+            }
+            // 画面内に収める
+            x = Mathf.Clamp(x, 0f, UI.screenWidth - width);
+            y = Mathf.Clamp(y, 0f, UI.screenHeight - height);
+            Rect rect = new Rect(x, y, width, height);
+            // ドラッグ開始
+            if (Event.current.type == EventType.MouseDown
+                && Event.current.button == 0
+                && Mouse.IsOver(rect))
+            {
+                erosionUiDragging = true;
+                erosionUiDragOffset = Event.current.mousePosition - new Vector2(x, y);
+                Event.current.Use();
+            }
+            // ドラッグ中
+            if (erosionUiDragging && Event.current.type == EventType.MouseDrag)
+            {
+                Vector2 pos = Event.current.mousePosition - erosionUiDragOffset;
+                pos.x = Mathf.Clamp(pos.x, 0f, UI.screenWidth - width);
+                pos.y = Mathf.Clamp(pos.y, 0f, UI.screenHeight - height);
+                VoidAwakeMod.Settings.erosionUiX = pos.x;
+                VoidAwakeMod.Settings.erosionUiY = pos.y;
+                rect.position = pos;
+                Event.current.Use();
+            }
+            // ドロップで位置を保存
+            if (erosionUiDragging && Event.current.type == EventType.MouseUp)
+            {
+                erosionUiDragging = false;
+                LoadedModManager.GetMod<VoidAwakeMod>().WriteSettings();
+                Event.current.Use();
+            }
+            string label = "世界浸食率: " + ErosionRatePercentLabel;
+            string tip = "浸食タイル " + ErodedTileCount + " / 全タイル " + TotalTiles
+                + "\nドラッグで移動できます。";
             Widgets.DrawWindowBackground(rect);
             Text.Anchor = TextAnchor.MiddleCenter;
             Widgets.Label(rect, label);
             Text.Anchor = TextAnchor.UpperLeft;
             TooltipHandler.TipRegion(rect, tip);
         }
-
         //陸地を数える
         private void RecalculateLandTileCount()
         {
