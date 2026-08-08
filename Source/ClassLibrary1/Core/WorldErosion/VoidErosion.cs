@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using RimWorld;
+﻿using RimWorld;
 using RimWorld.Planet;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using Verse;
 
 namespace VoidAwake
@@ -20,6 +21,7 @@ namespace VoidAwake
 
         private int lastDay = -1;
         private int cachedErodedCount;
+        private int cachedLandTileCount;
 
         // --- バランス（確認用の大きめ値。本番で戻す） ---
         public const float StartRadius = 1f;//開始時の浸食範囲
@@ -31,7 +33,9 @@ namespace VoidAwake
         {
         }
 
-        public int TotalTiles => Find.WorldGrid.TilesCount;
+        /// <summary>海洋を除いた陸タイル総数。</summary>
+        public int TotalTiles => cachedLandTileCount;
+
 
         public int ErodedTileCount => cachedErodedCount;
 
@@ -85,6 +89,7 @@ namespace VoidAwake
 
             lastDay = day;
             radiusInTiles = StartRadius + day * TilesPerDay;
+            RecalculateLandTileCount();
             RecalculateErodedTiles();
 
         }
@@ -103,24 +108,30 @@ namespace VoidAwake
 
         private void ChooseOriginTile()
         {
-            List<PlanetTile> landTiles = new List<PlanetTile>();
             WorldGrid grid = Find.WorldGrid;
+            Vector3 mapCenter = grid.SurfaceViewCenter;
+
+            PlanetTile best = PlanetTile.Invalid;
+            float bestDist = float.MaxValue;
 
             for (int i = 0; i < grid.TilesCount; i++)
             {
                 PlanetTile tile = i;
-                if (!grid[tile].WaterCovered)
+                if (grid[tile].WaterCovered) continue;
+
+                float dist = Vector3.Angle(grid.GetTileCenter(tile), mapCenter);
+                if (dist < bestDist)
                 {
-                    landTiles.Add(tile);
+                    bestDist = dist;
+                    best = tile;
                 }
             }
 
-            originTile = landTiles.Count == 0 ? (PlanetTile)0 : landTiles.RandomElement();
+            originTile = best.Valid ? best : (PlanetTile)0;
             radiusInTiles = StartRadius;
-            Log.Message($"[VoidAwake] Void erosion origin tile = {originTile}");
+            Log.Message($"[VoidAwake] Void erosion origin tile = {originTile} (near map center)");
             EnsureMarker();
         }
-
         /// <summary>浸食タイル集合を作り直し、描画レイヤを dirty にする。</summary>
         private void RecalculateErodedTiles()
         {
@@ -145,13 +156,18 @@ namespace VoidAwake
                 }
             }
 
+            // 浸食率用: 海洋を除外した陸タイルだけ数える
+            int landEroded = 0;
+            foreach (PlanetTile t in ErodedTiles)
+            {
+                if (!grid[t].WaterCovered)
+                    landEroded++;
+            }
+            cachedErodedCount = landEroded;
 
-
-            cachedErodedCount = ErodedTiles.Count;
             NotifyDrawLayerDirty();
             ApplyVoidSettlementDestruction();
         }
-
         private void NotifyDrawLayerDirty()
         {
             // 1.6: WorldRenderer.SetDirty<T>(PlanetLayer)
@@ -294,6 +310,45 @@ namespace VoidAwake
 
             settlement.Destroy();
         }
+
+        //ヴォイドの世界の浸食率に使うやつ
+        public override void WorldComponentOnGUI()
+        {
+            if (Find.ScreenshotModeHandler != null && Find.ScreenshotModeHandler.Active)
+                return;
+
+            string label = "世界浸食率: " + ErosionRatePercentLabel;
+            string tip = "浸食タイル " + ErodedTileCount + " / 全タイル " + TotalTiles;
+
+            float width = 220f;
+            float height = 28f;
+            Rect rect = new Rect(
+                (float)UI.screenWidth - width - 16f,
+                80f,
+                width,
+                height);
+
+            Widgets.DrawWindowBackground(rect);
+            Text.Anchor = TextAnchor.MiddleCenter;
+            Widgets.Label(rect, label);
+            Text.Anchor = TextAnchor.UpperLeft;
+            TooltipHandler.TipRegion(rect, tip);
+        }
+
+        //陸地を数える
+        private void RecalculateLandTileCount()
+        {
+            WorldGrid grid = Find.WorldGrid;
+            int count = 0;
+            for (int i = 0; i < grid.TilesCount; i++)
+            {
+                PlanetTile tile = i;
+                if (!grid[tile].WaterCovered)
+                    count++;
+            }
+            cachedLandTileCount = count;
+        }
+
 
     }
 }
