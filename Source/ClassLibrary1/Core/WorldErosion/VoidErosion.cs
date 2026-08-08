@@ -30,6 +30,9 @@ namespace VoidAwake
         public const float StartRadius = 1f;//開始時の浸食範囲
         public const float TilesPerDay = 1.0f;//浸食の進行速度
 
+        private static Texture2D erosionClockTex;
+        private static Texture2D erosionClockHandsTex;
+
         private VoidAwake_WorldErosionMarker marker;
 
         public VoidAwake_VoidErosion(World world) : base(world)
@@ -315,14 +318,32 @@ namespace VoidAwake
         }
 
         //ヴォイドの世界の浸食率に使うやつ
+        private static void EnsureErosionClockTextures()
+        {
+            if (erosionClockTex != null) return;
+            erosionClockTex = ContentFinder<Texture2D>.Get("UI/Interface/WorldClock/Clock");
+            erosionClockHandsTex = ContentFinder<Texture2D>.Get("UI/Interface/WorldClock/ClockHands");
+        }
+        /// <summary>0〜12。浸食率を12分割した硬い目盛り。</summary>
+        public int ErosionClockHour
+        {
+            get
+            {
+                // 100% で 12（一周）。11までにしたいなら Clamp(..., 0, 11)
+                return Mathf.Clamp(Mathf.FloorToInt(ErosionRate * 12f), 0, 12);
+            }
+        }
+        public float ErosionClockAngle => ErosionClockHour * 30f;
         public override void WorldComponentOnGUI()
         {
             if (Find.ScreenshotModeHandler != null && Find.ScreenshotModeHandler.Active)
                 return;
             if (VoidAwakeMod.Settings == null || !VoidAwakeMod.Settings.showErosionRateUI)
                 return;
-            float width = 220f;
-            float height = 28f;
+            EnsureErosionClockTextures();
+            float size = 160f;
+            float width = size;
+            float height = size;
             float x = VoidAwakeMod.Settings.erosionUiX;
             float y = VoidAwakeMod.Settings.erosionUiY;
             if (x < 0f || y < 0f)
@@ -330,11 +351,10 @@ namespace VoidAwake
                 x = (float)UI.screenWidth - width - 16f;
                 y = 80f;
             }
-            // 画面内に収める
             x = Mathf.Clamp(x, 0f, UI.screenWidth - width);
             y = Mathf.Clamp(y, 0f, UI.screenHeight - height);
             Rect rect = new Rect(x, y, width, height);
-            // ドラッグ開始
+            // --- ドラッグ（既存と同じ） ---
             if (Event.current.type == EventType.MouseDown
                 && Event.current.button == 0
                 && Mouse.IsOver(rect))
@@ -343,7 +363,6 @@ namespace VoidAwake
                 erosionUiDragOffset = Event.current.mousePosition - new Vector2(x, y);
                 Event.current.Use();
             }
-            // ドラッグ中
             if (erosionUiDragging && Event.current.type == EventType.MouseDrag)
             {
                 Vector2 pos = Event.current.mousePosition - erosionUiDragOffset;
@@ -354,23 +373,31 @@ namespace VoidAwake
                 rect.position = pos;
                 Event.current.Use();
             }
-            // ドロップで位置を保存
             if (erosionUiDragging && Event.current.type == EventType.MouseUp)
             {
                 erosionUiDragging = false;
                 LoadedModManager.GetMod<VoidAwakeMod>().WriteSettings();
                 Event.current.Use();
             }
-            string label = "世界浸食率: " + ErosionRatePercentLabel;
-            string tip = "浸食タイル " + ErodedTileCount + " / 全タイル " + TotalTiles
+            // --- 時計描画 ---
+            // 背景パネルが邪魔なら DrawWindowBackground は消してOK
+            // Widgets.DrawWindowBackground(rect);
+            Widgets.DrawTextureFitted(rect, erosionClockTex, 1f);
+            float angle = ErosionClockAngle;
+            Widgets.DrawTextureFitted(
+                rect,
+                erosionClockHandsTex,
+                1f,
+                Vector2.one,
+                new Rect(0f, 0f, 1f, 1f),
+                angle);
+            string tip =
+                "世界浸食率: " + ErosionRatePercentLabel
+                + "\n浸食タイル " + ErodedTileCount + " / 全タイル " + TotalTiles
+                + "\n目盛り " + ErosionClockHour + " / 12"
                 + "\nドラッグで移動できます。";
-            Widgets.DrawWindowBackground(rect);
-            Text.Anchor = TextAnchor.MiddleCenter;
-            Widgets.Label(rect, label);
-            Text.Anchor = TextAnchor.UpperLeft;
             TooltipHandler.TipRegion(rect, tip);
-        }
-        //陸地を数える
+        }        //陸地を数える
         private void RecalculateLandTileCount()
         {
             WorldGrid grid = Find.WorldGrid;

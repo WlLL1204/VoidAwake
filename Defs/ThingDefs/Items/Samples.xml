@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<ThingCategoryDef>
+		<defName>VoidAwake_Samples</defName>
+		<label>サンプル</label>
+		<parent>Manufactured</parent>
+	</ThingCategoryDef>
+
+	<!-- 基礎サンプル -->
+	<ThingDef ParentName="ResourceBase">
+		<defName>VoidAwake_BasicSample</defName>
+		<label>基礎サンプル</label>
+		<description>虚無浸食の影響を受けた物質から採取した基礎的な標本。サンプル解析台での解析に用いる。</description>
+		<graphicData>
+			<!-- 仮テクスチャ: バニラバイオフェライト流用 -->
+			<texPath>Things/Item/Resource/Bioferrite</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+			<color>(140,160,170)</color>
+		</graphicData>
+		<soundInteract>Metal_Drop</soundInteract>
+		<soundDrop>Standard_Drop</soundDrop>
+		<stackLimit>50</stackLimit>
+		<healthAffectsPrice>false</healthAffectsPrice>
+		<statBases>
+			<MaxHitPoints>50</MaxHitPoints>
+			<MarketValue>15</MarketValue>
+			<Mass>0.2</Mass>
+			<Flammability>0.4</Flammability>
+			<DeteriorationRate>1.0</DeteriorationRate>
+		</statBases>
+		<thingCategories>
+			<li>VoidAwake_Samples</li>
+		</thingCategories>
+	</ThingDef>
+
+	<!-- 上級サンプル -->
+	<ThingDef ParentName="ResourceBase">
+		<defName>VoidAwake_AdvancedSample</defName>
+		<label>上級サンプル</label>
+		<description>高度に変質した虚無由来の標本。通常の基礎サンプルより濃密な情報が宿っており、高度な解析に用いる。</description>
+		<graphicData>
+			<!-- 仮テクスチャ: バニラシャード流用 -->
+			<texPath>Things/Item/Resource/Shard</texPath>
+			<graphicClass>Graphic_StackCount</graphicClass>
+			<color>(90,60,120)</color>
+		</graphicData>
+		<soundInteract>Metal_Drop</soundInteract>
+		<soundDrop>Standard_Drop</soundDrop>
+		<stackLimit>25</stackLimit>
+		<healthAffectsPrice>false</healthAffectsPrice>
+		<statBases>
+			<MaxHitPoints>80</MaxHitPoints>
+			<MarketValue>60</MarketValue>
+			<Mass>0.3</Mass>
+			<Flammability>0.2</Flammability>
+			<DeteriorationRate>0.5</DeteriorationRate>
+		</statBases>
+		<thingCategories>
+			<li>VoidAwake_Samples</li>
+		</thingCategories>
+	</ThingDef>
+
+</Defs>
