@@ -1,0 +1,20 @@
+<Defs>
+	<WorkGiverDef>
+		<defName>VoidAwake_RefuelBasicSample</defName>
+		<label>基礎サンプル補給</label>
+		<giverClass>VoidAwake.WorkGiver_RefuelBasicSample</giverClass>
+		<workType>Hauling</workType>
+		<verb>補給する</verb>
+		<gerund>補給中</gerund>
+		<priorityInType>50</priorityInType>
+	</WorkGiverDef>
+	<WorkGiverDef>
+		<defName>VoidAwake_RefuelAdvancedSample</defName>
+		<label>上級サンプル補給</label>
+		<giverClass>VoidAwake.WorkGiver_RefuelAdvancedSample</giverClass>
+		<workType>Hauling</workType>
+		<verb>補給する</verb>
+		<gerund>補給中</gerund>
+		<priorityInType>49</priorityInType>
+	</WorkGiverDef>
+</Defs>

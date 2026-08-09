@@ -10,7 +10,7 @@ namespace VoidAwake
         public static ThingDef VoidAwake_SampleExtractionKitBelt;
         public static ThingDef VoidAwake_BasicSample;
         public static ThingDef VoidAwake_AdvancedSample;
-
+        public static ThingDef VoidAwake_SampleAnalysisBench;
         static VoidAwake_ThingDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(VoidAwake_ThingDefOf));
     }
 
@@ -18,6 +18,9 @@ namespace VoidAwake
     public static class VA_JobDefOf
     {
         public static JobDef VoidAwake_ExtractSample;
+        public static JobDef VoidAwake_RefuelBasicSample;
+        public static JobDef VoidAwake_RefuelAdvancedSample;
+
         static VA_JobDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(VA_JobDefOf));
     }
 

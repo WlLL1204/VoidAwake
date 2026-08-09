@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-	<!-- サンプル解析台 -->
-	<ThingDef ParentName="BenchBase">
+	<ThingDef ParentName="BuildingBase">
 		<defName>VoidAwake_SampleAnalysisBench</defName>
 		<label>サンプル解析台</label>
-		<description>基礎サンプルや上級サンプルを解析するための作業台。虚無に由来する物質の構造を測定し、知見を引き出す。</description>
-		<thingClass>Building_WorkTable</thingClass>
+		<description>基礎サンプルと上級サンプルを別々に装填し、毎日アノマリー研究知識を得る解析装置。</description>
+		<thingClass>Building</thingClass>
+		<tickerType>Normal</tickerType>
 		<passability>PassThroughOnly</passability>
 		<pathCost>50</pathCost>
 		<fillPercent>0.5</fillPercent>
 		<useHitPoints>True</useHitPoints>
 		<graphicData>
-			<!-- 仮テクスチャ: バニラ血清ラボ流用 -->
 			<texPath>Things/Building/SerumCentrifuge/SerumCentrifuge</texPath>
 			<graphicClass>Graphic_Multi</graphicClass>
 			<drawSize>(3,3)</drawSize>
@@ -31,8 +30,6 @@
 			<buildingTags>
 				<li>Anomaly</li>
 			</buildingTags>
-			<workTableRoomRole>Laboratory</workTableRoomRole>
-			<workTableNotInRoomRoleFactor>0.8</workTableNotInRoomRoleFactor>
 		</building>
 		<designationCategory>Anomaly</designationCategory>
 		<uiOrder>310</uiOrder>
@@ -50,10 +47,6 @@
 		</costList>
 		<hasInteractionCell>true</hasInteractionCell>
 		<interactionCellOffset>(0,0,-1)</interactionCellOffset>
-		<surfaceType>Item</surfaceType>
-		<inspectorTabs>
-			<li>ITab_Bills</li>
-		</inspectorTabs>
 		<comps>
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
@@ -64,16 +57,53 @@
 				<glowRadius>5</glowRadius>
 				<glowColor>(73,123,138,0)</glowColor>
 			</li>
-			<li Class="CompProperties_AffectedByFacilities">
-				<linkableFacilities>
-					<li>ToolCabinet</li>
-				</linkableFacilities>
-			</li>
 			<li Class="CompProperties_Breakdownable"/>
+
+			<!-- 基礎サンプル燃料（自動消費はしない） -->
+			<li Class="CompProperties_Refuelable">
+				<compClass>VoidAwake.CompRefuelable_BasicSample</compClass>
+				<fuelCapacity>10</fuelCapacity>
+				<fuelConsumptionRate>0</fuelConsumptionRate>
+				<fuelFilter>
+					<thingDefs>
+						<li>VoidAwake_BasicSample</li>
+					</thingDefs>
+				</fuelFilter>
+				<fuelLabel>基礎サンプル</fuelLabel>
+				<fuelGizmoLabel>基礎サンプル</fuelGizmoLabel>
+				<showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+				<showFuelGizmo>true</showFuelGizmo>
+				<canEjectFuel>true</canEjectFuel>
+				<consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+			</li>
+
+			<!-- 上級サンプル燃料 -->
+			<li Class="CompProperties_Refuelable">
+				<compClass>VoidAwake.CompRefuelable_AdvancedSample</compClass>
+				<fuelCapacity>10</fuelCapacity>
+				<fuelConsumptionRate>0</fuelConsumptionRate>
+				<fuelFilter>
+					<thingDefs>
+						<li>VoidAwake_AdvancedSample</li>
+					</thingDefs>
+				</fuelFilter>
+				<fuelLabel>上級サンプル</fuelLabel>
+				<fuelGizmoLabel>上級サンプル</fuelGizmoLabel>
+				<showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+				<showFuelGizmo>true</showFuelGizmo>
+				<canEjectFuel>true</canEjectFuel>
+				<consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+			</li>
+
+			<!-- 毎日付与 -->
+			<li Class="VoidAwake.VoidAwake_CompProperties_SampleAnalysis">
+				<basicKnowledgePerDay>1</basicKnowledgePerDay>
+				<advancedKnowledgePerDay>1</advancedKnowledgePerDay>
+				<ticksPerCycle>60000</ticksPerCycle>
+			</li>
 		</comps>
 		<constructEffect>ConstructMetal</constructEffect>
 		<placeWorkers>
-			<li>PlaceWorker_ShowFacilitiesConnections</li>
 			<li>PlaceWorker_PreventInteractionSpotOverlap</li>
 		</placeWorkers>
 	</ThingDef>

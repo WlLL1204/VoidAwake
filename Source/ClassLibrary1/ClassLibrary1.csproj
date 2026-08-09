@@ -377,6 +377,9 @@
     <Compile Include="Core\VoidResearch\Extraction\Extraction_JobGiver.cs" />
     <Compile Include="Core\VoidResearch\Extraction\Extraction_Utility.cs" />
     <Compile Include="Core\VoidResearch\Extraction\Extraction_WorkGiver.cs" />
+    <Compile Include="Core\VoidResearch\Extraction\SampleResearch\SampleResearch_CompRefuelable.cs" />
+    <Compile Include="Core\VoidResearch\Extraction\SampleResearch\SampleResearch_CompSampleAnalysis.cs" />
+    <Compile Include="Core\VoidResearch\Extraction\SampleResearch\SampleResearch_WorkGiver.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion.cs" />
     <Compile Include="Core\WorldErosion\VoidErosionMap.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion_JumpButton.cs" />
