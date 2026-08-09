@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <VoidAwake_CreateChimeraCompleteText>{0_nameDef}が{RITUAL_label}の儀式を完了した。手懐けられたキメラが現れた。</VoidAwake_CreateChimeraCompleteText>
+  <VoidAwake_CreateChimeraFailedText>{0_nameDef}が{RITUAL_label}の儀式を完了したが、キメラの作製に失敗した。</VoidAwake_CreateChimeraFailedText>
+
+</LanguageData>

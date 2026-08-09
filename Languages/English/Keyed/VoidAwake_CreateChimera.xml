@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <VoidAwake_CreateChimeraCompleteText>{0_nameDef} has completed the {RITUAL_label} ritual. A tamed chimera has appeared.</VoidAwake_CreateChimeraCompleteText>
+  <VoidAwake_CreateChimeraFailedText>{0_nameDef} has completed the {RITUAL_label} ritual, but failed to create a chimera.</VoidAwake_CreateChimeraFailedText>
+
+</LanguageData>

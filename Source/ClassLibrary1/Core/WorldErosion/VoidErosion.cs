@@ -64,21 +64,16 @@ namespace VoidAwake
             base.FinalizeInit(fromLoad);
 
             if (!originTile.Valid)
-            {
-                ChooseOriginTile();
-            }
+                ChooseOriginTile(); // origin だけ決める。radius は触らない
 
-            if (radiusInTiles < StartRadius)
-            {
-                radiusInTiles = StartRadius;
-            }
-
+            SyncRadiusFromCalendar();
+            RecalculateLandTileCount();
             RecalculateErodedTiles();
-            lastDay = GenDate.DaysPassed;
+
+            lastDay = GenDate.DaysPassed; // 同期後なら上書きしてOK
             EnsureMarker();
             lastClockHour = ErosionClockHour;
         }
-
         public override void ExposeData()
         {
             base.ExposeData();
@@ -94,17 +89,19 @@ namespace VoidAwake
         public override void WorldComponentTick()
         {
             int day = GenDate.DaysPassed;
-            if (day == lastDay) return;
+            if (day != lastDay)
+            {
+                lastDay = day;
+                SyncRadiusFromCalendar();
+                RecalculateLandTileCount();
+                RecalculateErodedTiles();
+            }
 
-            lastDay = day;
-            radiusInTiles = StartRadius + day * TilesPerDay;
-            RecalculateLandTileCount();
-            RecalculateErodedTiles();
-
-            TryPlayClockTickSound();
+            // 日替わり処理の外でも、針が進んだか毎回見る
+            TryFireClockHourEvent();
         }
 
-        private void TryPlayClockTickSound()
+        private void TryFireClockHourEvent()
         {
             int hour = ErosionClockHour;
             if (lastClockHour < 0)
@@ -115,11 +112,20 @@ namespace VoidAwake
             if (hour <= lastClockHour)
                 return;
 
-            lastClockHour = hour;
+            // セーブ跨ぎやジャンプで複数時間スキップしても全部拾う
+            for (int h = lastClockHour + 1; h <= hour; h++)
+                OnErosionClockHourAdvanced(h);
 
-            SoundDef def = DefDatabase<SoundDef>.GetNamedSilentFail("VoidAwake_WorldClockTick");
-            if (def != null)
-                def.PlayOneShotOnCamera();
+            lastClockHour = hour;
+        }
+
+        private void OnErosionClockHourAdvanced(int hour)
+        {
+            SoundDef sound = DefDatabase<SoundDef>.GetNamedSilentFail("VoidAwake_WorldClockTick");
+            if (sound != null)
+                sound.PlayOneShotOnCamera();
+
+            VoidClockEventUtility.TryFireRandomEvent(hour);
         }
         public override void WorldComponentUpdate()
         {
@@ -132,6 +138,8 @@ namespace VoidAwake
             VoidAwake_VoidTile.UpdateSwirlScroll();
             VoidAwake_VoidTileEffect.UpdateCloudScroll();
         }
+
+
 
         private void ChooseOriginTile()
         {
@@ -155,7 +163,6 @@ namespace VoidAwake
             }
 
             originTile = best.Valid ? best : (PlanetTile)0;
-            radiusInTiles = StartRadius;
             Log.Message($"[VoidAwake] Void erosion origin tile = {originTile} (near map center)");
             EnsureMarker();
         }
@@ -469,5 +476,10 @@ namespace VoidAwake
             }
         }
 
+        //世界の浸食レベルの同期
+        private void SyncRadiusFromCalendar()
+        {
+            radiusInTiles = StartRadius + GenDate.DaysPassed * TilesPerDay;
+        }
     }
 }

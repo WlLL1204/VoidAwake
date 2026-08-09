@@ -3,7 +3,25 @@
   "WorkspaceRootPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|c:\\program files (x86)\\steam\\steamapps\\common\\rimworld\\mods\\voidawake\\source\\classlibrary1\\core\\worlderosion\\voiderosion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|c:\\program files (x86)\\steam\\steamapps\\common\\rimworld\\mods\\voidawake\\source\\classlibrary1\\core\\psychicrituals\\psychicritualtoil_createchimera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\core\\psychicrituals\\psychicritualtoil_createchimera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\classlibrary1\\core\\psychicrituals\\psychicritualdef_createchimera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\core\\psychicrituals\\psychicritualdef_createchimera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\ThingDefs\\Animals\\VoidAwake_Chimera.xml||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\WorldErosion\\ClockEvent\\ClockEvents.xml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\classlibrary1\\core\\worlderosion\\clockevent\\clockevent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\core\\worlderosion\\clockevent\\clockevent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\classlibrary1\\core\\worlderosion\\voiderosion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{112F1895-6FAC-4270-8EA7-D5BB17B06206}|ClassLibrary1\\ClassLibrary1.csproj|solutionrelative:classlibrary1\\core\\worlderosion\\voiderosion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -19,15 +37,81 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "PsychicRitualToil_CreateChimera.cs",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\PsychicRituals\\PsychicRitualToil_CreateChimera.cs",
+              "RelativeDocumentMoniker": "ClassLibrary1\\Core\\PsychicRituals\\PsychicRitualToil_CreateChimera.cs",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\PsychicRituals\\PsychicRitualToil_CreateChimera.cs",
+              "RelativeToolTip": "ClassLibrary1\\Core\\PsychicRituals\\PsychicRitualToil_CreateChimera.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwgAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-09T08:21:05.531Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "VoidAwake_Chimera.xml",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\ThingDefs\\Animals\\VoidAwake_Chimera.xml",
+              "RelativeDocumentMoniker": "..\\Defs\\ThingDefs\\Animals\\VoidAwake_Chimera.xml",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\ThingDefs\\Animals\\VoidAwake_Chimera.xml",
+              "RelativeToolTip": "..\\Defs\\ThingDefs\\Animals\\VoidAwake_Chimera.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2026-08-09T08:15:24.405Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ClockEvents.xml",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\WorldErosion\\ClockEvent\\ClockEvents.xml",
+              "RelativeDocumentMoniker": "..\\Defs\\WorldErosion\\ClockEvent\\ClockEvents.xml",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Defs\\WorldErosion\\ClockEvent\\ClockEvents.xml",
+              "RelativeToolTip": "..\\Defs\\WorldErosion\\ClockEvent\\ClockEvents.xml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
+              "WhenOpened": "2026-08-09T07:43:16.049Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PsychicRitualDef_CreateChimera.cs",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\PsychicRituals\\PsychicRitualDef_CreateChimera.cs",
+              "RelativeDocumentMoniker": "ClassLibrary1\\Core\\PsychicRituals\\PsychicRitualDef_CreateChimera.cs",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\PsychicRituals\\PsychicRitualDef_CreateChimera.cs",
+              "RelativeToolTip": "ClassLibrary1\\Core\\PsychicRituals\\PsychicRitualDef_CreateChimera.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-09T08:21:04.481Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ClockEvent.cs",
+              "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\ClockEvent\\ClockEvent.cs",
+              "RelativeDocumentMoniker": "ClassLibrary1\\Core\\WorldErosion\\ClockEvent\\ClockEvent.cs",
+              "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\ClockEvent\\ClockEvent.cs",
+              "RelativeToolTip": "ClassLibrary1\\Core\\WorldErosion\\ClockEvent\\ClockEvent.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAADwvyEAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-08-09T07:43:53.878Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "VoidErosion.cs",
               "DocumentMoniker": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\VoidErosion.cs",
               "RelativeDocumentMoniker": "ClassLibrary1\\Core\\WorldErosion\\VoidErosion.cs",
               "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\WorldErosion\\VoidErosion.cs",
               "RelativeToolTip": "ClassLibrary1\\Core\\WorldErosion\\VoidErosion.cs",
-              "ViewState": "AgIAALkBAAAAAAAAAAAcwNMBAAArAAAAAAAAAA==",
+              "ViewState": "AgIAAHMAAAAAAAAAAAAcwIEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-09T05:30:10.801Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T06:35:40.501Z"
             }
           ]
         }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<VoidAwake.VoidClockEventDef>
+		<defName>VoidAwake_ClockEvent_TestA</defName>
+		<label>テストA</label>
+		<description>テスト用の時計イベントです。</description>
+		<level>1</level>
+		<weight>1</weight>
+		<workerClass>VoidAwake.VoidClockEventWorker_Placeholder</workerClass>
+	</VoidAwake.VoidClockEventDef>
+
+	<!-- Level 1 -->
+	<VoidAwake.VoidClockEventDef>
+		<defName>VoidAwake_ClockEvent_L1_Whisper</defName>
+		<label>虚無の囁き</label>
+		<description>...</description>
+		<level>1</level>
+		<weight>1</weight>
+		<workerClass>VoidAwake.VoidClockEventWorker_Placeholder</workerClass>
+	</VoidAwake.VoidClockEventDef>
+	
+</Defs>
