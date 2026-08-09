@@ -372,6 +372,11 @@
     <Compile Include="Core\ErosionEvent\ErosionLevel4.cs" />
     <Compile Include="Core\VoidAwakeSettings.cs" />
     <Compile Include="Core\VoidAwake_PlaySettings_Patch.cs" />
+    <Compile Include="Core\VoidResearch\Extraction\Extraction_DefOf.cs" />
+    <Compile Include="Core\VoidResearch\Extraction\Extraction_Designator.cs" />
+    <Compile Include="Core\VoidResearch\Extraction\Extraction_JobGiver.cs" />
+    <Compile Include="Core\VoidResearch\Extraction\Extraction_Utility.cs" />
+    <Compile Include="Core\VoidResearch\Extraction\Extraction_WorkGiver.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion.cs" />
     <Compile Include="Core\WorldErosion\VoidErosionMap.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion_JumpButton.cs" />

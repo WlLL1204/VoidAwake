@@ -1,0 +1,20 @@
+<Defs>
+	<WorkTypeDef>
+		<defName>VoidAwake_SampleExtract</defName>
+		<labelShort>サンプル抽出</labelShort>
+		<pawnLabel>抽出担当</pawnLabel>
+		<gerundLabel>サンプル抽出</gerundLabel>
+		<description>ダウンしたアノマリーからサンプルを抽出する。抽出キットか抽出ベルトが必要。</description>
+		<verb>抽出</verb>
+		<naturalPriority>960</naturalPriority>
+		<disabledForSlaves>true</disabledForSlaves>
+		<relevantSkills>
+			<li>Medicine</li>
+		</relevantSkills>
+		<workTags>
+			<li>Caring</li>
+			<li>Commoner</li>
+			<li>AllWork</li>
+		</workTags>
+	</WorkTypeDef>
+</Defs>
