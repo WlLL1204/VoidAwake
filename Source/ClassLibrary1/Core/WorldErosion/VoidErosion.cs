@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace VoidAwake
 {
@@ -22,7 +23,7 @@ namespace VoidAwake
         private int lastDay = -1;
         private int cachedErodedCount;
         private int cachedLandTileCount;
-
+        private int lastClockHour = -1;
         private bool erosionUiDragging;
         private Vector2 erosionUiDragOffset;
 
@@ -75,6 +76,7 @@ namespace VoidAwake
             RecalculateErodedTiles();
             lastDay = GenDate.DaysPassed;
             EnsureMarker();
+            lastClockHour = ErosionClockHour;
         }
 
         public override void ExposeData()
@@ -84,6 +86,7 @@ namespace VoidAwake
             Scribe_Values.Look(ref radiusInTiles, "radiusInTiles", StartRadius);
             Scribe_Values.Look(ref lastDay, "lastDay", -1);
             Scribe_Values.Look(ref cachedErodedCount, "cachedErodedCount", 0);
+            Scribe_Values.Look(ref lastClockHour, "lastClockHour", -1);
             // ErodedTiles はセーブしない（ロード後 FinalizeInit / Recalculate で復元）
             Scribe_References.Look(ref marker, "erosionMarker");
         }
@@ -98,8 +101,26 @@ namespace VoidAwake
             RecalculateLandTileCount();
             RecalculateErodedTiles();
 
+            TryPlayClockTickSound();
         }
 
+        private void TryPlayClockTickSound()
+        {
+            int hour = ErosionClockHour;
+            if (lastClockHour < 0)
+            {
+                lastClockHour = hour;
+                return;
+            }
+            if (hour <= lastClockHour)
+                return;
+
+            lastClockHour = hour;
+
+            SoundDef def = DefDatabase<SoundDef>.GetNamedSilentFail("VoidAwake_WorldClockTick");
+            if (def != null)
+                def.PlayOneShotOnCamera();
+        }
         public override void WorldComponentUpdate()
         {
             if (ErodedTiles == null || ErodedTiles.Count == 0)
@@ -391,12 +412,12 @@ namespace VoidAwake
                 Vector2.one,
                 new Rect(0f, 0f, 1f, 1f),
                 angle);
-            string tip =
-                "世界浸食率: " + ErosionRatePercentLabel
-                + "\n浸食タイル " + ErodedTileCount + " / 全タイル " + TotalTiles
-                + "\n目盛り " + ErosionClockHour + " / 12"
-                + "\nドラッグで移動できます。";
+
+            //ここから
+            string tip = GetWorldClockTooltip();
             TooltipHandler.TipRegion(rect, tip);
+            //ここまでがメッセージ
+
         }        //陸地を数える
         private void RecalculateLandTileCount()
         {
@@ -411,6 +432,42 @@ namespace VoidAwake
             cachedLandTileCount = count;
         }
 
+        //ワールドクロックのメッセージ
+        private string GetWorldClockTooltip()
+        {
+            string flavor = GetWorldClockFlavor(ErosionClockHour);
+            return "虚無の時計\n" + flavor + "\n\nドラッグで移動できます。";
+        }
+        private static string GetWorldClockFlavor(int hour)
+        {
+            switch (hour)
+            {
+                case 0:
+                    return "ヴォイドはまだ眠っています、脱出するか立ち向かう準備をしましょう";
+
+                case 1:
+                case 2:
+                case 3:
+                    return "ヴォイドの浸食が始まりました、手遅れになる前に行動しましょう";
+
+                case 4:
+                case 5:
+                case 6:
+                    return "浸食は確実に広がっている。獣の声が、夜ごとに少しずつ歪んでいく。";
+
+                case 7:
+                case 8:
+                case 9:
+                    return "虚無はもはや噂ではない。集落が消え、道が折れ、空の色が変わる。";
+
+                case 10:
+                case 11:
+                    return "世界の大部分が吞まれた。残された土地は、針の影の中で息をひそめている。";
+
+                default: 
+                    return "世界はヴォイドに支配されました";
+            }
+        }
 
     }
 }
