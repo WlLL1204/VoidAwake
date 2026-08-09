@@ -365,7 +365,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Building\BioConverter\BioConverter_Comp.cs" />
+    <Compile Include="Building\BioConverter\BioConverter_SubClass.cs" />
+    <Compile Include="Building\BioConverter\BioConverter_WorkGiver.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Core\SpasmGas\SpasmGas_Release.cs" />
     <Compile Include="Core\ErosionEvent\ErosionLevel1.cs" />
     <Compile Include="Core\ErosionEvent\ErosionLevel2.cs" />
     <Compile Include="Core\ErosionEvent\ErosionLevel3.cs" />

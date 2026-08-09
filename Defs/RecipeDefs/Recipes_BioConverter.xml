@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- 捻じれた肉 → バイオフェライト -->
+	<RecipeDef>
+		<defName>VoidAwake_MakeBioferriteFromTwistedMeat</defName>
+		<label>捻じれた肉からバイオフェライトを生成</label>
+		<description>捻じれた肉を圧搾・電磁刺激し、組織中のアーカイト反応からバイオフェライトを抽出する。</description>
+		<jobString>捻じれた肉をバイオフェライトへ変換中。</jobString>
+		<workAmount>2000</workAmount>
+		<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+		<workSkill>Crafting</workSkill>
+		<effectWorking>Cremate</effectWorking>
+		<soundWorking>Recipe_Cremate</soundWorking>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Meat_Twisted</li>
+					</thingDefs>
+				</filter>
+				<count>25</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Meat_Twisted</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Bioferrite>10</Bioferrite>
+		</products>
+	</RecipeDef>
+
+	<!-- ドレッドレザー → バイオフェライト -->
+	<RecipeDef>
+		<defName>VoidAwake_MakeBioferriteFromDreadLeather</defName>
+		<label>ドレッドレザーからバイオフェライトを生成</label>
+		<description>ドレッドレザーを細断・加熱し、異常な繊維構造からバイオフェライトを再結晶させる。</description>
+		<jobString>ドレッドレザーをバイオフェライトへ変換中。</jobString>
+		<workAmount>2500</workAmount>
+		<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+		<workSkill>Crafting</workSkill>
+		<effectWorking>Smelt</effectWorking>
+		<soundWorking>Recipe_Smelt</soundWorking>
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>Leather_Dread</li>
+					</thingDefs>
+				</filter>
+				<count>5</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<thingDefs>
+				<li>Leather_Dread</li>
+			</thingDefs>
+		</fixedIngredientFilter>
+		<products>
+			<Bioferrite>15</Bioferrite>
+		</products>
+	</RecipeDef>
+
+</Defs>

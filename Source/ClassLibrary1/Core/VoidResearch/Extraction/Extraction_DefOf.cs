@@ -20,7 +20,8 @@ namespace VoidAwake
         public static JobDef VoidAwake_ExtractSample;
         public static JobDef VoidAwake_RefuelBasicSample;
         public static JobDef VoidAwake_RefuelAdvancedSample;
-
+        public static JobDef VoidAwake_RefuelTwistedMeat;
+        public static JobDef VoidAwake_RefuelDreadLeather;
         static VA_JobDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(VA_JobDefOf));
     }
 

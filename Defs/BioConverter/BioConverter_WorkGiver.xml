@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<WorkGiverDef>
+		<defName>VoidAwake_RefuelTwistedMeat</defName>
+		<label>捻じれた肉補給</label>
+		<giverClass>VoidAwake.WorkGiver_RefuelTwistedMeat</giverClass>
+		<workType>Hauling</workType>
+		<verb>補給する</verb>
+		<gerund>補給中</gerund>
+		<priorityInType>50</priorityInType>
+	</WorkGiverDef>
+	<WorkGiverDef>
+		<defName>VoidAwake_RefuelDreadLeather</defName>
+		<label>ドレッドレザー補給</label>
+		<giverClass>VoidAwake.WorkGiver_RefuelDreadLeather</giverClass>
+		<workType>Hauling</workType>
+		<verb>補給する</verb>
+		<gerund>補給中</gerund>
+		<priorityInType>49</priorityInType>
+	</WorkGiverDef>
+</Defs>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<JobDef>
+		<defName>VoidAwake_RefuelTwistedMeat</defName>
+		<driverClass>VoidAwake.JobDriver_RefuelTwistedMeat</driverClass>
+		<reportString>TargetA に捻じれた肉を補給中。</reportString>
+		<suspendable>false</suspendable>
+		<allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+	</JobDef>
+	<JobDef>
+		<defName>VoidAwake_RefuelDreadLeather</defName>
+		<driverClass>VoidAwake.JobDriver_RefuelDreadLeather</driverClass>
+		<reportString>TargetA にドレッドレザーを補給中。</reportString>
+		<suspendable>false</suspendable>
+		<allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+	</JobDef>
+</Defs>
