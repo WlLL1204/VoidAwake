@@ -377,6 +377,7 @@
     <Compile Include="Core\VoidServants\MainButtonWorker_ToggleVoidServantsTab.cs" />
     <Compile Include="Core\VoidServants\Patch_ExcludeVoidServantsFromAnimalsTab.cs" />
     <Compile Include="Core\VoidServants\Patch_VoidServantEnsureName.cs" />
+    <Compile Include="Core\VoidServants\VoidAwake_ChimeraComp.cs" />
     <Compile Include="Core\SpasmGas\SpasmGas_Release.cs" />
     <Compile Include="Core\ErosionEvent\ErosionLevel1.cs" />
     <Compile Include="Core\ErosionEvent\ErosionLevel2.cs" />
@@ -392,6 +393,12 @@
     <Compile Include="Core\VoidResearch\Extraction\SampleResearch\SampleResearch_CompRefuelable.cs" />
     <Compile Include="Core\VoidResearch\Extraction\SampleResearch\SampleResearch_CompSampleAnalysis.cs" />
     <Compile Include="Core\VoidResearch\Extraction\SampleResearch\SampleResearch_WorkGiver.cs" />
+    <Compile Include="Core\VoidResearch\GeneExtraction\GeneExtraction_Utility.cs" />
+    <Compile Include="Core\VoidResearch\GeneExtraction\GeneExtraction_MapComponent.cs" />
+    <Compile Include="Core\VoidResearch\GeneExtraction\GeneExtraction_Dialog.cs" />
+    <Compile Include="Core\VoidResearch\GeneExtraction\GeneExtraction_GizmoPatch.cs" />
+    <Compile Include="Core\VoidResearch\GeneExtraction\GeneExtraction_WorkGiver.cs" />
+    <Compile Include="Core\VoidResearch\GeneExtraction\GeneExtraction_JobDriver.cs" />
     <Compile Include="Core\WorldErosion\ClockEvent\ClockEvent.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion.cs" />
     <Compile Include="Core\WorldErosion\VoidErosionMap.cs" />

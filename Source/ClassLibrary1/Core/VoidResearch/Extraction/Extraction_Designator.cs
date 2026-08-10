@@ -23,6 +23,10 @@ namespace VoidAwake
         public override AcceptanceReport CanDesignateThing(Thing t)
         {
             var p = t as Pawn;
+            if (p == null)
+                return false;
+            if (VoidServantUtility.IsVoidServant(p))
+                return "使役中の存在からは抽出できません。";
             if (!VoidAwake_ExtractionUtility.IsExtractableAnomaly(p))
                 return false;
             if (VoidAwake_ExtractionUtility.GetSampleDef(p) == null)

@@ -18,7 +18,7 @@
       <ToxicResistance>0.5</ToxicResistance>
       <MarketValue>1200</MarketValue>
       <FilthRate>4</FilthRate>
-      <Wildness>0.85</Wildness>
+      <Wildness>0.4</Wildness>
     </statBases>
     <uiIconScale>1.15</uiIconScale>
     <race>
@@ -131,8 +131,9 @@
       </li>
     </tools>
     <comps>
-      <li Class="CompProperties_Chimera">
+      <li Class="VoidAwake.CompProperties_VoidAwake_Chimera">
         <simpleAnimalLabel>キメラ</simpleAnimalLabel>
+        <allyRageRadius>8.9</allyRageRadius>
       </li>
     </comps>
   </ThingDef>

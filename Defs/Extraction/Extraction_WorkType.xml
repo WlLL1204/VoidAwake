@@ -1,10 +1,10 @@
 <Defs>
 	<WorkTypeDef>
 		<defName>VoidAwake_SampleExtract</defName>
-		<labelShort>サンプル抽出</labelShort>
+		<labelShort>抽出</labelShort>
 		<pawnLabel>抽出担当</pawnLabel>
-		<gerundLabel>サンプル抽出</gerundLabel>
-		<description>ダウンしたアノマリーからサンプルを抽出する。抽出キットか抽出ベルトが必要。</description>
+		<gerundLabel>抽出</gerundLabel>
+		<description>ダウンしたアノマリーからのサンプル抽出、および収容中シャンブラーからの遺伝子抽出を行う。サンプル抽出キット／ベルト、または遺伝子抽出キットが必要。</description>
 		<verb>抽出</verb>
 		<naturalPriority>960</naturalPriority>
 		<disabledForSlaves>true</disabledForSlaves>

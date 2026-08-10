@@ -9,15 +9,17 @@ namespace VoidAwake
 	{
 		public static void Postfix(Pawn __instance)
 		{
-			if (__instance.Name != null)
-			{
-				return;
-			}
 			if (!VoidServantUtility.IsPlayerVoidServant(__instance))
 			{
 				return;
 			}
-			__instance.Name = PawnBioAndNameGenerator.GeneratePawnName(__instance, NameStyle.Numeric);
+
+			if (__instance.Name == null)
+			{
+				__instance.Name = PawnBioAndNameGenerator.GeneratePawnName(__instance, NameStyle.Numeric);
+			}
+
+			VoidServantUtility.EnsureTamenessComplete(__instance);
 		}
 	}
 }

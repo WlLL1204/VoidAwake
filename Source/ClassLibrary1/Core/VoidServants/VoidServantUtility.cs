@@ -23,5 +23,19 @@ namespace VoidAwake
 		{
 			return IsVoidServant(pawn) && pawn.Faction == Faction.OfPlayer;
 		}
+
+		public static void EnsureTamenessComplete(Pawn pawn)
+		{
+			if (pawn?.training == null)
+			{
+				return;
+			}
+			if (pawn.training.HasLearned(TrainableDefOf.Tameness))
+			{
+				return;
+			}
+			pawn.training.SetWantedRecursive(TrainableDefOf.Tameness, checkOn: true);
+			pawn.training.Train(TrainableDefOf.Tameness, null, complete: true);
+		}
 	}
 }

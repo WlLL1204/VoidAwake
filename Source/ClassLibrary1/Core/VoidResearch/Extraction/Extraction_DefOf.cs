@@ -11,6 +11,7 @@ namespace VoidAwake
         public static ThingDef VoidAwake_BasicSample;
         public static ThingDef VoidAwake_AdvancedSample;
         public static ThingDef VoidAwake_SampleAnalysisBench;
+        public static ThingDef VoidAwake_GeneExtractionKit;
         static VoidAwake_ThingDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(VoidAwake_ThingDefOf));
     }
 
@@ -18,6 +19,7 @@ namespace VoidAwake
     public static class VA_JobDefOf
     {
         public static JobDef VoidAwake_ExtractSample;
+        public static JobDef VoidAwake_ExtractGene;
         public static JobDef VoidAwake_RefuelBasicSample;
         public static JobDef VoidAwake_RefuelAdvancedSample;
         public static JobDef VoidAwake_RefuelTwistedMeat;
@@ -29,6 +31,14 @@ namespace VoidAwake
     public static class VoidAwake_DesignationDefOf
     {
         public static DesignationDef VoidAwake_ExtractSample;
+        public static DesignationDef VoidAwake_ExtractGene;
         static VoidAwake_DesignationDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(VoidAwake_DesignationDefOf));
+    }
+
+    [DefOf]
+    public static class VoidAwake_ResearchProjectDefOf
+    {
+        public static ResearchProjectDef VoidAwake_GeneExtraction;
+        static VoidAwake_ResearchProjectDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(VoidAwake_ResearchProjectDefOf));
     }
 }

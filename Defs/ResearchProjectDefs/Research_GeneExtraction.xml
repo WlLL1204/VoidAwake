@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>VoidAwake_GeneExtraction</defName>
+    <label>遺伝子の抽出</label>
+    <description>収容したシャンブラーから遺伝子を採取する方法を解明する。研究完了後、遺伝子抽出キットを製作でき、収容中の人間型シャンブラーから選んだ遺伝子1つを遺伝子パックとして抽出できる。抽出にはキットを1つ消費し、対象の全遺伝子は削除されたうえで死亡する。</description>
+    <tab>Anomaly</tab>
+    <prerequisites>
+      <li>BasicPsychicRituals</li>
+    </prerequisites>
+    <knowledgeCost>40</knowledgeCost>
+    <knowledgeCategory>Basic</knowledgeCategory>
+    <researchViewX>6.50</researchViewX>
+    <researchViewY>1.90</researchViewY>
+    <generalRules>
+      <rulesStrings>
+        <li>subject->gene extraction</li>
+        <li>subject->遺伝子の抽出</li>
+
+        <li>subject_story->isolated anomalous base pairs from corrupted tissue</li>
+        <li>subject_story->mapped void-touched genomes under sterile lamps</li>
+        <li>subject_story->catalogued hereditary patterns in warped flesh</li>
+        <li>subject_story->decoded a treatise on harvesting living genetic templates</li>
+
+        <li>subject_gerund->extracting genes</li>
+        <li>subject_gerund->harvesting genetic material from anomalies</li>
+      </rulesStrings>
+    </generalRules>
+  </ResearchProjectDef>
+
+</Defs>

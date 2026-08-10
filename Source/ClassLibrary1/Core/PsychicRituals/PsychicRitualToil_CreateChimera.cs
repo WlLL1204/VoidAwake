@@ -58,6 +58,8 @@ namespace VoidAwake
 				chimera.Name = PawnBioAndNameGenerator.GeneratePawnName(chimera, NameStyle.Numeric);
 			}
 
+			VoidServantUtility.EnsureTamenessComplete(chimera);
+
 			GenSpawn.Spawn(chimera, spawnCell, map);
 			Find.LetterStack.ReceiveLetter(
 				"PsychicRitualCompleteLabel".Translate(psychicRitual.def.label),

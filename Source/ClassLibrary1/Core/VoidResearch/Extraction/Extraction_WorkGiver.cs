@@ -14,11 +14,6 @@ namespace VoidAwake
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            if (!VoidAwake_ExtractionUtility.HasExtractionGear(pawn))
-            {
-                JobFailReason.Is("抽出キットか抽出ベルトが必要です。");
-                return false;
-            }
             var target = t as Pawn;
             if (!VoidAwake_ExtractionUtility.IsExtractableAnomaly(target))
                 return false;
@@ -28,6 +23,11 @@ namespace VoidAwake
                 return false;
             if (!pawn.CanReserve(t, 1, -1, null, forced))
                 return false;
+            if (!VoidAwake_ExtractionUtility.HasExtractionGear(pawn))
+            {
+                JobFailReason.Is("抽出キットか抽出ベルトが必要です。");
+                return false;
+            }
             return true;
         }
 

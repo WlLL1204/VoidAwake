@@ -19,6 +19,8 @@ namespace VoidAwake
         {
             if (p == null || p.Dead || !p.Downed || p.RaceProps.Humanlike)
                 return false;
+            if (VoidServantUtility.IsVoidServant(p))
+                return false;
             // 収容可能なエンティティ＝アノマリー判定
             return p.TryGetComp<CompHoldingPlatformTarget>() != null;
         }

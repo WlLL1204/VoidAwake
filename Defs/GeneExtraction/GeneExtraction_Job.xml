@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<JobDef>
+		<defName>VoidAwake_ExtractGene</defName>
+		<driverClass>VoidAwake.JobDriver_ExtractGene</driverClass>
+		<reportString>TargetA から遺伝子を抽出中。</reportString>
+		<allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+	</JobDef>
+</Defs>
