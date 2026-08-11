@@ -104,6 +104,12 @@ namespace VoidAwake
 			overlay?.Print(layer, this, OverlayExtraY);
 		}
 
+		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
+		{
+			base.DrawAt(drawLoc, flip);
+			VoidAwake_DoorTrapComboUtility.DrawTripwiresFrom(this);
+		}
+
 		protected override void SpringSub(Pawn p)
 		{
 			base.SpringSub(p);
@@ -127,6 +133,9 @@ namespace VoidAwake
 
 		private int destroyedTrapCount;
 
+		/// <summary>Door cell → reserving trapper thingIDNumber. One trapper per door.</summary>
+		private Dictionary<IntVec3, int> doorReservations = new Dictionary<IntVec3, int>();
+
 		public MapComponent_VoidAwake_TrapperTraps(Map map) : base(map)
 		{
 		}
@@ -143,9 +152,123 @@ namespace VoidAwake
 			VoidAwake_TrapperUtility.RevealAllTrappersOnMap(map);
 		}
 
+		public bool IsDoorReservedByOther(IntVec3 doorCell, Pawn pawn)
+		{
+			if (pawn == null || !doorCell.IsValid)
+			{
+				return false;
+			}
+
+			if (!doorReservations.TryGetValue(doorCell, out int holderId))
+			{
+				return false;
+			}
+
+			if (holderId == pawn.thingIDNumber)
+			{
+				return false;
+			}
+
+			if (!IsReservationHolderValid(holderId))
+			{
+				doorReservations.Remove(doorCell);
+				return false;
+			}
+
+			return true;
+		}
+
+		/// <summary>
+		/// Claim a door for this trapper. Releases this pawn's previous door claims first.
+		/// Fails if another living trapper already holds the door.
+		/// </summary>
+		public bool TryReserveDoor(IntVec3 doorCell, Pawn pawn)
+		{
+			if (pawn == null || !doorCell.IsValid)
+			{
+				return false;
+			}
+
+			if (IsDoorReservedByOther(doorCell, pawn))
+			{
+				return false;
+			}
+
+			ReleaseAllDoorsFor(pawn);
+			doorReservations[doorCell] = pawn.thingIDNumber;
+			return true;
+		}
+
+		public void ReleaseDoor(IntVec3 doorCell, Pawn pawn)
+		{
+			if (pawn == null || !doorCell.IsValid)
+			{
+				return;
+			}
+
+			if (doorReservations.TryGetValue(doorCell, out int holderId) && holderId == pawn.thingIDNumber)
+			{
+				doorReservations.Remove(doorCell);
+			}
+		}
+
+		public void ReleaseAllDoorsFor(Pawn pawn)
+		{
+			if (pawn == null || doorReservations.Count == 0)
+			{
+				return;
+			}
+
+			int id = pawn.thingIDNumber;
+			List<IntVec3> toRemove = null;
+			foreach (KeyValuePair<IntVec3, int> kv in doorReservations)
+			{
+				if (kv.Value == id)
+				{
+					if (toRemove == null)
+					{
+						toRemove = new List<IntVec3>();
+					}
+
+					toRemove.Add(kv.Key);
+				}
+			}
+
+			if (toRemove == null)
+			{
+				return;
+			}
+
+			for (int i = 0; i < toRemove.Count; i++)
+			{
+				doorReservations.Remove(toRemove[i]);
+			}
+		}
+
+		private bool IsReservationHolderValid(int holderId)
+		{
+			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+			for (int i = 0; i < pawns.Count; i++)
+			{
+				Pawn p = pawns[i];
+				if (p != null && p.thingIDNumber == holderId && !p.Dead && p.Spawned
+					&& p.kindDef == VoidAwake_TrapperDefOf.Trapper)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 		public override void ExposeData()
 		{
 			Scribe_Values.Look(ref destroyedTrapCount, "destroyedTrapCount", 0);
+			Scribe_Collections.Look(ref doorReservations, "doorReservations", LookMode.Value, LookMode.Value);
+			if (Scribe.mode == LoadSaveMode.PostLoadInit && doorReservations == null)
+			{
+				doorReservations = new Dictionary<IntVec3, int>();
+			}
 		}
 	}
 
@@ -161,21 +284,56 @@ namespace VoidAwake
 			map.GetComponent<MapComponent_VoidAwake_TrapperTraps>()?.NotifyTrapDestroyed();
 		}
 
-		public static void RevealAllTrappersOnMap(Map map)
+		public static MapComponent_VoidAwake_TrapperTraps GetTrapMapComp(Map map)
 		{
-			if (map == null)
+			return map?.GetComponent<MapComponent_VoidAwake_TrapperTraps>();
+		}
+
+		public static bool TryReserveDoor(Map map, IntVec3 doorCell, Pawn pawn)
+		{
+			return GetTrapMapComp(map)?.TryReserveDoor(doorCell, pawn) ?? false;
+		}
+
+		public static bool IsDoorReservedByOther(Map map, IntVec3 doorCell, Pawn pawn)
+		{
+			return GetTrapMapComp(map)?.IsDoorReservedByOther(doorCell, pawn) ?? false;
+		}
+
+		public static void ReleaseAllDoorsFor(Pawn pawn)
+		{
+			if (pawn?.Map == null)
 			{
 				return;
 			}
 
-			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
-			for (int i = 0; i < pawns.Count; i++)
+			GetTrapMapComp(pawn.Map)?.ReleaseAllDoorsFor(pawn);
+		}
+
+		private static bool revealingAll;
+
+		public static void RevealAllTrappersOnMap(Map map)
+		{
+			if (map == null || revealingAll)
 			{
-				Pawn pawn = pawns[i];
-				if (pawn?.kindDef == VoidAwake_TrapperDefOf.Trapper)
+				return;
+			}
+
+			revealingAll = true;
+			try
+			{
+				IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+				for (int i = 0; i < pawns.Count; i++)
 				{
-					pawn.TryGetComp<VoidAwake_TrapperComp>()?.EnterCombat();
+					Pawn pawn = pawns[i];
+					if (pawn?.kindDef == VoidAwake_TrapperDefOf.Trapper)
+					{
+						pawn.TryGetComp<VoidAwake_TrapperComp>()?.ApplyEnterCombat();
+					}
 				}
+			}
+			finally
+			{
+				revealingAll = false;
 			}
 		}
 	}

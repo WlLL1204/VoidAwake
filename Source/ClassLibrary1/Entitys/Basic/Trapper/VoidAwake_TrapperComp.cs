@@ -16,6 +16,8 @@ namespace VoidAwake
 		public int placeCooldownTicks = 2500; // ~1 in-game hour
 		public int stealthReturnDelayTicks = 180; // ~3 seconds after no reachable colonists
 		public int combatMinDurationTicks = 2500; // combat lasts at least ~1 in-game hour
+		public int footprintIntervalCells = 2; // stealth footprints every N cells moved
+		public float footprintScale = 0.65f;
 
 		public CompProperties_VoidAwake_Trapper()
 		{
@@ -32,6 +34,8 @@ namespace VoidAwake
 		private IntVec3 chainDoorCell = IntVec3.Invalid;
 		private int ticksUntilStealthReturn;
 		private int ticksUntilCombatUnlock;
+		private IntVec3 lastFootprintCell = IntVec3.Invalid;
+		private int cellsSinceFootprint;
 
 		public CompProperties_VoidAwake_Trapper Props => (CompProperties_VoidAwake_Trapper)props;
 
@@ -72,6 +76,11 @@ namespace VoidAwake
 
 		public void BeginDoorChain(IntVec3 doorCell)
 		{
+			if (!VoidAwake_TrapperUtility.TryReserveDoor(Pawn.Map, doorCell, Pawn))
+			{
+				return;
+			}
+
 			chainDoorCell = doorCell;
 			chainPlacing = true;
 		}
@@ -92,20 +101,38 @@ namespace VoidAwake
 
 		public void Notify_ChainEnded()
 		{
+			// Keep door reservation so other trappers do not start on the same door.
 			chainPlacing = false;
 			chainDoorCell = IntVec3.Invalid;
 			lastTrapCell = IntVec3.Invalid;
 			ticksUntilNextPlace = Props.placeCooldownTicks;
 		}
 
+		/// <summary>Enter combat and pull every other Trapper on the map into combat too.</summary>
 		public void EnterCombat()
 		{
+			Map map = Pawn?.Map;
+			if (map != null)
+			{
+				VoidAwake_TrapperUtility.RevealAllTrappersOnMap(map);
+			}
+			else
+			{
+				ApplyEnterCombat();
+			}
+		}
+
+		/// <summary>Apply combat state to this pawn only (used by map-wide reveal).</summary>
+		internal void ApplyEnterCombat()
+		{
+			VoidAwake_TrapperUtility.ReleaseAllDoorsFor(Pawn);
 			state = TrapperCombatState.Combat;
 			ticksUntilStealthReturn = 0;
 			ticksUntilCombatUnlock = Props.combatMinDurationTicks;
 			chainPlacing = false;
 			chainDoorCell = IntVec3.Invalid;
 			lastTrapCell = IntVec3.Invalid;
+			ResetFootprintTracking();
 			RemoveStealthHediff();
 		}
 
@@ -120,7 +147,22 @@ namespace VoidAwake
 			chainPlacing = false;
 			chainDoorCell = IntVec3.Invalid;
 			lastTrapCell = IntVec3.Invalid;
+			ResetFootprintTracking();
 			EnsureStealthHediff();
+		}
+
+		public override void PostDestroy(DestroyMode mode, Map previousMap)
+		{
+			if (previousMap != null)
+			{
+				previousMap.GetComponent<MapComponent_VoidAwake_TrapperTraps>()?.ReleaseAllDoorsFor(Pawn);
+			}
+			else
+			{
+				VoidAwake_TrapperUtility.ReleaseAllDoorsFor(Pawn);
+			}
+
+			base.PostDestroy(mode, previousMap);
 		}
 
 		public override void CompTick()
@@ -132,12 +174,14 @@ namespace VoidAwake
 
 			if (!Pawn.Spawned || Pawn.Dead)
 			{
+				ResetFootprintTracking();
 				return;
 			}
 
 			if (IsStealth)
 			{
 				EnsureStealthHediff();
+				TrySpawnStealthFootprint();
 				return;
 			}
 
@@ -190,6 +234,56 @@ namespace VoidAwake
 			}
 
 			return false;
+		}
+
+		private void TrySpawnStealthFootprint()
+		{
+			IntVec3 cell = Pawn.Position;
+			if (!lastFootprintCell.IsValid)
+			{
+				lastFootprintCell = cell;
+				return;
+			}
+
+			if (cell == lastFootprintCell)
+			{
+				return;
+			}
+
+			lastFootprintCell = cell;
+			cellsSinceFootprint++;
+
+			int interval = Props.footprintIntervalCells;
+			if (interval < 1)
+			{
+				interval = 1;
+			}
+
+			if (cellsSinceFootprint < interval)
+			{
+				return;
+			}
+
+			cellsSinceFootprint = 0;
+			Map map = Pawn.Map;
+			if (map == null)
+			{
+				return;
+			}
+
+			FleckCreationData data = FleckMaker.GetDataStatic(
+				cell.ToVector3Shifted(),
+				map,
+				VoidAwake_TrapperDefOf.VoidAwake_TrapperFootstep,
+				Props.footprintScale);
+			data.rotation = Pawn.Rotation.AsAngle;
+			map.flecks.CreateFleck(data);
+		}
+
+		private void ResetFootprintTracking()
+		{
+			lastFootprintCell = IntVec3.Invalid;
+			cellsSinceFootprint = 0;
 		}
 
 		public override void PostPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)

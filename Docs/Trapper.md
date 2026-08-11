@@ -54,6 +54,7 @@ stateDiagram-v2
 
 - Hediff `VoidAwake_TrapperStealth`（`HediffCompProperties_Invisibility`、`visibleToPlayer` false）
 - AI: ドア周囲に罠 → なければ徘徊。**積極戦闘なし**（`JobGiver_ReactToCloseMeleeThreat` のみ残る）
+- 移動中は `footprintIntervalCells` = 2 マスごとに足跡 Fleck（`VoidAwake_TrapperFootstep` / `FootStep.png`）を残す
 - 設置クールダウン `placeCooldownTicks` = 2500（約1時間）
 - マップ罠上限 `maxTrapsOnMap` = 8
 
@@ -68,9 +69,11 @@ stateDiagram-v2
 
 1. **被ダメージ** — Comp `PostPostApplyDamage`
 2. **妨害フレア** — Harmony で `HediffComp_Invisibility.DisruptInvisibility` をフック
-3. **マップ上の熊罠が累計5つ破壊**（作動破壊含む）— `MapComponent_VoidAwake_TrapperTraps` がカウントし、5で全 Trapper を `EnterCombat`、カウントリセット
+3. **マップ上の熊罠が累計5つ破壊**（作動破壊含む）— `MapComponent_VoidAwake_TrapperTraps` がカウントし、5で全 Trapper を交戦へ
+4. **罠作動（Spring）** — `SpringSub` で全 Trapper を交戦へ
+5. **浮いたドアコンボ発動** — 隣接罠3個以上で全 Trapper を交戦へ
 
-罠1つ作動しただけでは交戦にならない。
+いずれの場合も **1匹が交戦に入ると同マップの全 Trapper が交戦**（`RevealAllTrappersOnMap` → `ApplyEnterCombat`）。
 
 ---
 
@@ -90,15 +93,45 @@ flowchart TD
 
 - 対象: コロニー `Building_Door` の周囲 3×3（ドア自身除く8マス）
 - 連続設置はそのドアの周囲内だけ（通路へ広がらない）
-- 候補条件: Standable・既存罠なし・到達可・`CanReserve`（複数 Trapper の予約衝突対策）
-- 予約失敗時はエラーログを出さない（`errorOnFailed: false`）
+- 候補条件: Standable・既存罠なし・到達可・`CanReserve`（セル予約）
+- **ドア予約（Trapper 間）**: 設置開始時にドアを MapComponent で予約。他の Trapper は予約済みドアを選ばない。チェーン終了後も交戦/死亡まで保持
+- セル予約失敗時はエラーログを出さない（`errorOnFailed: false`）
 
 ### 熊罠 `VoidAwake_BearTrap`
 
 - `Building_TrapDamager` 相当（`TrapMeleeDamage` 80、作動で破壊）
 - プレイヤー建築メニューには出ない（エンティティが `GenSpawn`）
 - Trapper は PawnKind で `immuneToTraps`
-- テクスチャ: `Textures/Entitys/Trapper/bearTrap.png`
+- テクスチャ: `Textures/Entitys/Trapper/bearTrap.png`（`Transparent`、alpha 0.85）
+- 地形に応じて草・苔・地表オーバーレイでカモフラージュ
+
+---
+
+## 浮いたドアコンボ
+
+壁に挟まれていない**浮いたドア**を狩るための罠連動。通常の壁付きドアには効果なし。
+
+```mermaid
+flowchart LR
+  DoorOpen[DoorOpen] --> Float{浮いたドア?}
+  Float -->|no| Skip[何もしない]
+  Float -->|yes| Count[上下左右の罠]
+  Count -->|lt 3| Skip
+  Count -->|gte 3| Blast[9マス罠ダメージ]
+  Blast --> KillDoor[ドア破壊]
+  KillDoor --> KillTraps[隣接罠破壊]
+```
+
+| 項目 | 内容 |
+|------|------|
+| 対象 | プレイヤー派閥の浮いたドア（cardinal 4マスの壁 ≤1、または standable ≥3） |
+| カウント | ドアの上下左右のみ（対角は含めない） |
+| 発動 | `Building_Door.DoorOpen` 時に隣接罠 **3個以上**（1〜2個は無効） |
+| 効果 | ドア中心 3×3 のポーンに `TrapMeleeDamage`（Stab）→ ドア破壊 → 隣接罠全破壊 → **全 Trapper 交戦** |
+| 紐 | 同じ浮いたドアの cardinal 罠同士を全ペアで紐描画（対面含む）。紐は不透明、罠は alpha 0.85 |
+| 実装 | [`DoorTrapComboUtility.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/DoorTrapComboUtility.cs) + [`Patch_Building_Door_DoorOpen.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/Patch_Building_Door_DoorOpen.cs) |
+
+コンボで壊れた罠も通常破壊と同様に `NotifyTrapDestroyed` へ加算される。
 
 ---
 
@@ -117,9 +150,14 @@ flowchart TD
 | 項目 | 値 |
 |------|-----|
 | 設置クールダウン | 2500 tick ≈ 1時間 |
+| 足跡間隔（隠密移動） | 2 マス |
 | 交戦最低時間 | 2500 tick ≈ 1時間 |
 | 隠密復帰待ち（入植者不在後） | 180 tick ≈ 3秒 |
 | マップ罠上限 | 8 |
 | 破壊で交戦 | 5 |
 | 襲来頭数 | points &lt; 400 → 1、&lt; 800 → 2、それ以上 → 3 |
 | 罠ダメージ | TrapMeleeDamage 80 |
+| 罠の透明度 | alpha 0.85 |
+| 紐の透明度 | 不透明（alpha 1） |
+| 浮いたドアコンボ | 隣接罠 3個以上で 9マスダメージ + ドア/罠破壊 + 全交戦 |
+| 交戦伝播 | 1匹が交戦 → 同マップの全 Trapper が交戦 |

@@ -107,6 +107,11 @@ namespace VoidAwake
 				}
 
 				IntVec3 doorCell = door.Position;
+				if (VoidAwake_TrapperUtility.IsDoorReservedByOther(map, doorCell, pawn))
+				{
+					continue;
+				}
+
 				foreach (IntVec3 cell in CellsAroundDoor(doorCell))
 				{
 					if (IsValidTrapCell(pawn, cell))
@@ -125,9 +130,43 @@ namespace VoidAwake
 				a.cell.DistanceToSquared(pawn.Position).CompareTo(b.cell.DistanceToSquared(pawn.Position)));
 
 			int take = candidates.Count < 8 ? candidates.Count : 8;
-			(IntVec3 cell, IntVec3 door) pick = candidates[Rand.Range(0, take)];
-			comp.BeginDoorChain(pick.door);
-			return pick.cell;
+
+			// Prefer a door we can actually reserve; try nearby candidates until one sticks.
+			List<IntVec3> triedDoors = new List<IntVec3>();
+			for (int attempt = 0; attempt < take; attempt++)
+			{
+				(IntVec3 cell, IntVec3 door) pick = candidates[Rand.Range(0, take)];
+				if (triedDoors.Contains(pick.door))
+				{
+					continue;
+				}
+
+				triedDoors.Add(pick.door);
+				comp.BeginDoorChain(pick.door);
+				if (comp.ChainPlacing && comp.ChainDoorCell == pick.door)
+				{
+					return pick.cell;
+				}
+			}
+
+			// Deterministic fallback over nearest doors.
+			for (int i = 0; i < candidates.Count; i++)
+			{
+				(IntVec3 cell, IntVec3 door) pick = candidates[i];
+				if (triedDoors.Contains(pick.door))
+				{
+					continue;
+				}
+
+				triedDoors.Add(pick.door);
+				comp.BeginDoorChain(pick.door);
+				if (comp.ChainPlacing && comp.ChainDoorCell == pick.door)
+				{
+					return pick.cell;
+				}
+			}
+
+			return IntVec3.Invalid;
 		}
 
 		public static IEnumerable<IntVec3> CellsAroundDoor(IntVec3 doorCell)

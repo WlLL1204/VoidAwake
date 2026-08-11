@@ -413,9 +413,11 @@
     <Compile Include="Entitys\Basic\FlyingHed\FlyingHed.cs" />
     <Compile Include="Entitys\Basic\Trapper\Building_VoidAwake_BearTrap.cs" />
     <Compile Include="Entitys\Basic\Trapper\DebugActions_Trapper.cs" />
+    <Compile Include="Entitys\Basic\Trapper\DoorTrapComboUtility.cs" />
     <Compile Include="Entitys\Basic\Trapper\IncidentWorker_TrapperArrival.cs" />
     <Compile Include="Entitys\Basic\Trapper\JobDriver_PlaceBearTrap.cs" />
     <Compile Include="Entitys\Basic\Trapper\JobGiver_TrapperPlaceTrap.cs" />
+    <Compile Include="Entitys\Basic\Trapper\Patch_Building_Door_DoorOpen.cs" />
     <Compile Include="Entitys\Basic\Trapper\Patch_TrapperStealth_DisruptInvisibility.cs" />
     <Compile Include="Entitys\Basic\Trapper\ThinkNode_ConditionalTrapperState.cs" />
     <Compile Include="Entitys\Basic\Trapper\Trapper_DefOf.cs" />
