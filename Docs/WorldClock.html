@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>WorldClock 仕様・システム・イベント追加方法 — VoidAwake</title>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true, theme: "neutral" });
+  </script>
+  <style>
+    :root {
+      --bg: #f7f5f1;
+      --fg: #1a1a1a;
+      --muted: #555;
+      --border: #d4cfc4;
+      --code-bg: #efeae2;
+      --accent: #3d5a45;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif;
+      line-height: 1.65;
+      color: var(--fg);
+      background: var(--bg);
+    }
+    main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+    h1 { font-size: 1.75rem; margin: 0 0 0.5rem; }
+    h2 {
+      font-size: 1.25rem;
+      margin: 2.25rem 0 0.75rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--accent);
+    }
+    h3 { font-size: 1.05rem; margin: 1.5rem 0 0.5rem; }
+    p, li { color: var(--fg); }
+    .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.75rem 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.75rem 0 1rem;
+      font-size: 0.95rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.45rem 0.65rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: var(--code-bg); }
+    code, pre {
+      font-family: Consolas, "Cascadia Mono", "Yu Gothic UI", monospace;
+      font-size: 0.88rem;
+    }
+    code {
+      background: var(--code-bg);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.9rem 1rem;
+      overflow-x: auto;
+    }
+    pre code { background: none; padding: 0; }
+    a { color: var(--accent); }
+    .mermaid {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    ul { padding-left: 1.35rem; }
+    .note {
+      background: #fff;
+      border-left: 3px solid var(--accent);
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>WorldClock 仕様・システム・イベント追加方法</h1>
+    <p class="meta">VoidAwake 内部ドキュメント（ソース: <code>Docs/WorldClock.md</code>）</p>
+
+    <h2>結論</h2>
+    <p>
+      WorldClock は独立システムではなく、<code>VoidAwake_VoidErosion</code>（<code>WorldComponent</code>）の
+      <strong>浸食率 UI / 進行マイルストーン</strong> である。
+      針の「時」は <code>GenDate</code> の時刻ではなく、<code>floor(浸食率 × 12)</code> の離散値（0〜12）。
+    </p>
+
+    <hr />
+
+    <h2>全体構成</h2>
+    <pre class="mermaid">
+flowchart TB
+  Days[GenDate.DaysPassed]
+  Radius[radiusInTiles = 1 + days]
+  Eroded[ErodedTiles 再計算]
+  Rate[ErosionRate = 浸食陸 / 全陸]
+  Hour[ErosionClockHour 0-12]
+  Fire[OnErosionClockHourAdvanced]
+  Util[VoidClockEventUtility]
+  Def[VoidClockEventDef + Worker]
+
+  Days --> Radius --> Eroded --> Rate --> Hour
+  Hour --> Fire
+  Fire -->|Tick音| Sound[VoidAwake_WorldClockTick]
+  Fire --> Util --> Def
+    </pre>
+
+    <table>
+      <thead>
+        <tr><th>役割</th><th>ファイル</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>浸食・時計・UI</td><td><code>Source/ClassLibrary1/Core/WorldErosion/VoidErosion.cs</code></td></tr>
+        <tr><td>時計イベント Def / Worker</td><td><code>ClockEvent.cs</code> / <code>FixedHourEvents.cs</code></td></tr>
+        <tr><td>イベント XML</td><td><code>Defs/WorldErosion/ClockEvent/ClockEvents.xml</code></td></tr>
+        <tr><td>Tick 音</td><td><code>Defs/Systems/SoundDef/Sound_WorldClock.xml</code></td></tr>
+        <tr><td>テクスチャ</td><td><code>Textures/UI/Interface/WorldClock/</code></td></tr>
+      </tbody>
+    </table>
+    <p class="note">マップ帯の <code>GameCondition</code>（Light〜Extreme）は時計イベントとは別系統（タイル距離比）。混同しない。</p>
+
+    <hr />
+
+    <h2>浸食の進行（針が進む前提）</h2>
+    <ol>
+      <li><strong>日替わり</strong>で <code>radiusInTiles = StartRadius(1) + DaysPassed × TilesPerDay(1)</code></li>
+      <li>原点タイルから半径内のタイルを <code>ErodedTiles</code> に入れる</li>
+      <li><strong>浸食率</strong> = 浸食された陸タイル数 / ワールド全陸タイル数</li>
+      <li><strong>時計の時</strong> = <code>Clamp(Floor(ErosionRate × 12), 0, 12)</code>、針角度 = 時 × 30°</li>
+    </ol>
+    <p>
+      毎 <code>WorldComponentTick</code> で <code>TryFireClockHourEvent</code> が走り、
+      <code>lastClockHour</code> より進んでいればスキップ分も含めて順に発火する。
+    </p>
+
+    <hr />
+
+    <h2>時計が進んだときの処理</h2>
+    <p><code>OnErosionClockHourAdvanced(hour)</code>:</p>
+    <ol>
+      <li><code>VoidAwake_WorldClockTick</code> をカメラ再生</li>
+      <li><code>VoidClockEventUtility.TryFireRandomEvent(hour)</code>
+        <ul>
+          <li>先に <strong>固定枠</strong>（<code>fixedHour == hour</code>）があれば実行</li>
+          <li>続けて <strong>ランダム枠</strong>（レベル別重み抽選）を実行</li>
+          <li>時 1 / 4 / 7 / 10 / 12 では両者が併発する</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>固定イベント（別枠）</h3>
+    <table>
+      <thead>
+        <tr><th>時</th><th>Def</th><th>Worker</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><code>VoidAwake_ClockEvent_Fixed_Hour1</code></td><td><code>VoidClockEventWorker_FixedHour1</code></td></tr>
+        <tr><td>4</td><td><code>VoidAwake_ClockEvent_Fixed_Hour4</code></td><td><code>VoidClockEventWorker_FixedHour4</code></td></tr>
+        <tr><td>7</td><td><code>VoidAwake_ClockEvent_Fixed_Hour7</code></td><td><code>VoidClockEventWorker_FixedHour7</code></td></tr>
+        <tr><td>10</td><td><code>VoidAwake_ClockEvent_Fixed_Hour10</code></td><td><code>VoidClockEventWorker_FixedHour10</code></td></tr>
+        <tr><td>12</td><td><code>VoidAwake_ClockEvent_Fixed_Hour12</code></td><td><code>VoidClockEventWorker_FixedHour12</code></td></tr>
+      </tbody>
+    </table>
+    <p class="note">XML に <code>&lt;fixedHour&gt;N&lt;/fixedHour&gt;</code> を付けると固定枠。ランダム候補からは除外。発火時はレター通知（<code>SendEventLetter</code>）。ゲームプレイは <code>ExecuteFixedEvent</code> で後から追加（<code>FixedHourEvents.cs</code>）。</p>
+
+    <h3>時 → イベントレベル</h3>
+    <table>
+      <thead>
+        <tr><th>時 (hour)</th><th>レベル</th><th>備考</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0</td><td>なし</td><td>イベント発火しない</td></tr>
+        <tr><td>1–3</td><td>Lv1</td><td></td></tr>
+        <tr><td>4–6</td><td>Lv2</td><td></td></tr>
+        <tr><td>7–9</td><td>Lv3</td><td></td></tr>
+        <tr><td>10–12</td><td>Lv4</td><td></td></tr>
+      </tbody>
+    </table>
+    <p>
+      同レベル内で <code>weight &gt; 0</code> かつ <code>Worker.CanFire(hour)</code> の Def を重み付き抽選し、
+      <code>TryExecute</code> を呼ぶ。候補が無いと警告ログのみ（現状 Lv2–4 の XML が空）。
+    </p>
+
+    <h3>UI</h3>
+    <ul>
+      <li><code>WorldComponentOnGUI</code> で時計＋針を描画（設定 <code>showErosionRateUI</code>）</li>
+      <li>ドラッグで位置保存、ホバーでフレーバー文言（時帯ごと）</li>
+    </ul>
+
+    <hr />
+
+    <h2>イベント追加手順</h2>
+
+    <h3>1. Worker クラスを追加</h3>
+    <p><code>ClockEvent.cs</code> と同名前空間（または別ファイル）に:</p>
+    <pre><code>public class VoidClockEventWorker_MyEvent : VoidClockEventWorker
+{
+    public override bool CanFire(int hour) =&gt; true; // 任意の前提条件
+
+    public override void TryExecute(int hour)
+    {
+        // ゲームプレイ処理
+        SendEventLetter(); // label / description からレター
+    }
+}</code></pre>
+    <ul>
+      <li><code>CanFire</code>: 研究・ストーリーテラー・マップ有無などで除外</li>
+      <li><code>SendEventLetter</code>: タイトル=<code>def.LabelCap</code>、本文=<code>description</code>（空なら定型文）</li>
+    </ul>
+    <p>プレースホルダー実装は <code>VoidClockEventWorker_Placeholder</code>（レター＋ログのみ）。</p>
+
+    <h3>2. XML Def を追加</h3>
+    <p><code>Defs/WorldErosion/ClockEvent/ClockEvents.xml</code> に:</p>
+    <pre><code>&lt;VoidAwake.VoidClockEventDef&gt;
+  &lt;defName&gt;VoidAwake_ClockEvent_L2_MyEvent&lt;/defName&gt;
+  &lt;label&gt;イベント名&lt;/label&gt;
+  &lt;description&gt;レター本文&lt;/description&gt;
+  &lt;level&gt;2&lt;/level&gt;
+  &lt;weight&gt;1&lt;/weight&gt;
+  &lt;workerClass&gt;VoidAwake.VoidClockEventWorker_MyEvent&lt;/workerClass&gt;
+&lt;/VoidAwake.VoidClockEventDef&gt;</code></pre>
+    <ul>
+      <li><code>level</code> は厳密一致（Lv1 Def は hour 1–3 のときだけ候補）</li>
+      <li><code>weight</code> が大きいほど同レベル内で選ばれやすい</li>
+      <li>DefDatabase 自動登録のため、追加登録コードは不要</li>
+    </ul>
+
+    <h3>3. 動作確認の目安</h3>
+    <ul>
+      <li>浸食率が次の 1/12 を跨いだタイミングで発火（通常は日進行後の半径拡大時）</li>
+      <li>セーブ跨ぎや複数時間ジャンプは <code>lastClockHour+1 … hour</code> を順に処理</li>
+      <li>同レベルに複数 Def があれば重み抽選</li>
+    </ul>
+    <p>既存サンプル: <code>VoidAwake_ClockEvent_TestA</code> / <code>L1_Whisper</code>（どちらも Lv1 + Placeholder）。</p>
+
+    <hr />
+
+    <h2>開発時の注意</h2>
+    <ul>
+      <li>時計の「時」≠ ゲーム内の時刻。<strong>陸の浸食割合</strong>が駆動源</li>
+      <li>Lv2–4 の Def が無いと該当 hour で警告のみ</li>
+      <li>マップ浸食帯の効果は <code>VoidConditions</code> + <code>ErosionLevel1–4</code> 側（時計イベントとは別）</li>
+      <li>VoidProtect（浄化タイル）は現状描画寄りで、浸食再計算では未使用</li>
+    </ul>
+  </main>
+</body>
+</html>

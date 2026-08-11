@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<ThingDef ParentName="BuildingBase">
+		<defName>VoidAwake_BearTrap</defName>
+		<label>bear trap</label>
+		<description>A concealed void-forged snare. Springs when disturbed, then breaks apart.</description>
+		<thingClass>VoidAwake.Building_VoidAwake_BearTrap</thingClass>
+		<graphicData>
+			<texPath>Entitys/Trapper/bearTrap</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<drawSize>1</drawSize>
+		</graphicData>
+		<altitudeLayer>Building</altitudeLayer>
+		<rotatable>false</rotatable>
+		<tickerType>Normal</tickerType>
+		<stealable>false</stealable>
+		<leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+		<statBases>
+			<MaxHitPoints>40</MaxHitPoints>
+			<Flammability>0.5</Flammability>
+			<Beauty>-10</Beauty>
+			<TrapMeleeDamage>80</TrapMeleeDamage>
+			<TrapSpringChance>1.0</TrapSpringChance>
+		</statBases>
+		<building>
+			<isTrap>true</isTrap>
+			<trapDestroyOnSpring>true</trapDestroyOnSpring>
+			<trapDamageCategory>Sharp</trapDamageCategory>
+			<expandHomeArea>false</expandHomeArea>
+			<ai_chillDestination>false</ai_chillDestination>
+		</building>
+	</ThingDef>
+
+</Defs>

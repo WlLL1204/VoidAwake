@@ -400,6 +400,7 @@
     <Compile Include="Core\VoidResearch\GeneExtraction\GeneExtraction_WorkGiver.cs" />
     <Compile Include="Core\VoidResearch\GeneExtraction\GeneExtraction_JobDriver.cs" />
     <Compile Include="Core\WorldErosion\ClockEvent\ClockEvent.cs" />
+    <Compile Include="Core\WorldErosion\ClockEvent\FixedHourEvents.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion.cs" />
     <Compile Include="Core\WorldErosion\VoidErosionMap.cs" />
     <Compile Include="Core\WorldErosion\VoidErosion_JumpButton.cs" />
@@ -410,6 +411,15 @@
     <Compile Include="Core\WorldErosion\WorldErosionMarker.cs" />
     <Compile Include="Entitys\Basic\ChainOfTragedy\ChainOfTragedy.cs" />
     <Compile Include="Entitys\Basic\FlyingHed\FlyingHed.cs" />
+    <Compile Include="Entitys\Basic\Trapper\Building_VoidAwake_BearTrap.cs" />
+    <Compile Include="Entitys\Basic\Trapper\DebugActions_Trapper.cs" />
+    <Compile Include="Entitys\Basic\Trapper\IncidentWorker_TrapperArrival.cs" />
+    <Compile Include="Entitys\Basic\Trapper\JobDriver_PlaceBearTrap.cs" />
+    <Compile Include="Entitys\Basic\Trapper\JobGiver_TrapperPlaceTrap.cs" />
+    <Compile Include="Entitys\Basic\Trapper\Patch_TrapperStealth_DisruptInvisibility.cs" />
+    <Compile Include="Entitys\Basic\Trapper\ThinkNode_ConditionalTrapperState.cs" />
+    <Compile Include="Entitys\Basic\Trapper\Trapper_DefOf.cs" />
+    <Compile Include="Entitys\Basic\Trapper\VoidAwake_TrapperComp.cs" />
     <Compile Include="Patch\EndGame_ShipEscape.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -12,6 +12,9 @@ namespace VoidAwake
         /// <summary>1〜4。時計の四分円ごとのイベントテーブル。</summary>
         public int level = 1;
 
+        /// <summary>-1 = ランダム枠。0以上 = その時に必ず発火する固定枠（ランダム候補外）。</summary>
+        public int fixedHour = -1;
+
         public Type workerClass = typeof(VoidClockEventWorker_Placeholder);
 
         [Unsaved] private VoidClockEventWorker workerInt;
@@ -29,9 +32,12 @@ namespace VoidAwake
             }
         }
 
+        public bool IsFixedEvent => fixedHour >= 0;
+
         public bool IsAllowedAtLevel(int eventLevel)
         {
-            return level == eventLevel && weight > 0f;
+            // 固定枠はランダム抽選に混ぜない
+            return !IsFixedEvent && level == eventLevel && weight > 0f;
         }
     }
 
@@ -82,6 +88,9 @@ namespace VoidAwake
 
         public static void TryFireRandomEvent(int hour)
         {
+            // 別枠: 固定イベント（該当時のみ。ランダムと併発）
+            TryFireFixedEvent(hour);
+
             int eventLevel = HourToEventLevel(hour);
             if (eventLevel <= 0)
                 return;
@@ -96,6 +105,17 @@ namespace VoidAwake
             }
 
             chosen.Worker.TryExecute(hour);
+        }
+
+        /// <summary>固定枠。時 1/4/7/10/12 などで必ず発火。ランダムとは独立。</summary>
+        public static void TryFireFixedEvent(int hour)
+        {
+            VoidClockEventDef fixedDef = DefDatabase<VoidClockEventDef>.AllDefsListForReading
+                .FirstOrDefault(d => d.fixedHour == hour && d.Worker.CanFire(hour));
+            if (fixedDef == null)
+                return;
+
+            fixedDef.Worker.TryExecute(hour);
         }
     }
 }

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Defs>
+  <ThinkTreeDef>
+    <defName>VoidAwake_Trapper</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+
+        <li Class="ThinkNode_ConditionalMustKeepLyingDown">
+          <subNodes>
+            <li Class="ThinkNode_QueuedJob">
+              <inBedOnly>true</inBedOnly>
+            </li>
+            <li Class="JobGiver_KeepLyingDown" />
+          </subNodes>
+        </li>
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Downed</treeDef>
+        </li>
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>BurningResponse</treeDef>
+        </li>
+
+        <li Class="ThinkNodeConditional_EscapingHoldingPlatform">
+          <subNodes>
+            <li Class="JobGiver_EscapingHoldingPlatform" />
+          </subNodes>
+        </li>
+
+        <li Class="JobGiver_ReactToCloseMeleeThreat" />
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>MentalStateNonCritical</treeDef>
+        </li>
+
+        <li Class="ThinkNode_Subtree">
+          <treeDef>LordDuty</treeDef>
+        </li>
+
+        <!-- Stealth: place traps, no aggressive fight -->
+        <li Class="VoidAwake.ThinkNode_ConditionalTrapperStealth">
+          <subNodes>
+            <li Class="VoidAwake.JobGiver_TrapperPlaceTrap" />
+            <li Class="ThinkNode_Tagger">
+              <tagToGive>Idle</tagToGive>
+              <subNodes>
+                <li Class="JobGiver_WanderAnywhere">
+                  <maxDanger>Deadly</maxDanger>
+                  <ticksBetweenWandersRange>180~720</ticksBetweenWandersRange>
+                  <wanderRadius>6</wanderRadius>
+                  <canBashDoors>false</canBashDoors>
+                  <expireOnNearbyEnemy>true</expireOnNearbyEnemy>
+                </li>
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+
+        <!-- Combat: fight, no trap placing -->
+        <li Class="VoidAwake.ThinkNode_ConditionalTrapperCombat">
+          <subNodes>
+            <li Class="JobGiver_MetalhorrorFight" />
+            <li Class="ThinkNode_Tagger">
+              <tagToGive>Idle</tagToGive>
+              <subNodes>
+                <li Class="JobGiver_WanderAnywhere">
+                  <maxDanger>Deadly</maxDanger>
+                  <ticksBetweenWandersRange>180~720</ticksBetweenWandersRange>
+                  <wanderRadius>6</wanderRadius>
+                  <canBashDoors>true</canBashDoors>
+                  <expireOnNearbyEnemy>true</expireOnNearbyEnemy>
+                </li>
+              </subNodes>
+            </li>
+          </subNodes>
+        </li>
+
+        <li Class="ThinkNode_SubtreesByTag">
+          <insertTag>Metalhorror_PreWander</insertTag>
+        </li>
+
+        <li Class="JobGiver_IdleError"/>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+  <ThinkTreeDef>
+    <defName>VoidAwake_TrapperConstant</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Despawned</treeDef>
+        </li>
+        <li Class="ThinkNode_ConditionalCanDoLordJobNow">
+          <subNodes>
+            <li Class="ThinkNode_Subtree">
+              <treeDef>LordDutyConstant</treeDef>
+            </li>
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+</Defs>

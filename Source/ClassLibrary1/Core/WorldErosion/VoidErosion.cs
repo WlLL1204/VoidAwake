@@ -292,55 +292,39 @@ namespace VoidAwake
                 victims.Add(s);
             }
 
+            var affected = new HashSet<Faction>();
             foreach (Settlement s in victims)
+            {
+                if (s.Faction != null)
+                    affected.Add(s.Faction);
                 DestroyNpcSettlementByVoid(s);
+            }
+
+            foreach (Faction f in affected)
+            {
+                if (f.IsPlayer || f.defeated)
+                    continue;
+                bool anyLeft = false;
+                foreach (Settlement other in Find.WorldObjects.Settlements)
+                {
+                    if (other.Faction == f)
+                    {
+                        anyLeft = true;
+                        break;
+                    }
+                }
+                if (!anyLeft)
+                    f.defeated = true;
+            }
 
             prevHeavyExtreme = nowHeavy;
         }
 
         private void DestroyNpcSettlementByVoid(Settlement settlement)
         {
-            PlanetTile tile = settlement.Tile;
-            Faction faction = settlement.Faction;
-            string label = settlement.Label;
-
             // プレイヤーが今そのマップにいる場合は一旦スキップ（任意）
             if (settlement.HasMap && settlement.Map.mapPawns.AnyColonistSpawned)
                 return;
-
-            bool hasOtherBase = false;
-            foreach (Settlement other in Find.WorldObjects.Settlements)
-            {
-                if (other != settlement && other.Faction == faction)
-                {
-                    hasOtherBase = true;
-                    break;
-                }
-            }
-
-            // 廃墟マーカー（拠点が破壊された見た目）
-            var ruined = (DestroyedSettlement)WorldObjectMaker.MakeWorldObject(
-                tile.LayerDef.DestroyedSettlementWorldObjectDef);
-            ruined.Tile = tile;
-            ruined.SetFaction(faction);
-            Find.WorldObjects.Add(ruined);
-
-            if (settlement.HasMap)
-                settlement.Map.info.parent = ruined;
-
-            string body = "LetterFactionBaseDefeatedNoRaids".Translate(label);
-            if (!hasOtherBase)
-            {
-                faction.defeated = true;
-                body += "\n\n" + "LetterFactionBaseDefeated_FactionDestroyed".Translate(faction.Name);
-            }
-
-            Find.LetterStack.ReceiveLetter(
-                "LetterLabelFactionBaseDefeated".Translate(),
-                body,
-                LetterDefOf.NeutralEvent, 
-                new GlobalTargetInfo(tile),
-                faction);
 
             settlement.Destroy();
         }
