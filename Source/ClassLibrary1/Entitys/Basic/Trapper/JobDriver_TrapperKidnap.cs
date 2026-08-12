@@ -19,7 +19,7 @@ namespace VoidAwake
 		private Pawn Victim => job.GetTarget(VictimInd).Thing as Pawn;
 
 		private int PassageUseTicks =>
-			pawn.TryGetComp<VoidAwake_TrapperComp>()?.Props.passageUseTicks ?? 120;
+			pawn.TryGetComp<VoidAwake_TrapperComp>()?.Props.kidnapPassageUseTicks ?? 240;
 
 		public override bool TryMakePreToilReservations(bool errorOnFailed)
 		{

@@ -43,6 +43,8 @@ namespace VoidAwake
 		public int passageSearchRetryTicks = 600; // wait before retrying a failed rabbit passage scan
 
 		public int passageUseTicks = 120; // time to slip through a rabbit passage
+
+		public int kidnapPassageUseTicks = 240; // time to slip through a rabbit passage while carrying a kidnapped pawn
 		public int kidnapRetryTicks = 120; // wait before retrying a failed kidnap job
 
 		public CompProperties_VoidAwake_Trapper()
@@ -87,6 +89,8 @@ namespace VoidAwake
 		private int nextKidnapJobTick;
 
 		private Pawn kidnapTarget;
+
+		private TrapperCombatState stateBeforeKidnap = TrapperCombatState.Stealth;
 
 
 
@@ -343,6 +347,11 @@ namespace VoidAwake
 
 		{
 
+			if (state != TrapperCombatState.Kidnap)
+			{
+				stateBeforeKidnap = state;
+			}
+
 			state = TrapperCombatState.Kidnap;
 
 			kidnapTarget = target;
@@ -381,8 +390,31 @@ namespace VoidAwake
 
 			RemoveKidnappingHediff();
 
-			EnterStealth();
+			TrapperCombatState resume = stateBeforeKidnap;
+			stateBeforeKidnap = TrapperCombatState.Stealth;
 
+			if (resume == TrapperCombatState.Combat)
+			{
+				RestoreCombatAfterFailedKidnap();
+			}
+			else
+			{
+				EnterStealth();
+			}
+
+		}
+
+		private void RestoreCombatAfterFailedKidnap()
+		{
+			state = TrapperCombatState.Combat;
+			ticksUntilStealthReturn = 0;
+
+			if (ticksUntilCombatUnlock <= 0)
+			{
+				ticksUntilCombatUnlock = Props.combatMinDurationTicks;
+			}
+
+			RemoveStealthHediff();
 		}
 
 		/// <summary>Clears kidnap target before map exit. Keeps kidnapping hediff so the Trapper stays visible and slow until despawn.</summary>
@@ -1023,6 +1055,8 @@ namespace VoidAwake
 			Scribe_Values.Look(ref nextKidnapJobTick, "nextKidnapJobTick", 0);
 
 			Scribe_References.Look(ref kidnapTarget, "kidnapTarget");
+
+			Scribe_Values.Look(ref stateBeforeKidnap, "stateBeforeKidnap", TrapperCombatState.Stealth);
 
 
 

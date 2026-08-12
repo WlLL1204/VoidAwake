@@ -54,7 +54,9 @@ flowchart TB
 stateDiagram-v2
   [*] --> Stealth
   Stealth --> Kidnap: downedColonistReachable
-  Kidnap --> Stealth: noTargets_and_notCarrying
+  Combat --> Kidnap: downedColonistReachable
+  Kidnap --> Stealth: noTargets_and_notCarrying_fromStealth
+  Kidnap --> Combat: noTargets_and_notCarrying_fromCombat
   Stealth --> Combat: damage_or_disruptor_or_5trapsDestroyed
   Kidnap --> Combat: damage
   Combat --> Stealth: afterMin1h_and_noReachableColonist_3s
@@ -73,7 +75,7 @@ stateDiagram-v2
 
 ### Kidnap（拉致）
 
-- 条件: Stealth 中（または Kidnap 再試行中）に **Downed 入植者**が通常到達 + 通り道経由で到達可能
+- 条件: Stealth または Combat 中（または Kidnap 再試行中）に **Downed 入植者**が通常到達 + 通り道経由で到達可能
 - Hediff `VoidAwake_TrapperKidnapping`（移動 0.45 倍・運搬容量 +500・**可視**）
 - AI: ThinkTree 上は `JobGiver_TrapperKidnap` のみ（罠設置は行わない）。**退出は同一 JobDriver 内**で通り道使用・掘削も行う
 - フロー: 対象へ接近 → 運搬 → **ExitLoop**（下記）→ `GameComponent_VoidAwake_TrapperKidnaps` に登録 → `ExitMap`
@@ -87,7 +89,7 @@ stateDiagram-v2
 - ジョブ失敗時: `kidnapRetryTicks` = 120 tick のクールダウン（`Notify_KidnapJobFailed`、同一失敗での多重設定は idempotent）
 - 掘削探索失敗時: `passageSearchRetryTicks` = 600 tick（`Notify_PassageSearchFailed`）
 - ジョブ開始時: 同一 tick 再割当防止のため +1 tick ブロック（`Notify_KidnapJobStarted`）
-- 対象不在かつ非運搬中: `ExitKidnap()` で Stealth 復帰
+- 対象不在かつ非運搬中: `ExitKidnap()` で拉致開始前の状態へ復帰（Stealth 起点なら Stealth、Combat 起点なら Combat）
 - マップ退出直前: `PrepareExitAfterKidnap()` で対象参照のみクリア。**Hediff は despawn まで維持**（退出失敗時も可視・低速のまま再試行可能）
 - 被ダメージ: Combat へ（全 Trapper 交戦伝播）
 

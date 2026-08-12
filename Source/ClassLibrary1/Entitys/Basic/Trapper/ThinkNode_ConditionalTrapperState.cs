@@ -32,7 +32,7 @@ namespace VoidAwake
 			}
 
 			return comp.IsKidnap
-				|| (comp.IsStealth && VoidAwake_TrapperKidnapUtility.HasKidnapTargets(pawn));
+				|| ((comp.IsStealth || comp.IsCombat) && VoidAwake_TrapperKidnapUtility.HasKidnapTargets(pawn));
 		}
 	}
 }

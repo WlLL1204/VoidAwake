@@ -13,7 +13,7 @@ namespace VoidAwake
 			}
 
 			VoidAwake_TrapperComp comp = pawn.TryGetComp<VoidAwake_TrapperComp>();
-			if (comp == null || comp.IsCombat)
+			if (comp == null)
 			{
 				return null;
 			}
@@ -43,7 +43,7 @@ namespace VoidAwake
 				return null;
 			}
 
-			if (comp.IsStealth)
+			if (comp.IsStealth || comp.IsCombat)
 			{
 				comp.EnterKidnap(victim);
 			}
