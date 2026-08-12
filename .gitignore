@@ -9,3 +9,6 @@ Source/**/obj/
 
 # 作業用アート素材（Clip Studio 等）。ゲームは読まないので配布対象外
 _art/
+
+# RimWorld 本体の逆コンパイル資料（参照用・配布対象外）
+_decomp/
