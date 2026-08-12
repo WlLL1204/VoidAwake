@@ -18,7 +18,7 @@ flowchart TB
   Tick["CompHoldingPlatformTarget.CaptivityTick<br/>2500 tick 毎"]
   Mtb["ContainmentUtility.InitiateEscapeMtbDays"]
   Can["ContainmentUtility.CanParticipateInEscape"]
-  Block["Patch_ContainmentUtility_CanParticipateInEscape<br/>収容強度が足りていれば false"]
+  Block["VoidAwake_Patch_ContainmentUtility_CanParticipateInEscape<br/>収容強度が足りていれば false"]
   Never["-1f を返す → 抽選なし / ITab は Never 表示"]
   Roll["Rand.MTBEventOccurs"]
   Escape["CompHoldingPlatformTarget.Escape(initiator)"]
@@ -39,16 +39,16 @@ flowchart TB
 
 | 役割 | パス |
 |------|------|
-| アノマリー 1 体分の脱走設定（まとめ） | [`Defs/Containment/ContainmentEscapeDefs.xml`](../Defs/Containment/ContainmentEscapeDefs.xml) / [`VoidAwake_ContainmentEscapeDef.cs`](../Source/ClassLibrary1/Core/Containment/VoidAwake_ContainmentEscapeDef.cs) |
-| 脱走イベント 1 件の定義 | [`Defs/Containment/EscapeEventDefs.xml`](../Defs/Containment/EscapeEventDefs.xml) / [`VoidAwake_EscapeEventDef.cs`](../Source/ClassLibrary1/Core/Containment/VoidAwake_EscapeEventDef.cs) |
-| イベントワーカー基底・脱走時の状況 | [`VoidAwake_EscapeEventWorker.cs`](../Source/ClassLibrary1/Core/Containment/VoidAwake_EscapeEventWorker.cs) |
-| アノマリーごとの空スタブ | [`Events/EscapeEventWorkers_Vanilla.cs`](../Source/ClassLibrary1/Core/Containment/Events/EscapeEventWorkers_Vanilla.cs) |
-| 収容判定・Def 解決・イベント発火 | [`ContainmentEscapeUtility.cs`](../Source/ClassLibrary1/Core/Containment/ContainmentEscapeUtility.cs) |
-| Harmony パッチ | [`Patch_ContainmentEscape.cs`](../Source/ClassLibrary1/Core/Containment/Patch_ContainmentEscape.cs) |
-| Dev デバッグ | [`DebugActions_Containment.cs`](../Source/ClassLibrary1/Core/Containment/DebugActions_Containment.cs) |
+| アノマリー 1 体分の脱走設定（まとめ） | [`Defs/VoidAwake_ContainmentEscapeDefs/ContainmentEscapes_VoidAwake.xml`](../Defs/VoidAwake_ContainmentEscapeDefs/ContainmentEscapes_VoidAwake.xml) / [`VoidAwake_ContainmentEscapeDef.cs`](../Source/VoidAwake/Systems/Containment/VoidAwake_ContainmentEscapeDef.cs) |
+| 脱走イベント 1 件の定義 | [`Defs/VoidAwake_EscapeEventDefs/EscapeEvents_VoidAwake.xml`](../Defs/VoidAwake_EscapeEventDefs/EscapeEvents_VoidAwake.xml) / [`VoidAwake_EscapeEventDef.cs`](../Source/VoidAwake/Systems/Containment/VoidAwake_EscapeEventDef.cs) |
+| イベントワーカー基底・脱走時の状況 | [`VoidAwake_EscapeEventWorker.cs`](../Source/VoidAwake/Systems/Containment/VoidAwake_EscapeEventWorker.cs) |
+| アノマリーごとの空スタブ | [`Events/EscapeEventWorkers_Vanilla.cs`](../Source/VoidAwake/Systems/Containment/Events/VoidAwake_EscapeEventWorkers_Vanilla.cs) |
+| 収容判定・Def 解決・イベント発火 | [`VoidAwake_ContainmentEscapeUtility.cs`](../Source/VoidAwake/Systems/Containment/VoidAwake_ContainmentEscapeUtility.cs) |
+| Harmony パッチ | [`VoidAwake_Patch_ContainmentEscape.cs`](../Source/VoidAwake/Systems/Containment/VoidAwake_Patch_ContainmentEscape.cs) |
+| Dev デバッグ | [`VoidAwake_DebugActions_Containment.cs`](../Source/VoidAwake/Systems/Containment/VoidAwake_DebugActions_Containment.cs) |
 | 文言 | [`English`](../Languages/English/Keyed/VoidAwake_Containment.xml) / [`Japanese`](../Languages/Japanese/Keyed/VoidAwake_Containment.xml) |
 
-Harmony の登録は既存の [`VoidAwake_PlaySettings_Patch.cs`](../Source/ClassLibrary1/Core/VoidAwake_PlaySettings_Patch.cs) にある `PatchAll()` が拾うため、初期化コードは追加していない。
+Harmony の登録は既存の [`VoidAwake_HarmonyInit.cs`](../Source/VoidAwake/Core/VoidAwake_HarmonyInit.cs) にある `PatchAll()` が拾うため、初期化コードは追加していない。
 
 ---
 
@@ -61,13 +61,13 @@ Harmony の登録は既存の [`VoidAwake_PlaySettings_Patch.cs`](../Source/Clas
 ```csharp
 public static void Postfix(Pawn pawn, StringBuilder sb, ref bool __result)
 {
-    if (!__result || !ContainmentEscapeUtility.IsEscapeProof(pawn)) return;
+    if (!__result || !VoidAwake_ContainmentEscapeUtility.IsEscapeProof(pawn)) return;
     __result = false;
     // sb に理由を追記して ITab のツールチップに出す
 }
 ```
 
-判定は `ContainmentEscapeUtility.IsEscapeProof` が行い、中身はバニラの拡張メソッド `Thing.SafelyContains` をそのまま使っている。
+判定は `VoidAwake_ContainmentEscapeUtility.IsEscapeProof` が行い、中身はバニラの拡張メソッド `Thing.SafelyContains` をそのまま使っている。
 
 ```
 CompEntityHolder.ContainmentStrength >= entity.GetStatValue(StatDefOf.MinimumContainmentStrength)
@@ -106,7 +106,7 @@ flowchart LR
 
 ### 対象アノマリーの解決
 
-`ContainmentEscapeUtility.ContainmentEscapeDefFor` が以下の優先順で `VoidAwake_ContainmentEscapeDef` を解決する。
+`VoidAwake_ContainmentEscapeUtility.ContainmentEscapeDefFor` が以下の優先順で `VoidAwake_ContainmentEscapeDef` を解決する。
 
 1. `entityDef` と `mutantDef` の両方が一致
 2. `mutantDef` のみ指定された Def が一致
@@ -123,9 +123,9 @@ flowchart LR
 
 ## 新しいアノマリーへの対応手順
 
-1. [`Events/EscapeEventWorkers_Vanilla.cs`](../Source/ClassLibrary1/Core/Containment/Events/EscapeEventWorkers_Vanilla.cs) に `VoidAwake_EscapeEventWorker` を継承したクラスを 1 つ足し、`DoEscapeEvent` を実装する（実装が育ったら個別ファイルに切り出す）。
-2. [`EscapeEventDefs.xml`](../Defs/Containment/EscapeEventDefs.xml) にイベント Def を 1 件足し、`workerClass` にそのクラスを指定する。
-3. [`ContainmentEscapeDefs.xml`](../Defs/Containment/ContainmentEscapeDefs.xml) にまとめ Def を 1 件足し、`events` でそのイベントを参照する。
+1. [`Events/EscapeEventWorkers_Vanilla.cs`](../Source/VoidAwake/Systems/Containment/Events/VoidAwake_EscapeEventWorkers_Vanilla.cs) に `VoidAwake_EscapeEventWorker` を継承したクラスを 1 つ足し、`DoEscapeEvent` を実装する（実装が育ったら個別ファイルに切り出す）。
+2. [`EscapeEvents_VoidAwake.xml`](../Defs/VoidAwake_EscapeEventDefs/EscapeEvents_VoidAwake.xml) にイベント Def を 1 件足し、`workerClass` にそのクラスを指定する。
+3. [`ContainmentEscapes_VoidAwake.xml`](../Defs/VoidAwake_ContainmentEscapeDefs/ContainmentEscapes_VoidAwake.xml) にまとめ Def を 1 件足し、`events` でそのイベントを参照する。
 
 ```xml
 <VoidAwake.VoidAwake_EscapeEventDef>
@@ -183,7 +183,7 @@ VoidAwake レターがあるアノマリーが initiator として脱走する�
 | デバッグアクション `VoidAwake → Containment: dump escape events` | 収容可能なアノマリーごとに解決される Def とイベントをログに出す。`(DEFAULT)` 付きが専用イベント未定義なので、アノマリーが増えたときの取りこぼし確認に使う |
 | バニラの `DEV: Escape` / `DEV: Timed escape` | 選択中の 1 体のみ |
 
-部屋の判定範囲はバニラの連鎖脱走と同じ「部屋内および隣接」（`Room.ContainedAndAdjacentThings`）。最初の 1 体だけ `initiator` として扱うので、レターは 1 通に収まる。強制脱走の入口は `ContainmentEscapeUtility.ForceEscapeRoom` で、脱走阻止パッチは経由しないため収容強度が足りていても発動する。
+部屋の判定範囲はバニラの連鎖脱走と同じ「部屋内および隣接」（`Room.ContainedAndAdjacentThings`）。最初の 1 体だけ `initiator` として扱うので、レターは 1 通に収まる。強制脱走の入口は `VoidAwake_ContainmentEscapeUtility.ForceEscapeRoom` で、脱走阻止パッチは経由しないため収容強度が足りていても発動する。
 
 ---
 

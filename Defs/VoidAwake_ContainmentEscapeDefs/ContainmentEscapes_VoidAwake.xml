@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- アノマリー 1 体分の脱走設定。events に並べたイベント Def が脱走時に順番に発火する。
+	     新しいアノマリーに対応するときは、EscapeEventDefs.xml にイベントを 1 件足して
+	     ここで参照する Def を 1 件追加するだけでよい。
+
+	     entityDef と mutantDef の両方を省略した Def は、専用定義が無いアノマリー全ての既定になる。 -->
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Default</defName>
+		<label>収容破綻（既定）</label>
+		<events>
+			<li>VoidAwake_EscapeEvent_Default</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<!-- ===== バニラ: 専用エンティティ ===== -->
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Metalhorror</defName>
+		<entityDef>Metalhorror</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Metalhorror</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Revenant</defName>
+		<entityDef>Revenant</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Revenant</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Sightstealer</defName>
+		<entityDef>Sightstealer</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Sightstealer</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Noctol</defName>
+		<entityDef>Noctol</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Noctol</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Gorehulk</defName>
+		<entityDef>Gorehulk</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Gorehulk</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Devourer</defName>
+		<entityDef>Devourer</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Devourer</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Chimera</defName>
+		<entityDef>Chimera</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Chimera</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<!-- ===== バニラ: フレッシュビースト ===== -->
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Bulbfreak</defName>
+		<entityDef>Bulbfreak</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Bulbfreak</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Toughspike</defName>
+		<entityDef>Toughspike</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Toughspike</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Trispike</defName>
+		<entityDef>Trispike</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Trispike</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Fingerspike</defName>
+		<entityDef>Fingerspike</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Fingerspike</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Dreadmeld</defName>
+		<entityDef>Dreadmeld</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Dreadmeld</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<!-- ===== バニラ: 球体 =====
+	     baseEscapeIntervalMtbDays が -1 なので自然脱走はしないが、Dev の強制脱走では通る。 -->
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Nociosphere</defName>
+		<entityDef>Nociosphere</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Nociosphere</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_FleshmassNucleus</defName>
+		<entityDef>FleshmassNucleus</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_FleshmassNucleus</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<!-- ===== バニラ: ミュータント =====
+	     Human だけでなく動物のシャンブラーも存在するため、entityDef は指定せず mutantDef のみで一致させる。 -->
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Shambler</defName>
+		<mutantDef>Shambler</mutantDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Shambler</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Ghoul</defName>
+		<mutantDef>Ghoul</mutantDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Ghoul</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_AwokenCorpse</defName>
+		<mutantDef>AwokenCorpse</mutantDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_AwokenCorpse</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<!-- ===== VoidAwake 独自エンティティ ===== -->
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_Trapper</defName>
+		<entityDef>VoidAwake_Trapper</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Trapper</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_FlyingHed</defName>
+		<entityDef>VoidAwake_FlyingHed</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_FlyingHed</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+	<!-- 検証用エンティティは既定イベントをそのまま使う -->
+	<VoidAwake.VoidAwake_ContainmentEscapeDef>
+		<defName>VoidAwake_ContainmentEscape_TestAnomaly</defName>
+		<entityDef>VoidAwake_TestAnomaly</entityDef>
+		<events>
+			<li>VoidAwake_EscapeEvent_Default</li>
+		</events>
+	</VoidAwake.VoidAwake_ContainmentEscapeDef>
+
+</Defs>

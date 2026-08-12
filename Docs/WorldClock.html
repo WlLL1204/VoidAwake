@@ -102,7 +102,7 @@
 
     <h2>結論</h2>
     <p>
-      WorldClock は独立システムではなく、<code>VoidAwake_VoidErosion</code>（<code>WorldComponent</code>）の
+      WorldClock は独立システムではなく、<code>VoidAwake_WorldComponent_VoidErosion</code>（<code>WorldComponent</code>）の
       <strong>浸食率 UI / 進行マイルストーン</strong> である。
       針の「時」は <code>GenDate</code> の時刻ではなく、<code>floor(浸食率 × 12)</code> の離散値（0〜12）。
     </p>
@@ -118,8 +118,8 @@ flowchart TB
   Rate[ErosionRate = 浸食陸 / 全陸]
   Hour[ErosionClockHour 0-12]
   Fire[OnErosionClockHourAdvanced]
-  Util[VoidClockEventUtility]
-  Def[VoidClockEventDef + Worker]
+  Util[VoidAwake_ClockEventUtility]
+  Def[VoidAwake_ClockEventDef + Worker]
 
   Days --> Radius --> Eroded --> Rate --> Hour
   Hour --> Fire
@@ -132,10 +132,10 @@ flowchart TB
         <tr><th>役割</th><th>ファイル</th></tr>
       </thead>
       <tbody>
-        <tr><td>浸食・時計・UI</td><td><code>Source/ClassLibrary1/Core/WorldErosion/VoidErosion.cs</code></td></tr>
-        <tr><td>時計イベント Def / Worker</td><td><code>ClockEvent.cs</code> / <code>FixedHourEvents.cs</code></td></tr>
-        <tr><td>イベント XML</td><td><code>Defs/WorldErosion/ClockEvent/ClockEvents.xml</code></td></tr>
-        <tr><td>Tick 音</td><td><code>Defs/Systems/SoundDef/Sound_WorldClock.xml</code></td></tr>
+        <tr><td>浸食・時計・UI</td><td><code>Source/VoidAwake/Systems/WorldErosion/VoidAwake_WorldComponent_VoidErosion.cs</code></td></tr>
+        <tr><td>時計イベント Def / Worker</td><td><code>VoidAwake_ClockEventWorker.cs</code> / <code>VoidAwake_ClockEventWorker_FixedHour.cs</code></td></tr>
+        <tr><td>イベント XML</td><td><code>Defs/VoidAwake_ClockEventDefs/ClockEvents_VoidAwake.xml</code></td></tr>
+        <tr><td>Tick 音</td><td><code>Defs/SoundDefs/Sounds_WorldClock.xml</code></td></tr>
         <tr><td>テクスチャ</td><td><code>Textures/UI/Interface/WorldClock/</code></td></tr>
       </tbody>
     </table>
@@ -161,7 +161,7 @@ flowchart TB
     <p><code>OnErosionClockHourAdvanced(hour)</code>:</p>
     <ol>
       <li><code>VoidAwake_WorldClockTick</code> をカメラ再生</li>
-      <li><code>VoidClockEventUtility.TryFireRandomEvent(hour)</code>
+      <li><code>VoidAwake_ClockEventUtility.TryFireRandomEvent(hour)</code>
         <ul>
           <li>先に <strong>固定枠</strong>（<code>fixedHour == hour</code>）があれば実行</li>
           <li>続けて <strong>ランダム枠</strong>（レベル別重み抽選）を実行</li>
@@ -176,14 +176,14 @@ flowchart TB
         <tr><th>時</th><th>Def</th><th>Worker</th></tr>
       </thead>
       <tbody>
-        <tr><td>1</td><td><code>VoidAwake_ClockEvent_Fixed_Hour1</code></td><td><code>VoidClockEventWorker_FixedHour1</code></td></tr>
-        <tr><td>4</td><td><code>VoidAwake_ClockEvent_Fixed_Hour4</code></td><td><code>VoidClockEventWorker_FixedHour4</code></td></tr>
-        <tr><td>7</td><td><code>VoidAwake_ClockEvent_Fixed_Hour7</code></td><td><code>VoidClockEventWorker_FixedHour7</code></td></tr>
-        <tr><td>10</td><td><code>VoidAwake_ClockEvent_Fixed_Hour10</code></td><td><code>VoidClockEventWorker_FixedHour10</code></td></tr>
-        <tr><td>12</td><td><code>VoidAwake_ClockEvent_Fixed_Hour12</code></td><td><code>VoidClockEventWorker_FixedHour12</code></td></tr>
+        <tr><td>1</td><td><code>VoidAwake_ClockEvent_Fixed_Hour1</code></td><td><code>VoidAwake_ClockEventWorker_FixedHour1</code></td></tr>
+        <tr><td>4</td><td><code>VoidAwake_ClockEvent_Fixed_Hour4</code></td><td><code>VoidAwake_ClockEventWorker_FixedHour4</code></td></tr>
+        <tr><td>7</td><td><code>VoidAwake_ClockEvent_Fixed_Hour7</code></td><td><code>VoidAwake_ClockEventWorker_FixedHour7</code></td></tr>
+        <tr><td>10</td><td><code>VoidAwake_ClockEvent_Fixed_Hour10</code></td><td><code>VoidAwake_ClockEventWorker_FixedHour10</code></td></tr>
+        <tr><td>12</td><td><code>VoidAwake_ClockEvent_Fixed_Hour12</code></td><td><code>VoidAwake_ClockEventWorker_FixedHour12</code></td></tr>
       </tbody>
     </table>
-    <p class="note">XML に <code>&lt;fixedHour&gt;N&lt;/fixedHour&gt;</code> を付けると固定枠。ランダム候補からは除外。発火時はレター通知（<code>SendEventLetter</code>）。ゲームプレイは <code>ExecuteFixedEvent</code> で後から追加（<code>FixedHourEvents.cs</code>）。</p>
+    <p class="note">XML に <code>&lt;fixedHour&gt;N&lt;/fixedHour&gt;</code> を付けると固定枠。ランダム候補からは除外。発火時はレター通知（<code>SendEventLetter</code>）。ゲームプレイは <code>ExecuteFixedEvent</code> で後から追加（<code>VoidAwake_ClockEventWorker_FixedHour.cs</code>）。</p>
 
     <h3>時 → イベントレベル</h3>
     <table>
@@ -214,8 +214,8 @@ flowchart TB
     <h2>イベント追加手順</h2>
 
     <h3>1. Worker クラスを追加</h3>
-    <p><code>ClockEvent.cs</code> と同名前空間（または別ファイル）に:</p>
-    <pre><code>public class VoidClockEventWorker_MyEvent : VoidClockEventWorker
+    <p><code>VoidAwake_ClockEventWorker.cs</code> と同名前空間（または別ファイル）に:</p>
+    <pre><code>public class VoidAwake_ClockEventWorker_MyEvent : VoidAwake_ClockEventWorker
 {
     public override bool CanFire(int hour) =&gt; true; // 任意の前提条件
 
@@ -229,18 +229,18 @@ flowchart TB
       <li><code>CanFire</code>: 研究・ストーリーテラー・マップ有無などで除外</li>
       <li><code>SendEventLetter</code>: タイトル=<code>def.LabelCap</code>、本文=<code>description</code>（空なら定型文）</li>
     </ul>
-    <p>プレースホルダー実装は <code>VoidClockEventWorker_Placeholder</code>（レター＋ログのみ）。</p>
+    <p>プレースホルダー実装は <code>VoidAwake_ClockEventWorker_Placeholder</code>（レター＋ログのみ）。</p>
 
     <h3>2. XML Def を追加</h3>
-    <p><code>Defs/WorldErosion/ClockEvent/ClockEvents.xml</code> に:</p>
-    <pre><code>&lt;VoidAwake.VoidClockEventDef&gt;
+    <p><code>Defs/VoidAwake_ClockEventDefs/ClockEvents_VoidAwake.xml</code> に:</p>
+    <pre><code>&lt;VoidAwake.VoidAwake_ClockEventDef&gt;
   &lt;defName&gt;VoidAwake_ClockEvent_L2_MyEvent&lt;/defName&gt;
   &lt;label&gt;イベント名&lt;/label&gt;
   &lt;description&gt;レター本文&lt;/description&gt;
   &lt;level&gt;2&lt;/level&gt;
   &lt;weight&gt;1&lt;/weight&gt;
-  &lt;workerClass&gt;VoidAwake.VoidClockEventWorker_MyEvent&lt;/workerClass&gt;
-&lt;/VoidAwake.VoidClockEventDef&gt;</code></pre>
+  &lt;workerClass&gt;VoidAwake.VoidAwake_ClockEventWorker_MyEvent&lt;/workerClass&gt;
+&lt;/VoidAwake.VoidAwake_ClockEventDef&gt;</code></pre>
     <ul>
       <li><code>level</code> は厳密一致（Lv1 Def は hour 1–3 のときだけ候補）</li>
       <li><code>weight</code> が大きいほど同レベル内で選ばれやすい</li>

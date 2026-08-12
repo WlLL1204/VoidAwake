@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<PawnKindDef>
+		<defName>VoidAwake_FlyingHed</defName>
+		<label>飛頭蛮</label>
+		<race>VoidAwake_FlyingHed</race>
+		<overrideDeathOnDownedChance>0.25</overrideDeathOnDownedChance>
+		<overrideDebugActionCategory>Entity</overrideDebugActionCategory>
+		<combatPower>25</combatPower>
+		<ecoSystemWeight>0.5</ecoSystemWeight>
+		<defaultFactionDef>Entities</defaultFactionDef>
+		<alternateGraphicChance>0.75</alternateGraphicChance>
+		<alternateGraphics>
+			<li>
+				<texPath>UI/Entities/Test</texPath>
+				<dessicatedTexPath>UI/Entities/Test</dessicatedTexPath>
+				<dessicatedGraphicData>
+					<attachPoints>
+						<li>
+							<offset>(-.2, 0, .7)</offset>
+							<type>PlatformRestraint0</type>
+						</li>
+						<li>
+							<offset>(.2, 0, .7)</offset>
+							<type>PlatformRestraint1</type>
+						</li>
+						<li>
+							<offset>(.3, 0, -.8)</offset>
+							<type>PlatformRestraint2</type>
+						</li>
+						<li>
+							<offset>(-.3, 0, -.8)</offset>
+							<type>PlatformRestraint3</type>
+						</li>
+					</attachPoints>
+				</dessicatedGraphicData>
+				<attachPoints>
+					<li>
+						<offset>(-.3, 0, .75)</offset>
+						<type>PlatformRestraint0</type>
+					</li>
+					<li>
+						<offset>(.2, 0, .75)</offset>
+						<type>PlatformRestraint1</type>
+					</li>
+					<li>
+						<offset>(.2, 0, -.6)</offset>
+						<type>PlatformRestraint2</type>
+					</li>
+					<li>
+						<offset>(-.2, 0, -.6)</offset>
+						<type>PlatformRestraint3</type>
+					</li>
+				</attachPoints>
+			</li>
+		</alternateGraphics>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>UI/Entities/Test</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>2.7</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>UI/Entities/Test</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>2.7</drawSize>
+					<attachPoints>
+						<li>
+							<offset>(-.5, 0, .5)</offset>
+							<type>PlatformRestraint0</type>
+						</li>
+						<li>
+							<offset>(.5, 0, .5)</offset>
+							<type>PlatformRestraint1</type>
+						</li>
+						<li>
+							<offset>(.4, 0, -.5)</offset>
+							<type>PlatformRestraint2</type>
+						</li>
+						<li>
+							<offset>(-.4, 0, -.5)</offset>
+							<type>PlatformRestraint3</type>
+						</li>
+					</attachPoints>
+				</dessicatedBodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+</Defs>

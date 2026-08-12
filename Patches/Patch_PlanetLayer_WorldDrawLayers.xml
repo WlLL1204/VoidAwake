@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/PlanetLayerDef[defName="Surface"]/worldDrawLayers</xpath>
+		<value>
+			<li>VoidAwake.VoidAwake_WorldDrawLayer_VoidTile</li>
+			<li>VoidAwake.VoidAwake_WorldDrawLayer_VoidTileEffect</li>
+			<li>VoidAwake.VoidAwake_WorldDrawLayer_WorldProtect</li>
+		</value>
+	</Operation>
+</Patch>

@@ -435,7 +435,7 @@
 	</table>
 
 	<h3>解決優先度</h3>
-	<p><code>ContainmentEscapeUtility.ContainmentEscapeDefFor</code> が次の順でまとめ Def を選びます。</p>
+	<p><code>VoidAwake_ContainmentEscapeUtility.ContainmentEscapeDefFor</code> が次の順でまとめ Def を選びます。</p>
 	<ol>
 		<li><code>entityDef</code> と <code>mutantDef</code> の両方が一致</li>
 		<li><code>mutantDef</code> のみ指定された Def が一致</li>
@@ -588,7 +588,7 @@
 	</p>
 
 	<div class="warn">
-		現状、すべてのアノマリー用ワーカー（<code>EscapeEventWorkers_Vanilla.cs</code>）は空実装です。
+		現状、すべてのアノマリー用ワーカー（<code>VoidAwake_EscapeEventWorkers_Vanilla.cs</code>）は空実装です。
 	</div>
 </section>
 
@@ -601,10 +601,10 @@
 			（当面は <code>Events/EscapeEventWorkers_Vanilla.cs</code> に並べ、育ったら個別ファイルへ切り出す）。
 		</li>
 		<li>
-			<code>Defs/Containment/EscapeEventDefs.xml</code> にイベント Def を 1 件足し、<code>workerClass</code> にそのクラスを指定する。
+			<code>Defs/VoidAwake_EscapeEventDefs/EscapeEvents_VoidAwake.xml</code> にイベント Def を 1 件足し、<code>workerClass</code> にそのクラスを指定する。
 		</li>
 		<li>
-			<code>Defs/Containment/ContainmentEscapeDefs.xml</code> にまとめ Def を 1 件足し、<code>events</code> でそのイベントを参照する。
+			<code>Defs/VoidAwake_ContainmentEscapeDefs/ContainmentEscapes_VoidAwake.xml</code> にまとめ Def を 1 件足し、<code>events</code> でそのイベントを参照する。
 			人型ミュータントなら <code>mutantDef</code>、通常エンティティなら <code>entityDef</code>。
 		</li>
 	</ol>
@@ -672,12 +672,12 @@
 		<tbody>
 			<tr>
 				<th>まとめ Def</th>
-				<td><code>Defs/Containment/ContainmentEscapeDefs.xml</code><br>
+				<td><code>Defs/VoidAwake_ContainmentEscapeDefs/ContainmentEscapes_VoidAwake.xml</code><br>
 					<code>Source/.../Containment/VoidAwake_ContainmentEscapeDef.cs</code></td>
 			</tr>
 			<tr>
 				<th>イベント Def</th>
-				<td><code>Defs/Containment/EscapeEventDefs.xml</code><br>
+				<td><code>Defs/VoidAwake_EscapeEventDefs/EscapeEvents_VoidAwake.xml</code><br>
 					<code>Source/.../Containment/VoidAwake_EscapeEventDef.cs</code></td>
 			</tr>
 			<tr>
@@ -686,19 +686,19 @@
 			</tr>
 			<tr>
 				<th>空スタブ（アノマリー別）</th>
-				<td><code>Source/.../Containment/Events/EscapeEventWorkers_Vanilla.cs</code></td>
+				<td><code>Source/.../Containment/Events/VoidAwake_EscapeEventWorkers_Vanilla.cs</code></td>
 			</tr>
 			<tr>
 				<th>判定・解決・発火</th>
-				<td><code>Source/.../Containment/ContainmentEscapeUtility.cs</code></td>
+				<td><code>Source/.../Containment/VoidAwake_ContainmentEscapeUtility.cs</code></td>
 			</tr>
 			<tr>
 				<th>Harmony パッチ</th>
-				<td><code>Source/.../Containment/Patch_ContainmentEscape.cs</code></td>
+				<td><code>Source/.../Containment/VoidAwake_Patch_ContainmentEscape.cs</code></td>
 			</tr>
 			<tr>
 				<th>Dev デバッグ</th>
-				<td><code>Source/.../Containment/DebugActions_Containment.cs</code></td>
+				<td><code>Source/.../Containment/VoidAwake_DebugActions_Containment.cs</code></td>
 			</tr>
 			<tr>
 				<th>文言</th>
@@ -714,7 +714,7 @@
 	</table>
 
 	<p>
-		Harmony の登録は既存の <code>VoidAwake_PlaySettings_Patch.cs</code> にある <code>PatchAll()</code> が拾うため、
+		Harmony の登録は既存の <code>VoidAwake_HarmonyInit.cs</code> にある <code>PatchAll()</code> が拾うため、
 		収容機能専用の初期化コードはありません。
 	</p>
 </section>

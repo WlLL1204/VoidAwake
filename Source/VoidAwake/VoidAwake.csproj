@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{112F1895-6FAC-4270-8EA7-D5BB17B06206}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VoidAwake</RootNamespace>
+    <AssemblyName>VoidAwake</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- 既定は Steam 版の標準配置 (steamapps\common\RimWorld\Mods\VoidAwake\Source\VoidAwake) を前提に解決する。
+         別配置でビルドする場合は RimWorldDir / HarmonyAssemblies を環境変数か /p: で上書きする。 -->
+    <RimWorldDir Condition=" '$(RimWorldDir)' == '' ">$(MSBuildProjectDirectory)\..\..\..\..</RimWorldDir>
+    <RimWorldManaged Condition=" '$(RimWorldManaged)' == '' ">$(RimWorldDir)\RimWorldWin64_Data\Managed</RimWorldManaged>
+    <HarmonyAssemblies Condition=" '$(HarmonyAssemblies)' == '' ">$(RimWorldDir)\..\..\workshop\content\294100\2009463077\Current\Assemblies</HarmonyAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyAssemblies)\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="HarmonyMod">
+      <HintPath>$(HarmonyAssemblies)\HarmonyMod.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.AI.Navigation">
+      <HintPath>$(RimWorldManaged)\Unity.AI.Navigation.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Burst">
+      <HintPath>$(RimWorldManaged)\Unity.Burst.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Burst.Unsafe">
+      <HintPath>$(RimWorldManaged)\Unity.Burst.Unsafe.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Collections">
+      <HintPath>$(RimWorldManaged)\Unity.Collections.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Collections.LowLevel.ILSupport">
+      <HintPath>$(RimWorldManaged)\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>$(RimWorldManaged)\Unity.Mathematics.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.MemoryProfiler">
+      <HintPath>$(RimWorldManaged)\Unity.MemoryProfiler.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.Profiling.Core">
+      <HintPath>$(RimWorldManaged)\Unity.Profiling.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>$(RimWorldManaged)\Unity.TextMeshPro.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AccessibilityModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.AccessibilityModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.AIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AndroidJNIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.AndroidJNIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ARModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.ARModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.AudioModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ClothModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.ClothModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterInputModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.ClusterInputModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterRendererModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.ClusterRendererModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ContentLoadModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.ContentLoadModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CrashReportingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CrashReportingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.DirectorModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.DirectorModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.DSPGraphModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.DSPGraphModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.GameCenterModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.GameCenterModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.GIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.GIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.GridModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.GridModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.HotReloadModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.HotReloadModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.InputModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.LocalizationModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.LocalizationModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.NVIDIAModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.NVIDIAModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PerformanceReportingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.PerformanceReportingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.Physics2DModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ProfilerModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.ProfilerModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PropertiesModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.PropertiesModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.ScreenCaptureModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.SharedInternalsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteMaskModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.SpriteMaskModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteShapeModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.SpriteShapeModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.StreamingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.StreamingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.SubstanceModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.SubstanceModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.SubsystemsModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.SubsystemsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TerrainModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainPhysicsModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreFontEngineModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreTextEngineModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TilemapModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TilemapModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TLSModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TLSModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UIElementsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UIModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UmbraModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UmbraModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsCommonModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityConnectModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UnityConnectModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityCurlModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UnityCurlModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityTestProtocolModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.VehiclesModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.VehiclesModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.VFXModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.VFXModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.VideoModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.VideoModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.VirtualTexturingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.VirtualTexturingModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.VRModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.VRModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.WindModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.WindModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.XRModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Buildings\BioConverter\VoidAwake_CompBioConverter.cs" />
+    <Compile Include="Buildings\BioConverter\VoidAwake_CompRefuelable_BioConverter.cs" />
+    <Compile Include="Buildings\BioConverter\VoidAwake_JobDriver_RefuelBioConverter.cs" />
+    <Compile Include="Buildings\BioConverter\VoidAwake_WorkGiver_RefuelBioConverter.cs" />
+    <Compile Include="Buildings\VoidAwake_Building_ImpactCheer.cs" />
+    <Compile Include="Core\DefOf\VoidAwake_DesignationDefOf.cs" />
+    <Compile Include="Core\DefOf\VoidAwake_HediffDefOf.cs" />
+    <Compile Include="Core\DefOf\VoidAwake_JobDefOf.cs" />
+    <Compile Include="Core\DefOf\VoidAwake_ResearchProjectDefOf.cs" />
+    <Compile Include="Core\DefOf\VoidAwake_ThingDefOf.cs" />
+    <Compile Include="Core\DefOf\VoidAwake_TrapperDefOf.cs" />
+    <Compile Include="Core\DefOf\VoidAwake_VoidMagicDefOf.cs" />
+    <Compile Include="Core\VoidAwake_HarmonyInit.cs" />
+    <Compile Include="Core\VoidAwake_Mod.cs" />
+    <Compile Include="Core\VoidAwake_Patch_PlaySettings.cs" />
+    <Compile Include="Core\VoidAwake_Settings.cs" />
+    <Compile Include="Entities\ChainOfTragedy\VoidAwake_ChainOfTragedy.cs" />
+    <Compile Include="Entities\FlyingHed\VoidAwake_FlyingHed.cs" />
+    <Compile Include="Entities\Trapper\AI\VoidAwake_JobGiver_TrapperCombatCreateRabbitPassage.cs" />
+    <Compile Include="Entities\Trapper\AI\VoidAwake_JobGiver_TrapperCombatUseRabbitPassage.cs" />
+    <Compile Include="Entities\Trapper\AI\VoidAwake_JobGiver_TrapperCreateRabbitPassage.cs" />
+    <Compile Include="Entities\Trapper\AI\VoidAwake_JobGiver_TrapperEscapeOutside.cs" />
+    <Compile Include="Entities\Trapper\AI\VoidAwake_JobGiver_TrapperKidnap.cs" />
+    <Compile Include="Entities\Trapper\AI\VoidAwake_JobGiver_TrapperPlaceTrap.cs" />
+    <Compile Include="Entities\Trapper\AI\VoidAwake_JobGiver_TrapperUseRabbitPassage.cs" />
+    <Compile Include="Entities\Trapper\AI\VoidAwake_JobGiver_TrapperWanderOutside.cs" />
+    <Compile Include="Entities\Trapper\AI\VoidAwake_ThinkNode_ConditionalTrapperState.cs" />
+    <Compile Include="Entities\Trapper\Buildings\VoidAwake_Building_BearTrap.cs" />
+    <Compile Include="Entities\Trapper\Buildings\VoidAwake_Building_RabbitPassage.cs" />
+    <Compile Include="Entities\Trapper\Buildings\VoidAwake_MapComponent_TrapperTraps.cs" />
+    <Compile Include="Entities\Trapper\Jobs\VoidAwake_JobDriver_CreateRabbitPassage.cs" />
+    <Compile Include="Entities\Trapper\Jobs\VoidAwake_JobDriver_DisarmBearTrap.cs" />
+    <Compile Include="Entities\Trapper\Jobs\VoidAwake_JobDriver_PlaceBearTrap.cs" />
+    <Compile Include="Entities\Trapper\Jobs\VoidAwake_JobDriver_TrapperKidnap.cs" />
+    <Compile Include="Entities\Trapper\Jobs\VoidAwake_JobDriver_UseRabbitPassage.cs" />
+    <Compile Include="Entities\Trapper\Patches\VoidAwake_Patch_Building_Door_DoorOpen.cs" />
+    <Compile Include="Entities\Trapper\Patches\VoidAwake_Patch_TrapperStealth_DisruptInvisibility.cs" />
+    <Compile Include="Entities\Trapper\UI\VoidAwake_BearTrapDisarmGizmos.cs" />
+    <Compile Include="Entities\Trapper\Utility\VoidAwake_BearTrapCaughtUtility.cs" />
+    <Compile Include="Entities\Trapper\Utility\VoidAwake_BearTrapTargetingUtility.cs" />
+    <Compile Include="Entities\Trapper\Utility\VoidAwake_DoorTrapComboUtility.cs" />
+    <Compile Include="Entities\Trapper\Utility\VoidAwake_RabbitPassageUtility.cs" />
+    <Compile Include="Entities\Trapper\Utility\VoidAwake_TrapperKidnapUtility.cs" />
+    <Compile Include="Entities\Trapper\Utility\VoidAwake_TrapperLoadoutUtility.cs" />
+    <Compile Include="Entities\Trapper\Utility\VoidAwake_TrapperUtility.cs" />
+    <Compile Include="Entities\Trapper\VoidAwake_CompTrapper.cs" />
+    <Compile Include="Entities\Trapper\VoidAwake_DebugActions_Trapper.cs" />
+    <Compile Include="Entities\Trapper\VoidAwake_GameComponent_TrapperKidnaps.cs" />
+    <Compile Include="Entities\Trapper\VoidAwake_HediffComp_TrapperKidnapping.cs" />
+    <Compile Include="Entities\Trapper\VoidAwake_IncidentWorker_TrapperArrival.cs" />
+    <Compile Include="Entities\Trapper\VoidAwake_TrapperKidnapRecord.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Systems\Containment\Events\VoidAwake_EscapeEventWorkers_Vanilla.cs" />
+    <Compile Include="Systems\Containment\VoidAwake_ContainmentEscapeDef.cs" />
+    <Compile Include="Systems\Containment\VoidAwake_ContainmentEscapeUtility.cs" />
+    <Compile Include="Systems\Containment\VoidAwake_DebugActions_Containment.cs" />
+    <Compile Include="Systems\Containment\VoidAwake_EscapeEventDef.cs" />
+    <Compile Include="Systems\Containment\VoidAwake_EscapeEventWorker.cs" />
+    <Compile Include="Systems\Containment\VoidAwake_Patch_ContainmentEscape.cs" />
+    <Compile Include="Systems\Endgame\VoidAwake_Patch_EscapeShipFindTile.cs" />
+    <Compile Include="Systems\PsychicRituals\VoidAwake_PsychicRitualDef_CreateChimera.cs" />
+    <Compile Include="Systems\PsychicRituals\VoidAwake_PsychicRitualToil_CreateChimera.cs" />
+    <Compile Include="Systems\SpasmGas\VoidAwake_CompSpasmGasRelease.cs" />
+    <Compile Include="Systems\SpasmGas\VoidAwake_HediffComp_SpasmGasExposure.cs" />
+    <Compile Include="Systems\SpasmGas\VoidAwake_Verb_DeploySpasmPack.cs" />
+    <Compile Include="Systems\VoidMagic\VoidAwake_Building_VoidMeditationSpot.cs" />
+    <Compile Include="Systems\VoidMagic\VoidAwake_CompMeditationAnchor.cs" />
+    <Compile Include="Systems\VoidMagic\VoidAwake_CompVoidMagic.cs" />
+    <Compile Include="Systems\VoidMagic\VoidAwake_DebugActions_VoidMagic.cs" />
+    <Compile Include="Systems\VoidMagic\VoidAwake_ITab_Pawn_VoidMagic.cs" />
+    <Compile Include="Systems\VoidMagic\VoidAwake_JobDriver_VoidMeditate.cs" />
+    <Compile Include="Systems\VoidMagic\VoidAwake_VoidMagicDef.cs" />
+    <Compile Include="Systems\VoidMagic\VoidAwake_VoidMagicUtility.cs" />
+    <Compile Include="Systems\VoidResearch\Extraction\VoidAwake_Designator_ExtractSample.cs" />
+    <Compile Include="Systems\VoidResearch\Extraction\VoidAwake_ExtractionUtility.cs" />
+    <Compile Include="Systems\VoidResearch\Extraction\VoidAwake_JobDriver_ExtractSample.cs" />
+    <Compile Include="Systems\VoidResearch\Extraction\VoidAwake_WorkGiver_ExtractSample.cs" />
+    <Compile Include="Systems\VoidResearch\GeneExtraction\VoidAwake_Dialog_GeneExtraction.cs" />
+    <Compile Include="Systems\VoidResearch\GeneExtraction\VoidAwake_GeneExtractionGizmos.cs" />
+    <Compile Include="Systems\VoidResearch\GeneExtraction\VoidAwake_GeneExtractionUtility.cs" />
+    <Compile Include="Systems\VoidResearch\GeneExtraction\VoidAwake_JobDriver_ExtractGene.cs" />
+    <Compile Include="Systems\VoidResearch\GeneExtraction\VoidAwake_MapComponent_GeneExtraction.cs" />
+    <Compile Include="Systems\VoidResearch\GeneExtraction\VoidAwake_WorkGiver_ExtractGene.cs" />
+    <Compile Include="Systems\VoidResearch\SampleAnalysis\VoidAwake_CompRefuelable_Sample.cs" />
+    <Compile Include="Systems\VoidResearch\SampleAnalysis\VoidAwake_CompSampleAnalysis.cs" />
+    <Compile Include="Systems\VoidResearch\SampleAnalysis\VoidAwake_JobDriver_RefuelSample.cs" />
+    <Compile Include="Systems\VoidResearch\SampleAnalysis\VoidAwake_WorkGiver_RefuelSample.cs" />
+    <Compile Include="Systems\VoidServants\VoidAwake_CompChimera.cs" />
+    <Compile Include="Systems\VoidServants\VoidAwake_MainButtonWorker_ToggleVoidServantsTab.cs" />
+    <Compile Include="Systems\VoidServants\VoidAwake_MainTabWindow_VoidServants.cs" />
+    <Compile Include="Systems\VoidServants\VoidAwake_Patch_MainTabWindow_Animals_Pawns.cs" />
+    <Compile Include="Systems\VoidServants\VoidAwake_Patch_VoidServantEnsureName.cs" />
+    <Compile Include="Systems\VoidServants\VoidAwake_PawnTable_VoidServants.cs" />
+    <Compile Include="Systems\VoidServants\VoidAwake_VoidServantUtility.cs" />
+    <Compile Include="Systems\WorldErosion\ClockEvent\VoidAwake_ClockEventDef.cs" />
+    <Compile Include="Systems\WorldErosion\ClockEvent\VoidAwake_ClockEventUtility.cs" />
+    <Compile Include="Systems\WorldErosion\ClockEvent\VoidAwake_ClockEventWorker.cs" />
+    <Compile Include="Systems\WorldErosion\ClockEvent\VoidAwake_ClockEventWorker_FixedHour.cs" />
+    <Compile Include="Systems\WorldErosion\GameConditions\VoidAwake_GameCondition_ErosionLevel1.cs" />
+    <Compile Include="Systems\WorldErosion\GameConditions\VoidAwake_GameCondition_ErosionLevel2.cs" />
+    <Compile Include="Systems\WorldErosion\GameConditions\VoidAwake_GameCondition_ErosionLevel3.cs" />
+    <Compile Include="Systems\WorldErosion\GameConditions\VoidAwake_GameCondition_ErosionLevel4.cs" />
+    <Compile Include="Systems\WorldErosion\VoidAwake_MainButtonWorker_JumpButton.cs" />
+    <Compile Include="Systems\WorldErosion\VoidAwake_MapComponent_VoidErosion.cs" />
+    <Compile Include="Systems\WorldErosion\VoidAwake_WorldComponent_VoidErosion.cs" />
+    <Compile Include="Systems\WorldErosion\VoidAwake_WorldDrawLayer_VoidTile.cs" />
+    <Compile Include="Systems\WorldErosion\VoidAwake_WorldDrawLayer_VoidTileEffect.cs" />
+    <Compile Include="Systems\WorldErosion\VoidAwake_WorldObject_ErosionMarker.cs" />
+    <Compile Include="Systems\WorldErosion\VoidProtect\VoidAwake_WorldComponent_VoidProtect.cs" />
+    <Compile Include="Systems\WorldErosion\VoidProtect\VoidAwake_WorldDrawLayer_WorldProtect.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="CopyToMod" AfterTargets="Build">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(MSBuildProjectDirectory)\..\..\Assemblies\" />
+  </Target>
+</Project>

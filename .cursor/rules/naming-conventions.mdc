@@ -1,0 +1,48 @@
+---
+description: VoidAwake の命名規則（C# 型名・Defs 配置・defName・XML 参照）
+alwaysApply: true
+---
+
+# VoidAwake 命名規則
+
+## C#
+
+- namespace は全ファイル `VoidAwake` のみ（サブ名前空間を作らない）
+- 名前空間直下の型は必ず `VoidAwake_` 始まり。形は `VoidAwake_<バニラ基底型>_<主題>`
+  - 例: `VoidAwake_JobDriver_ExtractSample`、`VoidAwake_CompProperties_Trapper`
+  - Harmony パッチは `VoidAwake_Patch_<対象型>_<対象メソッド>`
+- ファイル名 = 含まれる代表型名 + `.cs`。1 ファイルに複数型を置く場合は、
+  ファイル名と同名の基底型（`..._<Family>Base`）を必ず含める
+  - 例: `VoidAwake_WorkGiver_RefuelSample.cs` に `VoidAwake_WorkGiver_RefuelSampleBase<TComp>` と派生 2 種
+- 配置は `Source/VoidAwake/{Core,Buildings,Entities,Systems}/<機能>/[AI|Jobs|Buildings|Patches|UI|Utility]/`
+- `.cs` を追加したら `VoidAwake.csproj` の `<Compile Include>` にも必ず追加する（SDK 形式ではないため自動検出されない）
+
+## Defs
+
+- 配置は `Defs/<DefType>s/<def型の複数形>_<主題>.xml`
+  - 例: `Defs/JobDefs/Jobs_Trapper.xml`、`Defs/ThingDefs_Buildings/Buildings_BearTrap.xml`
+  - `ThingDef` はサブカテゴリで分ける: `ThingDefs_{Apparel,Buildings,Items,Misc,Races,Weapons}`
+  - Mod 独自 def 型はクラス名をそのままフォルダ名に使う: `Defs/VoidAwake_VoidMagicDefs/`
+- **1 ファイルにつき def 型は 1 種類のみ**。`ThingDef` と `PawnKindDef` も別ファイルに分ける
+- `defName` は必ず `VoidAwake_` 始まり。仮名（`Xxx_DefName` など）を残さない
+- Patches は `Patches/Patch_<対象>.xml`
+
+## XML から C# を参照するとき
+
+必ず名前空間付きの完全修飾名で書く。
+
+```xml
+<!-- BAD: 名前空間なし / 接頭辞なし -->
+<li Class="CompProperties_Trapper">
+<!-- GOOD -->
+<li Class="VoidAwake.VoidAwake_CompProperties_Trapper">
+```
+
+## Languages
+
+- `DefInjected/<DefType>/<Defs と同じファイル名>.xml`（例: `JobDef/Jobs_VoidMagic.xml`）
+- `Keyed/VoidAwake_<主題>.xml`（Keyed のみ接頭辞形式）
+
+## その他
+
+- テクスチャは `Textures/` 配下。`.clip` などの作業用素材は `_art/` に置き `Textures/` に混ぜない

@@ -14,12 +14,12 @@
 ```mermaid
 flowchart TB
   Spot[VoidAwake_VoidMeditationSpot]
-  Anchor[CompVoidAwake_MeditationAnchor]
+  Anchor[VoidAwake_CompMeditationAnchor]
   Platform[Building_HoldingPlatform.HeldPawn]
   Job[VoidAwake_VoidMeditate]
-  PawnComp[VoidAwake_VoidMagicComp]
+  PawnComp[VoidAwake_CompVoidMagic]
   MagicDef[VoidAwake_VoidMagicDef]
-  Tab[ITab_Pawn_VoidMagic]
+  Tab[VoidAwake_ITab_Pawn_VoidMagic]
 
   Spot --> Anchor
   Anchor -->|"radius 9.9 を走査"| Platform
@@ -33,22 +33,22 @@ flowchart TB
 
 | 役割 | パス |
 |------|------|
-| 繋がりの定義（既定テンプレート） | [`Defs/VoidMagic/VoidMagicDefs.xml`](../Defs/VoidMagic/VoidMagicDefs.xml) / [`VoidMagicDef.cs`](../Source/ClassLibrary1/Core/VoidMagic/VoidMagicDef.cs) |
-| Def 解決・アノマリー判定 | [`VoidMagicUtility.cs`](../Source/ClassLibrary1/Core/VoidMagic/VoidMagicUtility.cs) |
-| 入植者ごとの繋がり保存・減衰・段階付与 | [`VoidAwake_VoidMagicComp.cs`](../Source/ClassLibrary1/Core/VoidMagic/VoidAwake_VoidMagicComp.cs) |
-| 瞑想スポット | [`VoidMeditationSpot.xml`](../Defs/ThingDefs/Buildings/VoidMeditationSpot.xml) + [`Building_VoidAwake_VoidMeditationSpot.cs`](../Source/ClassLibrary1/Core/VoidMagic/Building_VoidAwake_VoidMeditationSpot.cs) |
-| 半径スキャン・フロートメニュー | [`CompVoidAwake_MeditationAnchor.cs`](../Source/ClassLibrary1/Core/VoidMagic/CompVoidAwake_MeditationAnchor.cs) |
-| 瞑想 Job | [`VoidMagic_Job.xml`](../Defs/VoidMagic/VoidMagic_Job.xml) + [`JobDriver_VoidMeditate.cs`](../Source/ClassLibrary1/Core/VoidMagic/JobDriver_VoidMeditate.cs) |
-| 専用タブ UI | [`ITab_Pawn_VoidMagic.cs`](../Source/ClassLibrary1/Core/VoidMagic/ITab_Pawn_VoidMagic.cs) |
-| comps / タブ / Royalty 連携パッチ | [`Patches/VoidMagicPatch.xml`](../Patches/VoidMagicPatch.xml) |
-| Dev デバッグ | [`DebugActions_VoidMagic.cs`](../Source/ClassLibrary1/Core/VoidMagic/DebugActions_VoidMagic.cs)（VoidAwake → VoidMagic: add connection +25 / fill connection / clear connections / dump links） |
+| 繋がりの定義（既定テンプレート） | [`Defs/VoidAwake_VoidMagicDefs/VoidMagics_VoidAwake.xml`](../Defs/VoidAwake_VoidMagicDefs/VoidMagics_VoidAwake.xml) / [`VoidAwake_VoidMagicDef.cs`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_VoidMagicDef.cs) |
+| Def 解決・アノマリー判定 | [`VoidAwake_VoidMagicUtility.cs`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_VoidMagicUtility.cs) |
+| 入植者ごとの繋がり保存・減衰・段階付与 | [`VoidAwake_CompVoidMagic.cs`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_CompVoidMagic.cs) |
+| 瞑想スポット | [`Buildings_VoidMeditationSpot.xml`](../Defs/ThingDefs_Buildings/Buildings_VoidMeditationSpot.xml) + [`VoidAwake_Building_VoidMeditationSpot.cs`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_Building_VoidMeditationSpot.cs) |
+| 半径スキャン・フロートメニュー | [`VoidAwake_CompMeditationAnchor.cs`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_CompMeditationAnchor.cs) |
+| 瞑想 Job | [`Jobs_VoidMagic.xml`](../Defs/JobDefs/Jobs_VoidMagic.xml) + [`VoidAwake_JobDriver_VoidMeditate.cs`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_JobDriver_VoidMeditate.cs) |
+| 専用タブ UI | [`VoidAwake_ITab_Pawn_VoidMagic.cs`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_ITab_Pawn_VoidMagic.cs) |
+| comps / タブ / Royalty 連携パッチ | [`Patches/Patch_VoidMagic.xml`](../Patches/Patch_VoidMagic.xml) |
+| Dev デバッグ | [`VoidAwake_DebugActions_VoidMagic.cs`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_DebugActions_VoidMagic.cs)（VoidAwake → VoidMagic: add connection +25 / fill connection / clear connections / dump links） |
 | 文言 | [`English`](../Languages/English/Keyed/VoidAwake_VoidMagic.xml) / [`Japanese`](../Languages/Japanese/Keyed/VoidAwake_VoidMagic.xml) + [`DefInjected`](../Languages/Japanese/DefInjected) |
 
 ---
 
 ## 対象アノマリーの決まり方
 
-Def を 1 体ずつ書く必要はない。`VoidMagicUtility.IsLinkableEntityDef` が **`CompProperties_HoldingPlatformTarget` を持つ非人型 ThingDef** を収容可能アノマリーとみなし、`DefFor` が
+Def を 1 体ずつ書く必要はない。`VoidAwake_VoidMagicUtility.IsLinkableEntityDef` が **`CompProperties_HoldingPlatformTarget` を持つ非人型 ThingDef** を収容可能アノマリーとみなし、`DefFor` が
 
 1. `entityDef` 指定の `VoidAwake_VoidMagicDef` があればそれを使う
 2. なければ既定テンプレート `VoidAwake_VoidMagicDefault` を使う
@@ -75,7 +75,7 @@ Def を 1 体ずつ書く必要はない。`VoidMagicUtility.IsLinkableEntityDef
 
 ## 瞑想の流れ
 
-加算は**ジョブではなく `VoidAwake_VoidMagicComp` 側**で行う。`CompTickRare`（≒250 tick ごと）で「その入植者が今瞑想しているか」を見て、周囲の収容アノマリーへ繋がりを配る。
+加算は**ジョブではなく `VoidAwake_CompVoidMagic` 側**で行う。`CompTickRare`（≒250 tick ごと）で「その入植者が今瞑想しているか」を見て、周囲の収容アノマリーへ繋がりを配る。
 
 ```mermaid
 sequenceDiagram
@@ -92,9 +92,9 @@ sequenceDiagram
   C->>C: 閾値を超えたら段階を解放
 ```
 
-- 瞑想の判定は `VoidMagicUtility.IsMeditationJob`。自前の `VoidAwake_VoidMeditate` に加えて、**`JobDriver_Meditate` を driverClass に持つジョブ全て**（バニラの `Meditate`、娯楽としての瞑想、Royalty のサイフォーカス瞑想、それらを継承した他 mod のジョブ）が対象。移動中は加算しない。
-- 半径は足元に瞑想スポット（`CompVoidAwake_MeditationAnchor`）があればその `radius` / `gainMultiplier` を使い、無ければ `DefaultMeditationRadius` = 9.9。つまり**スポットが無くても収容所の近くで瞑想すれば伸びる**が、スポットを置けば倍率などを調整できる。
-- スポット側のロジックは全て `CompVoidAwake_MeditationAnchor` に入っているため、**自前のスポットでもバニラの `MeditationSpot`（Royalty）でも同じように動く**。Royalty 側へは `Patches/VoidMagicPatch.xml` が `success=Always` で comp を差し込む（Royalty 未所持なら xpath が一致せず無視される）。
+- 瞑想の判定は `VoidAwake_VoidMagicUtility.IsMeditationJob`。自前の `VoidAwake_VoidMeditate` に加えて、**`JobDriver_Meditate` を driverClass に持つジョブ全て**（バニラの `Meditate`、娯楽としての瞑想、Royalty のサイフォーカス瞑想、それらを継承した他 mod のジョブ）が対象。移動中は加算しない。
+- 半径は足元に瞑想スポット（`VoidAwake_CompMeditationAnchor`）があればその `radius` / `gainMultiplier` を使い、無ければ `DefaultMeditationRadius` = 9.9。つまり**スポットが無くても収容所の近くで瞑想すれば伸びる**が、スポットを置けば倍率などを調整できる。
+- スポット側のロジックは全て `VoidAwake_CompMeditationAnchor` に入っているため、**自前のスポットでもバニラの `MeditationSpot`（Royalty）でも同じように動く**。Royalty 側へは `Patches/Patch_VoidMagic.xml` が `success=Always` で comp を差し込む（Royalty 未所持なら xpath が一致せず無視される）。
 - 範囲内に対象が複数いる場合は獲得量を頭数で割るので、**1 体に絞った配置の方が速く伸びる**。
 - 捻じれた瞑想ジョブは 60 tick ごとに範囲内の収容アノマリーを確認し、居なくなったらメッセージを出して中断する。
 - 建物を選択すると半径リングを描画し、Inspect 欄に範囲内のアノマリー名を並べる。
@@ -103,13 +103,13 @@ sequenceDiagram
 
 ## 減衰と段階
 
-加算と同じ `VoidAwake_VoidMagicComp.CompTickRare`（≒250 tick ごと、経過 tick から日数換算するのでティック間隔に依存しない）で判定する。加算を先に行うため、瞑想中の繋がりが減ることはない。
+加算と同じ `VoidAwake_CompVoidMagic.CompTickRare`（≒250 tick ごと、経過 tick から日数換算するのでティック間隔に依存しない）で判定する。加算を先に行うため、瞑想中の繋がりが減ることはない。
 
 - 対象種が**どのマップにも収容されていない**：`decayPerDayLost` で減衰（喪失）
 - 収容中だが**最後の瞑想から `idleGraceDays` 経過**：`decayPerDayIdle` で減衰（放置）
 - 収容中かつ猶予内：減衰なし（維持）
 
-収容状況の判定は `VoidMagicUtility.ContainedEntityDefsNow()` が全プレイヤーマップの収容プラットフォームを 600 tick キャッシュで走査する。繋がりが 0 まで落ちた行はリストから削除され、タブから消える。
+収容状況の判定は `VoidAwake_VoidMagicUtility.ContainedEntityDefsNow()` が全プレイヤーマップの収容プラットフォームを 600 tick キャッシュで走査する。繋がりが 0 まで落ちた行はリストから削除され、タブから消える。
 
 段階が上下すると `ApplyTierContent` が走り、解放済み段階の `abilities` / `hediff` を付与、失った段階のものを剥奪する。**現状は段階に中身が無いため実質何もしない**が、Def を埋めればそのまま機能する。段階の増減時は入植者に対してメッセージが出る。
 
@@ -130,20 +130,20 @@ sequenceDiagram
 |------|----|------|
 | 繋がり上限 | 100 | `maxConnection` |
 | 瞑想での獲得 | 5.0 / 1時間 | `connectionPerHourMeditating`、2500 tick 換算。範囲内の対象数で分割 |
-| 加算・減衰の判定間隔 | 250 tick | `VoidAwake_VoidMagicComp.UpdateIntervalTicks` |
-| 捻じれた瞑想 1 回の長さ | 2500 tick（約1時間） | `JobDriver_VoidMeditate.MeditateTicks` |
-| スポットの検出半径 | 9.9 セル | `CompProperties_VoidAwake_MeditationAnchor.radius` |
-| スポット無しの検出半径 | 9.9 セル | `VoidMagicUtility.DefaultMeditationRadius` |
+| 加算・減衰の判定間隔 | 250 tick | `VoidAwake_CompVoidMagic.UpdateIntervalTicks` |
+| 捻じれた瞑想 1 回の長さ | 2500 tick（約1時間） | `VoidAwake_JobDriver_VoidMeditate.MeditateTicks` |
+| スポットの検出半径 | 9.9 セル | `VoidAwake_CompProperties_MeditationAnchor.radius` |
+| スポット無しの検出半径 | 9.9 セル | `VoidAwake_VoidMagicUtility.DefaultMeditationRadius` |
 | 喪失時の減衰 | 6.0 / 日 | `decayPerDayLost` |
 | 放置の猶予 | 3 日 | `idleGraceDays` |
 | 放置時の減衰 | 1.0 / 日 | `decayPerDayIdle` |
-| 収容状況キャッシュ | 600 tick | `VoidMagicUtility.ContainedScanIntervalTicks` |
+| 収容状況キャッシュ | 600 tick | `VoidAwake_VoidMagicUtility.ContainedScanIntervalTicks` |
 | 段階の閾値 | 25 / 50 / 75 / 100 | 微かな共鳴 / 共振 / 深き共鳴 / 同化。能力は未設定 |
 
 ---
 
 ## 未実装（拡張ポイント）
 
-- 段階に紐づく超能力そのもの。`VoidMagicTier.abilities`（`AbilityDef` のリスト）と `hediff` を埋めれば、`VoidAwake_VoidMagicComp.ApplyTierContent` の付与・剥奪がそのまま動く。
+- 段階に紐づく超能力そのもの。`VoidAwake_VoidMagicTier.abilities`（`AbilityDef` のリスト）と `hediff` を埋めれば、`VoidAwake_CompVoidMagic.ApplyTierContent` の付与・剥奪がそのまま動く。
 - 繋がりのデメリット（Void 侵食・精神への影響）、研究前提、放射状（星座風）グラフ表示。
 - 瞑想スポットの専用テクスチャ（現在はバニラの `Things/Building/Misc/PartySpot` を暫定利用）。

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<PawnKindDef>
+		<defName>VoidAwake_Trapper</defName>
+		<label>トラッパー</label>
+		<race>VoidAwake_Trapper</race>
+		<overrideDeathOnDownedChance>0.25</overrideDeathOnDownedChance>
+		<overrideDebugActionCategory>Entity</overrideDebugActionCategory>
+		<immuneToTraps>true</immuneToTraps>
+		<combatPower>55</combatPower>
+		<ecoSystemWeight>0.5</ecoSystemWeight>
+		<defaultFactionDef>Entities</defaultFactionDef>
+		<startingHediffs>
+			<li>
+				<def>VoidAwake_TrapperStealth</def>
+			</li>
+		</startingHediffs>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>Entities/Trapper/Trapper</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>1.5</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Entities/Trapper/Trapper</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>1.5</drawSize>
+				</dessicatedBodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+</Defs>

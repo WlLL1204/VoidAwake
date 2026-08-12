@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<ThingDef ParentName="BuildingBase">
+		<defName>VoidAwake_BearTrap</defName>
+		<label>トラバサミ</label>
+		<description>トラッパーによって仕掛けられた特殊なトラバサミ</description>
+		<thingClass>VoidAwake.VoidAwake_Building_BearTrap</thingClass>
+		<graphicData>
+			<texPath>Entities/Trapper/bearTrap</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>Cutout</shaderType>
+			<color>(1, 1, 1, 1)</color>
+			<drawSize>1</drawSize>
+		</graphicData>
+		<altitudeLayer>Building</altitudeLayer>
+		<drawerType>MapMeshAndRealTime</drawerType>
+		<rotatable>false</rotatable>
+		<tickerType>Normal</tickerType>
+		<stealable>false</stealable>
+		<leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+		<statBases>
+			<MaxHitPoints>40</MaxHitPoints>
+			<Flammability>0.5</Flammability>
+			<Beauty>-10</Beauty>
+			<TrapMeleeDamage>80</TrapMeleeDamage>
+			<TrapSpringChance>1.0</TrapSpringChance>
+		</statBases>
+		<building>
+			<isTrap>true</isTrap>
+			<trapDestroyOnSpring>true</trapDestroyOnSpring>
+			<trapDamageCategory>Sharp</trapDamageCategory>
+			<expandHomeArea>false</expandHomeArea>
+			<ai_chillDestination>false</ai_chillDestination>
+		</building>
+	</ThingDef>
+
+</Defs>

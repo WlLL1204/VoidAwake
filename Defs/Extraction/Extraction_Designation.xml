@@ -1,7 +1,0 @@
-<Defs>
-	<DesignationDef>
-		<defName>VoidAwake_ExtractSample</defName>
-		<texturePath>Designations/Hunt</texturePath>
-		<targetType>Thing</targetType>
-	</DesignationDef>
-</Defs>

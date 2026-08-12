@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+	<!-- 繋がりの保存先。comps を持つ人型種族に追加する -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[race/intelligence="Humanlike"]/comps</xpath>
+		<success>Always</success>
+		<value>
+			<li Class="VoidAwake.VoidAwake_CompProperties_VoidMagic" />
+		</value>
+	</Operation>
+
+	<!-- comps を持たない人型種族（他 mod の種族など）向け -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[race/intelligence="Humanlike" and not(comps)]</xpath>
+		<success>Always</success>
+		<value>
+			<comps>
+				<li Class="VoidAwake.VoidAwake_CompProperties_VoidMagic" />
+			</comps>
+		</value>
+	</Operation>
+
+	<!-- 捻じれた魔術タブ。inspectorTabs はバニラの BasePawn 側で定義されている -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[@Name="BasePawn"]/inspectorTabs</xpath>
+		<value>
+			<li>VoidAwake.VoidAwake_ITab_Pawn_VoidMagic</li>
+		</value>
+	</Operation>
+
+	<!-- Royalty がある場合はバニラの瞑想スポットでも捻じれた瞑想ができるようにする -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThingDef[defName="MeditationSpot"]/comps</xpath>
+		<success>Always</success>
+		<value>
+			<li Class="VoidAwake.VoidAwake_CompProperties_MeditationAnchor">
+				<radius>9.9</radius>
+				<gainMultiplier>1.0</gainMultiplier>
+			</li>
+		</value>
+	</Operation>
+
+</Patch>

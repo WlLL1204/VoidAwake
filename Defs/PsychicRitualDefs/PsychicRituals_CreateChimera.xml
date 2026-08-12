@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <PsychicRitualDef Class="VoidAwake.VoidAwake_PsychicRitualDef_CreateChimera">
+    <defName>VoidAwake_CreateChimera</defName>
+    <label>キメラの作製</label>
+    <description>ヴォイドの力を用いてキメラを作製する精神儀式。儀式地点付近に、手懐けられたキメラが現れる。</description>
+    <researchPrerequisite>VoidAwake_CreateChimera</researchPrerequisite>
+    <outcomeDescription>儀式の品質に関わらず、手懐け可能なキメラが1体作製される。</outcomeDescription>
+    <hoursUntilOutcome>4</hoursUntilOutcome>
+    <layerWhitelist>
+      <li>Surface</li>
+    </layerWhitelist>
+    <requiredOffering>
+      <filter>
+        <thingDefs>
+          <li>Shard</li>
+        </thingDefs>
+      </filter>
+      <count>1</count>
+    </requiredOffering>
+    <cooldownHours>360</cooldownHours>
+    <chanterRole>ChanterAdvanced</chanterRole>
+    <iconPath>UI/CodexEntries/Chimera</iconPath>
+    <chimeraPawnKind>VoidAwake_Chimera</chimeraPawnKind>
+  </PsychicRitualDef>
+
+</Defs>

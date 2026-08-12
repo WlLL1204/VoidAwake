@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- サンプル抽出キットベルト（ユーティリティ） -->
+	<ThingDef ParentName="ApparelNoQualityBase">
+		<defName>VoidAwake_SampleExtractionKitBelt</defName>
+		<label>サンプル抽出キットベルト</label>
+		<description>標本採取用具を腰に装着したユーティリティベルト。基礎サンプルや上級サンプルの採取に用いる。</description>
+		<thingClass>Apparel</thingClass>
+		<graphicData>
+			<!-- 仮テクスチャ: バニラスモークポップパック流用 -->
+			<texPath>Things/Pawn/Humanlike/Apparel/SmokepopPack/SmokepopPack</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<drawSize>0.75</drawSize>
+			<color>(120,140,150)</color>
+		</graphicData>
+		<techLevel>Industrial</techLevel>
+		<tickerType>Normal</tickerType>
+		<statBases>
+			<WorkToMake>3600</WorkToMake>
+			<Mass>2</Mass>
+			<Flammability>0.4</Flammability>
+			<EquipDelay>2</EquipDelay>
+			<MaxHitPoints>100</MaxHitPoints>
+		</statBases>
+		<costList>
+			<Steel>30</Steel>
+			<ComponentIndustrial>2</ComponentIndustrial>
+		</costList>
+		<recipeMaker>
+			<unfinishedThingDef>UnfinishedBelt</unfinishedThingDef>
+			<workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+			<workSkill>Crafting</workSkill>
+			<effectWorking>Smith</effectWorking>
+			<soundWorking>Recipe_Machining</soundWorking>
+			<recipeUsers>
+				<li>TableMachining</li>
+			</recipeUsers>
+			<useIngredientsForColor>false</useIngredientsForColor>
+			<skillRequirements>
+				<Crafting>3</Crafting>
+			</skillRequirements>
+			<displayPriority>320</displayPriority>
+		</recipeMaker>
+		<thingCategories>
+			<li>ApparelUtility</li>
+		</thingCategories>
+		<apparel>
+			<countsAsClothingForNudity>false</countsAsClothingForNudity>
+			<careIfWornByCorpse>false</careIfWornByCorpse>
+			<careIfDamaged>false</careIfDamaged>
+			<wearPerDay>0</wearPerDay>
+			<bodyPartGroups>
+				<li>Waist</li>
+			</bodyPartGroups>
+			<layers>
+				<li>Belt</li>
+			</layers>
+			<wornGraphicPath>Things/Pawn/Humanlike/Apparel/SmokepopPack/SmokepopPack</wornGraphicPath>
+			<wornGraphicData>
+				<renderUtilityAsPack>true</renderUtilityAsPack>
+				<north>
+					<offset>(0,-0.15)</offset>
+				</north>
+				<east>
+					<offset>(-0.35,-0.05)</offset>
+					<thin><offset>(0.05,0)</offset></thin>
+					<hulk><offset>(-0.1,0)</offset></hulk>
+					<fat><offset>(-0.15,0)</offset></fat>
+				</east>
+				<west>
+					<offset>(0.35,-0.05)</offset>
+					<thin><offset>(-0.05,0)</offset></thin>
+					<hulk><offset>(0.1,0)</offset></hulk>
+					<fat><offset>(0.15,0)</offset></fat>
+				</west>
+				<male><scale>(0.75,0.75)</scale></male>
+				<female><scale>(0.75,0.75)</scale></female>
+				<thin><scale>(0.7,0.7)</scale></thin>
+				<hulk><scale>(0.9,0.9)</scale></hulk>
+				<fat><scale>(0.9,0.9)</scale></fat>
+			</wornGraphicData>
+			<developmentalStageFilter>Child, Adult</developmentalStageFilter>
+		</apparel>
+		<generateAllowChance>0</generateAllowChance>
+		<tradeTags>
+			<li>Clothing</li>
+		</tradeTags>
+	</ThingDef>
+
+</Defs>

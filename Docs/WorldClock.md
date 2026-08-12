@@ -2,7 +2,7 @@
 
 ## 結論
 
-WorldClock は独立システムではなく、[`VoidAwake_VoidErosion`](../Source/ClassLibrary1/Core/WorldErosion/VoidErosion.cs)（`WorldComponent`）の **浸食率 UI / 進行マイルストーン** である。針の「時」は `GenDate` の時刻ではなく、`floor(浸食率 × 12)` の離散値（0〜12）。
+WorldClock は独立システムではなく、[`VoidAwake_WorldComponent_VoidErosion`](../Source/VoidAwake/Systems/WorldErosion/VoidAwake_WorldComponent_VoidErosion.cs)（`WorldComponent`）の **浸食率 UI / 進行マイルストーン** である。針の「時」は `GenDate` の時刻ではなく、`floor(浸食率 × 12)` の離散値（0〜12）。
 
 ---
 
@@ -16,8 +16,8 @@ flowchart TB
   Rate[ErosionRate = 浸食陸 / 全陸]
   Hour[ErosionClockHour 0-12]
   Fire[OnErosionClockHourAdvanced]
-  Util[VoidClockEventUtility]
-  Def[VoidClockEventDef + Worker]
+  Util[VoidAwake_ClockEventUtility]
+  Def[VoidAwake_ClockEventDef + Worker]
 
   Days --> Radius --> Eroded --> Rate --> Hour
   Hour --> Fire
@@ -27,10 +27,10 @@ flowchart TB
 
 | 役割 | ファイル |
 |------|----------|
-| 浸食・時計・UI | [`VoidErosion.cs`](../Source/ClassLibrary1/Core/WorldErosion/VoidErosion.cs) |
-| 時計イベント Def / Worker | [`ClockEvent.cs`](../Source/ClassLibrary1/Core/WorldErosion/ClockEvent/ClockEvent.cs) / [`FixedHourEvents.cs`](../Source/ClassLibrary1/Core/WorldErosion/ClockEvent/FixedHourEvents.cs) |
-| イベント XML | [`ClockEvents.xml`](../Defs/WorldErosion/ClockEvent/ClockEvents.xml) |
-| Tick 音 | [`Sound_WorldClock.xml`](../Defs/Systems/SoundDef/Sound_WorldClock.xml) |
+| 浸食・時計・UI | [`VoidAwake_WorldComponent_VoidErosion.cs`](../Source/VoidAwake/Systems/WorldErosion/VoidAwake_WorldComponent_VoidErosion.cs) |
+| 時計イベント Def / Worker | [`VoidAwake_ClockEventWorker.cs`](../Source/VoidAwake/Systems/WorldErosion/ClockEvent/VoidAwake_ClockEventWorker.cs) / [`VoidAwake_ClockEventWorker_FixedHour.cs`](../Source/VoidAwake/Systems/WorldErosion/ClockEvent/VoidAwake_ClockEventWorker_FixedHour.cs) |
+| イベント XML | [`ClockEvents_VoidAwake.xml`](../Defs/VoidAwake_ClockEventDefs/ClockEvents_VoidAwake.xml) |
+| Tick 音 | [`Sounds_WorldClock.xml`](../Defs/SoundDefs/Sounds_WorldClock.xml) |
 | テクスチャ | `Textures/UI/Interface/WorldClock/` |
 
 マップ帯の `GameCondition`（Light〜Extreme）は時計イベントとは別系統（タイル距離比）。混同しない。
@@ -53,7 +53,7 @@ flowchart TB
 `OnErosionClockHourAdvanced(hour)`:
 
 1. `VoidAwake_WorldClockTick` をカメラ再生
-2. `VoidClockEventUtility.TryFireRandomEvent(hour)`
+2. `VoidAwake_ClockEventUtility.TryFireRandomEvent(hour)`
    - 先に **固定枠**（`fixedHour == hour`）があれば実行
    - 続けて **ランダム枠**（レベル別重み抽選）を実行
    - 時 1 / 4 / 7 / 10 / 12 では両者が併発する
@@ -62,14 +62,14 @@ flowchart TB
 
 | 時 | Def | Worker |
 |----|-----|--------|
-| 1 | `VoidAwake_ClockEvent_Fixed_Hour1` | `VoidClockEventWorker_FixedHour1` |
-| 4 | `VoidAwake_ClockEvent_Fixed_Hour4` | `VoidClockEventWorker_FixedHour4` |
-| 7 | `VoidAwake_ClockEvent_Fixed_Hour7` | `VoidClockEventWorker_FixedHour7` |
-| 10 | `VoidAwake_ClockEvent_Fixed_Hour10` | `VoidClockEventWorker_FixedHour10` |
-| 12 | `VoidAwake_ClockEvent_Fixed_Hour12` | `VoidClockEventWorker_FixedHour12` |
+| 1 | `VoidAwake_ClockEvent_Fixed_Hour1` | `VoidAwake_ClockEventWorker_FixedHour1` |
+| 4 | `VoidAwake_ClockEvent_Fixed_Hour4` | `VoidAwake_ClockEventWorker_FixedHour4` |
+| 7 | `VoidAwake_ClockEvent_Fixed_Hour7` | `VoidAwake_ClockEventWorker_FixedHour7` |
+| 10 | `VoidAwake_ClockEvent_Fixed_Hour10` | `VoidAwake_ClockEventWorker_FixedHour10` |
+| 12 | `VoidAwake_ClockEvent_Fixed_Hour12` | `VoidAwake_ClockEventWorker_FixedHour12` |
 
 - XML に `<fixedHour>N</fixedHour>` を付けると固定枠。ランダム候補からは除外される
-- 実装ファイル: [`FixedHourEvents.cs`](../Source/ClassLibrary1/Core/WorldErosion/ClockEvent/FixedHourEvents.cs)
+- 実装ファイル: [`VoidAwake_ClockEventWorker_FixedHour.cs`](../Source/VoidAwake/Systems/WorldErosion/ClockEvent/VoidAwake_ClockEventWorker_FixedHour.cs)
 - 発火時は `SendEventLetter()` でレター通知（label / description）。ゲームプレイ効果は `ExecuteFixedEvent` で後から追加
 
 ### 時 → イベントレベル
@@ -95,10 +95,10 @@ flowchart TB
 
 ### 1. Worker クラスを追加
 
-[`ClockEvent.cs`](../Source/ClassLibrary1/Core/WorldErosion/ClockEvent/ClockEvent.cs) と同名前空間（または別ファイル）に:
+[`VoidAwake_ClockEventWorker.cs`](../Source/VoidAwake/Systems/WorldErosion/ClockEvent/VoidAwake_ClockEventWorker.cs) と同名前空間（または別ファイル）に:
 
 ```csharp
-public class VoidClockEventWorker_MyEvent : VoidClockEventWorker
+public class VoidAwake_ClockEventWorker_MyEvent : VoidAwake_ClockEventWorker
 {
     public override bool CanFire(int hour) => true; // 任意の前提条件
 
@@ -113,21 +113,21 @@ public class VoidClockEventWorker_MyEvent : VoidClockEventWorker
 - `CanFire`: 研究・ストーリーテラー・マップ有無などで除外
 - `SendEventLetter`: タイトル=`def.LabelCap`、本文=`description`（空なら定型文）
 
-プレースホルダー実装は `VoidClockEventWorker_Placeholder`（レター＋ログのみ）。
+プレースホルダー実装は `VoidAwake_ClockEventWorker_Placeholder`（レター＋ログのみ）。
 
 ### 2. XML Def を追加
 
-[`Defs/WorldErosion/ClockEvent/ClockEvents.xml`](../Defs/WorldErosion/ClockEvent/ClockEvents.xml) に:
+[`Defs/VoidAwake_ClockEventDefs/ClockEvents_VoidAwake.xml`](../Defs/VoidAwake_ClockEventDefs/ClockEvents_VoidAwake.xml) に:
 
 ```xml
-<VoidAwake.VoidClockEventDef>
+<VoidAwake.VoidAwake_ClockEventDef>
   <defName>VoidAwake_ClockEvent_L2_MyEvent</defName>
   <label>イベント名</label>
   <description>レター本文</description>
   <level>2</level>
   <weight>1</weight>
-  <workerClass>VoidAwake.VoidClockEventWorker_MyEvent</workerClass>
-</VoidAwake.VoidClockEventDef>
+  <workerClass>VoidAwake.VoidAwake_ClockEventWorker_MyEvent</workerClass>
+</VoidAwake.VoidAwake_ClockEventDef>
 ```
 
 - `level` は厳密一致（Lv1 Def は hour 1–3 のときだけ候補）

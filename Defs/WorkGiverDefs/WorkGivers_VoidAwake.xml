@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<WorkGiverDef>
+		<defName>VoidAwake_RefuelTwistedMeat</defName>
+		<label>捻じれた肉補給</label>
+		<giverClass>VoidAwake.VoidAwake_WorkGiver_RefuelTwistedMeat</giverClass>
+		<workType>Hauling</workType>
+		<verb>補給する</verb>
+		<gerund>補給中</gerund>
+		<priorityInType>50</priorityInType>
+	</WorkGiverDef>
+	<WorkGiverDef>
+		<defName>VoidAwake_RefuelDreadLeather</defName>
+		<label>ドレッドレザー補給</label>
+		<giverClass>VoidAwake.VoidAwake_WorkGiver_RefuelDreadLeather</giverClass>
+		<workType>Hauling</workType>
+		<verb>補給する</verb>
+		<gerund>補給中</gerund>
+		<priorityInType>49</priorityInType>
+	</WorkGiverDef>
+
+	<WorkGiverDef>
+		<defName>VoidAwake_ExtractSample</defName>
+		<label>サンプル抽出</label>
+		<giverClass>VoidAwake.VoidAwake_WorkGiver_ExtractSample</giverClass>
+		<workType>VoidAwake_SampleExtract</workType>
+		<verb>抽出する</verb>
+		<gerund>抽出中</gerund>
+		<priorityInType>100</priorityInType>
+		<requiredCapacities>
+			<li>Manipulation</li>
+		</requiredCapacities>
+	</WorkGiverDef>
+
+	<WorkGiverDef>
+		<defName>VoidAwake_RefuelBasicSample</defName>
+		<label>基礎サンプル補給</label>
+		<giverClass>VoidAwake.VoidAwake_WorkGiver_RefuelBasicSample</giverClass>
+		<workType>Hauling</workType>
+		<verb>補給する</verb>
+		<gerund>補給中</gerund>
+		<priorityInType>50</priorityInType>
+	</WorkGiverDef>
+	<WorkGiverDef>
+		<defName>VoidAwake_RefuelAdvancedSample</defName>
+		<label>上級サンプル補給</label>
+		<giverClass>VoidAwake.VoidAwake_WorkGiver_RefuelAdvancedSample</giverClass>
+		<workType>Hauling</workType>
+		<verb>補給する</verb>
+		<gerund>補給中</gerund>
+		<priorityInType>49</priorityInType>
+	</WorkGiverDef>
+
+	<WorkGiverDef>
+		<defName>VoidAwake_ExtractGene</defName>
+		<label>遺伝子抽出</label>
+		<giverClass>VoidAwake.VoidAwake_WorkGiver_ExtractGene</giverClass>
+		<workType>VoidAwake_SampleExtract</workType>
+		<verb>遺伝子を抽出する</verb>
+		<gerund>遺伝子抽出中</gerund>
+		<priorityInType>110</priorityInType>
+		<requiredCapacities>
+			<li>Manipulation</li>
+		</requiredCapacities>
+	</WorkGiverDef>
+</Defs>

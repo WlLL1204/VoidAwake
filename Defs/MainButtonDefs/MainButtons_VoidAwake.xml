@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <MainButtonDef>
+    <defName>VoidAwake_VoidServants</defName>
+    <label>使役</label>
+    <description>儀式などで作製・使役した特殊な存在を管理します。名前の確認や主人・追従・エリアの設定ができます。</description>
+    <workerClass>VoidAwake.VoidAwake_MainButtonWorker_ToggleVoidServantsTab</workerClass>
+    <tabWindowClass>VoidAwake.VoidAwake_MainTabWindow_VoidServants</tabWindowClass>
+    <order>45</order>
+    <closesWorldView>true</closesWorldView>
+  </MainButtonDef>
+
+	<MainButtonDef>
+		<defName>VoidAwake_JumpButton</defName>
+		<label>浸食の基点</label>
+		<description>虚無浸食の起点タイルへワールドカメラを移動します。</description>
+		<workerClass>VoidAwake.VoidAwake_MainButtonWorker_JumpButton</workerClass>
+		<order>90</order>
+		<defaultHotKey>F9</defaultHotKey>
+	</MainButtonDef>
+</Defs>

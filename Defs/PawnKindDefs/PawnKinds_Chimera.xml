@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>VoidAwake_Chimera</defName>
+    <label>キメラ</label>
+    <race>VoidAwake_Chimera</race>
+    <combatPower>135</combatPower>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <alternateGraphicChance>0.75</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>Things/Pawn/Chimera/Chimera_D</texPath>
+        <dessicatedTexPath>Things/Pawn/Chimera/Dessicated/DessicatedChimera_D</dessicatedTexPath>
+      </li>
+      <li>
+        <texPath>Things/Pawn/Chimera/Chimera_C</texPath>
+        <dessicatedTexPath>Things/Pawn/Chimera/Dessicated/DessicatedChimera_C</dessicatedTexPath>
+      </li>
+      <li>
+        <texPath>Things/Pawn/Chimera/Chimera_B</texPath>
+        <dessicatedTexPath>Things/Pawn/Chimera/Dessicated/DessicatedChimera_B</dessicatedTexPath>
+      </li>
+    </alternateGraphics>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Chimera/Chimera_A</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.7</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Chimera/Dessicated/DessicatedChimera_A</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

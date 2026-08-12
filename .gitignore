@@ -1,0 +1,11 @@
+# ビルド成果物（Assemblies/VoidAwake.dll は配布物なので追跡する）
+Source/**/bin/
+Source/**/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# 作業用アート素材（Clip Studio 等）。ゲームは読まないので配布対象外
+_art/

@@ -1,8 +1,0 @@
-<Defs>
-	<JobDef>
-		<defName>VoidAwake_ExtractSample</defName>
-		<driverClass>VoidAwake.VoidAwake_Extraction_JobGiver</driverClass>
-		<reportString>TargetA からサンプルを抽出中。</reportString>
-		<allowOpportunisticPrefix>true</allowOpportunisticPrefix>
-	</JobDef>
-</Defs>

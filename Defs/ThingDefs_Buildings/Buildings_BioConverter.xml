@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<ThingDef ParentName="BuildingBase">
+		<defName>VoidAwake_BioConverter</defName>
+		<label>バイオ変換機</label>
+		<description>捻じれた肉とドレッドレザーを別タンクに装填し、時間経過でバイオフェライトを生成する装置。両方装填すると生産効率が2倍になる。</description>
+		<thingClass>Building</thingClass>
+		<tickerType>Normal</tickerType>
+		<passability>PassThroughOnly</passability>
+		<pathCost>50</pathCost>
+		<fillPercent>0.5</fillPercent>
+		<useHitPoints>True</useHitPoints>
+		<graphicData>
+			<texPath>Things/Building/BioferriteShaper/BioferriteShaper</texPath>
+			<graphicClass>Graphic_Multi</graphicClass>
+			<drawSize>(3.5,1.5)</drawSize>
+			<damageData>
+				<cornerTL>Damage/Corner</cornerTL>
+				<cornerTR>Damage/Corner</cornerTR>
+				<cornerBL>Damage/Corner</cornerBL>
+				<cornerBR>Damage/Corner</cornerBR>
+			</damageData>
+		</graphicData>
+		<castEdgeShadows>true</castEdgeShadows>
+		<staticSunShadowHeight>0.20</staticSunShadowHeight>
+		<altitudeLayer>Building</altitudeLayer>
+		<building>
+			<ai_chillDestination>false</ai_chillDestination>
+			<buildingTags>
+				<li>Anomaly</li>
+			</buildingTags>
+		</building>
+		<designationCategory>Anomaly</designationCategory>
+		<uiOrder>305</uiOrder>
+		<statBases>
+			<WorkToBuild>3000</WorkToBuild>
+			<MaxHitPoints>180</MaxHitPoints>
+			<Flammability>0.75</Flammability>
+			<Cleanliness>-2</Cleanliness>
+		</statBases>
+		<size>(3,1)</size>
+		<costList>
+			<ComponentIndustrial>2</ComponentIndustrial>
+			<Steel>60</Steel>
+			<Bioferrite>30</Bioferrite>
+		</costList>
+		<hasInteractionCell>true</hasInteractionCell>
+		<interactionCellOffset>(0,0,-1)</interactionCellOffset>
+		<comps>
+			<li Class="CompProperties_Power">
+				<compClass>CompPowerTrader</compClass>
+				<basePowerConsumption>250</basePowerConsumption>
+			</li>
+			<li Class="CompProperties_Flickable"/>
+			<li Class="CompProperties_Glower">
+				<glowRadius>5</glowRadius>
+				<glowColor>(73,123,138,0)</glowColor>
+			</li>
+			<li Class="CompProperties_Breakdownable"/>
+
+			<li Class="CompProperties_Refuelable">
+				<compClass>VoidAwake.VoidAwake_CompRefuelable_TwistedMeat</compClass>
+				<fuelCapacity>75</fuelCapacity>
+				<fuelConsumptionRate>0</fuelConsumptionRate>
+				<fuelFilter>
+					<thingDefs>
+						<li>Meat_Twisted</li>
+					</thingDefs>
+				</fuelFilter>
+				<fuelLabel>捻じれた肉</fuelLabel>
+				<fuelGizmoLabel>捻じれた肉</fuelGizmoLabel>
+				<showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+				<showFuelGizmo>true</showFuelGizmo>
+				<canEjectFuel>true</canEjectFuel>
+				<consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+			</li>
+
+			<li Class="CompProperties_Refuelable">
+				<compClass>VoidAwake.VoidAwake_CompRefuelable_DreadLeather</compClass>
+				<fuelCapacity>50</fuelCapacity>
+				<fuelConsumptionRate>0</fuelConsumptionRate>
+				<fuelFilter>
+					<thingDefs>
+						<li>Leather_Dread</li>
+					</thingDefs>
+				</fuelFilter>
+				<fuelLabel>ドレッドレザー</fuelLabel>
+				<fuelGizmoLabel>ドレッドレザー</fuelGizmoLabel>
+				<showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+				<showFuelGizmo>true</showFuelGizmo>
+				<canEjectFuel>true</canEjectFuel>
+				<consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+			</li>
+
+			<li Class="VoidAwake.VoidAwake_CompProperties_BioConverter">
+				<bioferritePerCycle>5</bioferritePerCycle>
+				<fuelPerCycle>1</fuelPerCycle>
+				<ticksPerCycle>15000</ticksPerCycle>
+			</li>
+		</comps>
+		<constructEffect>ConstructMetal</constructEffect>
+		<placeWorkers>
+			<li>PlaceWorker_PreventInteractionSpotOverlap</li>
+		</placeWorkers>
+	</ThingDef>
+
+</Defs>

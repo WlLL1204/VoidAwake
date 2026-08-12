@@ -15,7 +15,7 @@ Sightstealer 風に**レターなしでマップ端から現れ**、**隠密中�
 flowchart TB
   Incident[VoidAwake_TrapperArrival]
   Spawn[Edge spawn 1-3 Trapper]
-  Comp[VoidAwake_TrapperComp]
+  Comp[VoidAwake_CompTrapper]
   Stealth[Stealth: invisible + place traps]
   Kidnap[Kidnap: visible + carry colonist]
   Combat[Combat: visible + fight]
@@ -31,20 +31,20 @@ flowchart TB
 
 | 役割 | パス |
 |------|------|
-| 種族 / PawnKind | [`Defs/ThingDefs/Entities/Trapper.xml`](../Defs/ThingDefs/Entities/Trapper.xml) |
-| ThinkTree | [`Defs/ThinkTreeDefs/Trapper.xml`](../Defs/ThinkTreeDefs/Trapper.xml) |
-| 状態・タイマー Comp | [`VoidAwake_TrapperComp.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/VoidAwake_TrapperComp.cs) |
-| 罠設置 AI | [`JobGiver_TrapperPlaceTrap.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/JobGiver_TrapperPlaceTrap.cs) |
-| 罠設置 Job | [`JobDriver_PlaceBearTrap.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/JobDriver_PlaceBearTrap.cs) / [`Trapper_Job.xml`](../Defs/Trapper/Trapper_Job.xml) |
-| 兎の通り道 | [`RabbitPassageUtility.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/RabbitPassageUtility.cs) + [`RabbitPassage.xml`](../Defs/ThingDefs/Buildings/RabbitPassage.xml) |
-| 熊罠 | [`BearTrap.xml`](../Defs/ThingDefs/Buildings/BearTrap.xml) + [`Building_VoidAwake_BearTrap.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/Building_VoidAwake_BearTrap.cs) |
-| 透明 Hediff | [`TrapperStealth.xml`](../Defs/HediffDefs/TrapperStealth.xml) |
-| 拉致 Hediff | [`TrapperKidnapping.xml`](../Defs/HediffDefs/TrapperKidnapping.xml) |
-| 拉致 AI / Job | [`JobGiver_TrapperKidnap.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/JobGiver_TrapperKidnap.cs) / [`JobDriver_TrapperKidnap.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/JobDriver_TrapperKidnap.cs) |
-| 拉致レジストリ | [`GameComponent_VoidAwake_TrapperKidnaps.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/GameComponent_VoidAwake_TrapperKidnaps.cs) |
-| 襲来 Incident | [`Incidents_Trapper.xml`](../Defs/Storyteller/Incidents_Trapper.xml) + [`IncidentWorker_TrapperArrival.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/IncidentWorker_TrapperArrival.cs) |
-| Dev 起動 / 通り道デバッグ | [`DebugActions_Trapper.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/DebugActions_Trapper.cs)（VoidAwake → Trapper arrival / Trapper: rabbit passage debug / Trapper: prune rabbit passages） |
-| 妨害フレア連携 | [`Patch_TrapperStealth_DisruptInvisibility.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/Patch_TrapperStealth_DisruptInvisibility.cs) |
+| 種族 / PawnKind | [`Defs/ThingDefs_Races/Races_Trapper.xml`](../Defs/ThingDefs_Races/Races_Trapper.xml) |
+| ThinkTree | [`Defs/ThinkTreeDefs/ThinkTrees_Trapper.xml`](../Defs/ThinkTreeDefs/ThinkTrees_Trapper.xml) |
+| 状態・タイマー Comp | [`VoidAwake_CompTrapper.cs`](../Source/VoidAwake/Entities/Trapper/VoidAwake_CompTrapper.cs) |
+| 罠設置 AI | [`VoidAwake_JobGiver_TrapperPlaceTrap.cs`](../Source/VoidAwake/Entities/Trapper/AI/VoidAwake_JobGiver_TrapperPlaceTrap.cs) |
+| 罠設置 Job | [`VoidAwake_JobDriver_PlaceBearTrap.cs`](../Source/VoidAwake/Entities/Trapper/Jobs/VoidAwake_JobDriver_PlaceBearTrap.cs) / [`Jobs_Trapper.xml`](../Defs/JobDefs/Jobs_Trapper.xml) |
+| 兎の通り道 | [`VoidAwake_RabbitPassageUtility.cs`](../Source/VoidAwake/Entities/Trapper/Utility/VoidAwake_RabbitPassageUtility.cs) + [`Buildings_RabbitPassage.xml`](../Defs/ThingDefs_Buildings/Buildings_RabbitPassage.xml) |
+| 熊罠 | [`Buildings_BearTrap.xml`](../Defs/ThingDefs_Buildings/Buildings_BearTrap.xml) + [`VoidAwake_Building_BearTrap.cs`](../Source/VoidAwake/Entities/Trapper/Buildings/VoidAwake_Building_BearTrap.cs) |
+| 透明 Hediff | [`Hediffs_Trapper.xml`](../Defs/HediffDefs/Hediffs_Trapper.xml) |
+| 拉致 Hediff | [`Hediffs_Trapper.xml`](../Defs/HediffDefs/Hediffs_Trapper.xml) |
+| 拉致 AI / Job | [`VoidAwake_JobGiver_TrapperKidnap.cs`](../Source/VoidAwake/Entities/Trapper/AI/VoidAwake_JobGiver_TrapperKidnap.cs) / [`VoidAwake_JobDriver_TrapperKidnap.cs`](../Source/VoidAwake/Entities/Trapper/Jobs/VoidAwake_JobDriver_TrapperKidnap.cs) |
+| 拉致レジストリ | [`VoidAwake_GameComponent_TrapperKidnaps.cs`](../Source/VoidAwake/Entities/Trapper/VoidAwake_GameComponent_TrapperKidnaps.cs) |
+| 襲来 Incident | [`Incidents_Trapper.xml`](../Defs/IncidentDefs/Incidents_Trapper.xml) + [`VoidAwake_IncidentWorker_TrapperArrival.cs`](../Source/VoidAwake/Entities/Trapper/VoidAwake_IncidentWorker_TrapperArrival.cs) |
+| Dev 起動 / 通り道デバッグ | [`VoidAwake_DebugActions_Trapper.cs`](../Source/VoidAwake/Entities/Trapper/VoidAwake_DebugActions_Trapper.cs)（VoidAwake → Trapper arrival / Trapper: rabbit passage debug / Trapper: prune rabbit passages） |
+| 妨害フレア連携 | [`VoidAwake_Patch_TrapperStealth_DisruptInvisibility.cs`](../Source/VoidAwake/Entities/Trapper/Patches/VoidAwake_Patch_TrapperStealth_DisruptInvisibility.cs) |
 
 ---
 
@@ -63,7 +63,7 @@ stateDiagram-v2
   Kidnap --> despawn: kidnapComplete_ExitMap
 ```
 
-状態は [`VoidAwake_TrapperComp`](../Source/ClassLibrary1/Entitys/Basic/Trapper/VoidAwake_TrapperComp.cs) の `TrapperCombatState`（`Stealth` / `Combat` / `Kidnap`）。ThinkTree は [`ThinkNode_ConditionalTrapperKidnap` / `Stealth` / `Combat`](../Source/ClassLibrary1/Entitys/Basic/Trapper/ThinkNode_ConditionalTrapperState.cs) で分岐。**Kidnap サブツリーが Stealth より先**に評価されるため、拉致中に罠設置 AI へ落ちない。
+状態は [`VoidAwake_CompTrapper`](../Source/VoidAwake/Entities/Trapper/VoidAwake_CompTrapper.cs) の `VoidAwake_TrapperCombatState`（`Stealth` / `Combat` / `Kidnap`）。ThinkTree は [`VoidAwake_ThinkNode_ConditionalTrapperKidnap` / `Stealth` / `Combat`](../Source/VoidAwake/Entities/Trapper/AI/VoidAwake_ThinkNode_ConditionalTrapperState.cs) で分岐。**Kidnap サブツリーが Stealth より先**に評価されるため、拉致中に罠設置 AI へ落ちない。
 
 ### Stealth（隠密）
 
@@ -77,9 +77,9 @@ stateDiagram-v2
 
 - 条件: Stealth または Combat 中（または Kidnap 再試行中）に **Downed 入植者**が通常到達 + 通り道経由で到達可能
 - Hediff `VoidAwake_TrapperKidnapping`（移動 0.45 倍・運搬容量 +500・**可視**）
-- AI: ThinkTree 上は `JobGiver_TrapperKidnap` のみ（罠設置は行わない）。**退出は同一 JobDriver 内**で通り道使用・掘削も行う
-- フロー: 対象へ接近 → 運搬 → **ExitLoop**（下記）→ `GameComponent_VoidAwake_TrapperKidnaps` に登録 → `ExitMap`
-- **ExitLoop**（[`TryPlanKidnapExitStep`](Source/ClassLibrary1/Entitys/Basic/Trapper/RabbitPassageUtility.cs)）:
+- AI: ThinkTree 上は `VoidAwake_JobGiver_TrapperKidnap` のみ（罠設置は行わない）。**退出は同一 JobDriver 内**で通り道使用・掘削も行う
+- フロー: 対象へ接近 → 運搬 → **ExitLoop**（下記）→ `VoidAwake_GameComponent_TrapperKidnaps` に登録 → `ExitMap`
+- **ExitLoop**（[`TryPlanKidnapExitStep`](Source/VoidAwake/Entities/Trapper/Utility/VoidAwake_RabbitPassageUtility.cs)）:
   1. 通常到達でマップ端へ → 直接退出
   2. 不可なら既存通り道で外へ（`TryFindUsePassageTowardOutside`、多段ホップはループ）
   3. 自分のペア未所持かつ探索 OK なら **出口向け**新規ペアを掘削（`TryFindExitPassagePair`）
@@ -128,7 +128,7 @@ flowchart TD
 | 掘る位置 | 穴は不通行なので、トラッパーは入口の**隣のセル**（`FindDigStandCell`）から掘る。穴のセルに居るポーンは生成前に隣へ退避 |
 | 再利用優先 | 掘る前に既存の穴を調べ、**マルチホップで目的ドアに届く通り道があれば新規に掘らない**（`CollectDoorsNeedingNewPassage` / `IsDoorServedByExistingPassages`）。距離制限なし |
 | 上限 | **トラッパー1匹につき1ペア**（`HasOwnPassage`）。自分の穴が生きている間は絶対に掘らない。死亡時は `DestroyPassagesOwnedBy` で枠が空く |
-| 自動整理 | `MapComponent_VoidAwake_TrapperTraps` が 2000 tick ごとに `PruneRedundantPassages` を実行。**相方を失った残骸・両端が徒歩で行き来できるペア・同じ2領域をつなぐ重複ペア**を削除（`PairId` の若い方を残す）。横断 Job 中のペアは対象外 |
+| 自動整理 | `VoidAwake_MapComponent_TrapperTraps` が 2000 tick ごとに `PruneRedundantPassages` を実行。**相方を失った残骸・両端が徒歩で行き来できるペア・同じ2領域をつなぐ重複ペア**を削除（`PairId` の若い方を残す）。横断 Job 中のペアは対象外 |
 | 探索 | 掘削が必要なドアだけを対象に、ドア側をフラッド（最大 3000 セル）し、その境界の壁から反対側の到達可能セルを探す。対象ドアは近い順に最大 4 件 |
 | 再試行 | 失敗したら `passageSearchRetryTicks` = 600 tick は再探索しない |
 | 移動 | 壁は残したまま。トラッパー専用 Job で入口 Touch → 出口脇へテレポート |
@@ -138,7 +138,7 @@ flowchart TD
 | 寿命 | Stealth 中は残して使い回す（再侵入用）。**交戦突入でマップ上全削除**／死亡時は所有者の穴を削除 |
 | 設置後 | チェーン終了で `wantsEscapeOutside` → 通り道で壁外へ → `waitAnchorCell` 付近をウロチョロ |
 
-実装: [`RabbitPassageUtility.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/RabbitPassageUtility.cs)、[`Building_VoidAwake_RabbitPassage.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/Building_VoidAwake_RabbitPassage.cs)、`JobGiver_TrapperCreate/Use/Escape/WanderOutside`。
+実装: [`VoidAwake_RabbitPassageUtility.cs`](../Source/VoidAwake/Entities/Trapper/Utility/VoidAwake_RabbitPassageUtility.cs)、[`VoidAwake_Building_RabbitPassage.cs`](../Source/VoidAwake/Entities/Trapper/Buildings/VoidAwake_Building_RabbitPassage.cs)、`JobGiver_TrapperCreate/Use/Escape/WanderOutside`。
 
 作れない理由の確認は Dev Mode → **VoidAwake → Trapper: rabbit passage debug**（未到達ドア数・既存の穴で足りているドア数・新規掘削が必要なドア数・出口候補数・狭すぎて却下された数・却下された地形 defName をログ出力）。
 
@@ -155,7 +155,7 @@ flowchart TD
 
 1. **被ダメージ** — Comp `PostPostApplyDamage`
 2. **妨害フレア** — Harmony で `HediffComp_Invisibility.DisruptInvisibility` をフック
-3. **マップ上の熊罠が累計5つ破壊**（作動破壊含む）— `MapComponent_VoidAwake_TrapperTraps` がカウントし、5で全 Trapper を交戦へ
+3. **マップ上の熊罠が累計5つ破壊**（作動破壊含む）— `VoidAwake_MapComponent_TrapperTraps` がカウントし、5で全 Trapper を交戦へ
 4. **罠作動（Spring）** — `SpringSub` で全 Trapper を交戦へ
 5. **浮いたドアコンボ発動** — 隣接罠3個以上で全 Trapper を交戦へ
 
@@ -167,7 +167,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-  JG[JobGiver_TrapperPlaceTrap] --> Pick[ドア周囲8マスから候補]
+  JG[VoidAwake_JobGiver_TrapperPlaceTrap] --> Pick[ドア周囲8マスから候補]
   Pick --> Job[VoidAwake_PlaceBearTrap]
   Job --> Goto[移動]
   Goto --> Wait[短待機]
@@ -216,7 +216,7 @@ flowchart LR
 | 発動 | `Building_Door.DoorOpen` 時に隣接罠 **3個以上**（1〜2個は無効） |
 | 効果 | ドア中心 3×3 のポーンに `TrapMeleeDamage`（Stab）→ ドア破壊 → 隣接罠全破壊 → **全 Trapper 交戦** |
 | 紐 | 同じ浮いたドアの cardinal 罠同士を全ペアで紐描画（対面含む）。赤いグロー（太さ 0.34）＋黄白コア（0.16）の 2 重線を `MoteGlow` で描き、`MoteOverhead` 高度で脈動させる |
-| 実装 | [`DoorTrapComboUtility.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/DoorTrapComboUtility.cs) + [`Patch_Building_Door_DoorOpen.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/Patch_Building_Door_DoorOpen.cs) |
+| 実装 | [`VoidAwake_DoorTrapComboUtility.cs`](../Source/VoidAwake/Entities/Trapper/Utility/VoidAwake_DoorTrapComboUtility.cs) + [`VoidAwake_Patch_Building_Door_DoorOpen.cs`](../Source/VoidAwake/Entities/Trapper/Patches/VoidAwake_Patch_Building_Door_DoorOpen.cs) |
 
 コンボで壊れた罠も通常破壊と同様に `NotifyTrapDestroyed` へ加算される。
 
@@ -248,7 +248,7 @@ flowchart LR
 | 紐 | グロー 0.34 + コア 0.16、脈動 0.9〜1.25 倍 |
 | 通り道の再探索待ち | 600 tick |
 | 拉致ジョブ再試行待ち | 120 tick |
-| 拉致運搬容量ボーナス | Hediff `CarryingCapacity` +500（[`TrapperKidnapping.xml`](../Defs/HediffDefs/TrapperKidnapping.xml) が単一ソース） |
+| 拉致運搬容量ボーナス | Hediff `CarryingCapacity` +500（[`Hediffs_Trapper.xml`](../Defs/HediffDefs/Hediffs_Trapper.xml) が単一ソース） |
 | 通り道の上限 | トラッパー1匹につき 1 ペア |
 | 通り道の自動整理 | 2000 tick ごと |
 | 浮いたドアコンボ | 隣接罠 3個以上で 9マスダメージ + ドア/罠破壊 + 全交戦 |

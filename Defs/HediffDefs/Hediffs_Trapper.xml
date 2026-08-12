@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<HediffDef>
+		<hediffClass>HediffWithComps</hediffClass>
+		<defName>VoidAwake_CaughtInTrap</defName>
+		<label>罠にかかった</label>
+		<description>熊罠に足を捕らえられ、動けない。解除するまでその場から離れられない。</description>
+		<isBad>true</isBad>
+		<stages>
+			<li>
+				<statFactors>
+					<MoveSpeed>0</MoveSpeed>
+				</statFactors>
+			</li>
+		</stages>
+		<comps>
+			<li Class="HediffCompProperties_DisappearsOnDeath" />
+		</comps>
+	</HediffDef>
+
+	<HediffDef>
+		<hediffClass>HediffWithComps</hediffClass>
+		<defName>VoidAwake_TrapperKidnapping</defName>
+		<label>拉致中</label>
+		<description>入植者を拉致している。足元が遅く、姿は隠せない。</description>
+		<isBad>false</isBad>
+		<stages>
+			<li>
+				<statFactors>
+					<MoveSpeed>0.45</MoveSpeed>
+				</statFactors>
+				<statOffsets>
+					<CarryingCapacity>500</CarryingCapacity>
+				</statOffsets>
+			</li>
+		</stages>
+		<comps>
+			<li Class="VoidAwake.VoidAwake_HediffCompProperties_TrapperKidnapping" />
+			<li Class="HediffCompProperties_DisappearsOnDeath" />
+		</comps>
+	</HediffDef>
+
+	<HediffDef>
+		<hediffClass>HediffWithComps</hediffClass>
+		<defName>VoidAwake_TrapperStealth</defName>
+		<label>トラッパーの隠密</label>
+		<description>物陰に隠れこっそり移動している</description>
+		<isBad>false</isBad>
+		<comps>
+			<li Class="HediffCompProperties_Invisibility">
+				<visibleToPlayer>false</visibleToPlayer>
+				<fadeDurationTicks>60</fadeDurationTicks>
+				<recoverFromDisruptedTicks>90</recoverFromDisruptedTicks>
+				<affectedByDisruptor>true</affectedByDisruptor>
+			</li>
+			<li Class="HediffCompProperties_DisappearsOnDeath" />
+		</comps>
+	</HediffDef>
+</Defs>

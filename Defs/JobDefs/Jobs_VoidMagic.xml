@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<JobDef>
+		<defName>VoidAwake_VoidMeditate</defName>
+		<driverClass>VoidAwake.VoidAwake_JobDriver_VoidMeditate</driverClass>
+		<reportString>捻じれた繋がりに向けて瞑想している。</reportString>
+		<allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+		<casualInterruptible>true</casualInterruptible>
+	</JobDef>
+</Defs>

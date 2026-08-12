@@ -1,4 +1,0 @@
-C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\VoidAwake\Source\ClassLibrary1\bin\Release\ClassLibrary1.dll
-C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\VoidAwake\Source\ClassLibrary1\obj\Release\ClassLibrary1.csproj.AssemblyReference.cache
-C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\VoidAwake\Source\ClassLibrary1\obj\Release\ClassLibrary1.csproj.CoreCompileInputs.cache
-C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\VoidAwake\Source\ClassLibrary1\obj\Release\ClassLibrary1.dll

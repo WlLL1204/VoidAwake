@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<PawnKindDef>
+		<defName>VoidAwake_TestAnomaly</defName>
+		<label>検証用アノマリーくん</label>
+		<race>VoidAwake_TestAnomaly</race>
+		<defaultFactionDef>Entities</defaultFactionDef>
+		<immuneToGameConditionEffects>true</immuneToGameConditionEffects>
+		<overrideDebugActionCategory>Entity</overrideDebugActionCategory>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>UI/Entities/Test</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>2</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>UI/Entities/Test</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>2</drawSize>
+					<attachPoints>
+						<li>
+							<offset>(-.35, 0, .3)</offset>
+							<type>PlatformRestraint0</type>
+						</li>
+						<li>
+							<offset>(.4, 0, .15)</offset>
+							<type>PlatformRestraint1</type>
+						</li>
+						<li>
+							<offset>(.2, 0, -.6)</offset>
+							<type>PlatformRestraint2</type>
+						</li>
+						<li>
+							<offset>(-.2, 0, -.6)</offset>
+							<type>PlatformRestraint3</type>
+						</li>
+					</attachPoints>
+				</dessicatedBodyGraphicData>
+			</li>
+		</lifeStages>
+		<combatPower>250</combatPower>
+		<abilities>
+			<li>ConsumeLeap_Devourer</li>
+		</abilities>
+	</PawnKindDef>
+
+</Defs>
