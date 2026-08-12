@@ -145,7 +145,8 @@ flowchart TD
 ### Combat（交戦）
 
 - 透明解除、可視化
-- AI: `JobGiver_MetalhorrorFight` → 徘徊。**罠は置かない**
+- 装備: `VoidAwake_Gun_RabbitShot`（**pump shotgun 同等**、テクスチャ `RabbitShot.png`）。武器 Def の `destroyOnDrop` により死亡時に拾えない
+- AI: `JobGiver_AIFightEnemies` → 徘徊。**罠は置かない**
 - 最低持続 `combatMinDurationTicks` = 2500（約1時間）。`EnterCombat()` のたびにタイマー更新
 - 最低時間のあと、到達可能な入植者（人間・Downed 以外）が 0 の状態が `stealthReturnDelayTicks` = 180（約3秒）続くと Stealth 復帰
 - 交戦突入時にマップ上の兎の通り道を全削除

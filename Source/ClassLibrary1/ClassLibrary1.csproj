@@ -440,6 +440,8 @@
     <Compile Include="Entitys\Basic\Trapper\JobDriver_PlaceBearTrap.cs" />
     <Compile Include="Entitys\Basic\Trapper\JobDriver_TrapperKidnap.cs" />
     <Compile Include="Entitys\Basic\Trapper\JobDriver_UseRabbitPassage.cs" />
+    <Compile Include="Entitys\Basic\Trapper\JobGiver_TrapperCombatCreateRabbitPassage.cs" />
+    <Compile Include="Entitys\Basic\Trapper\JobGiver_TrapperCombatUseRabbitPassage.cs" />
     <Compile Include="Entitys\Basic\Trapper\JobGiver_TrapperCreateRabbitPassage.cs" />
     <Compile Include="Entitys\Basic\Trapper\JobGiver_TrapperEscapeOutside.cs" />
     <Compile Include="Entitys\Basic\Trapper\JobGiver_TrapperKidnap.cs" />
@@ -450,6 +452,7 @@
     <Compile Include="Entitys\Basic\Trapper\Patch_TrapperStealth_DisruptInvisibility.cs" />
     <Compile Include="Entitys\Basic\Trapper\RabbitPassageUtility.cs" />
     <Compile Include="Entitys\Basic\Trapper\ThinkNode_ConditionalTrapperState.cs" />
+    <Compile Include="Entitys\Basic\Trapper\TrapperLoadoutUtility.cs" />
     <Compile Include="Entitys\Basic\Trapper\Trapper_DefOf.cs" />
     <Compile Include="Entitys\Basic\Trapper\VoidAwake_BearTrapCaughtUtility.cs" />
     <Compile Include="Entitys\Basic\Trapper\VoidAwake_TrapperComp.cs" />

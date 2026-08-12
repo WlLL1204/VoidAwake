@@ -43,7 +43,7 @@ namespace VoidAwake
 				return null;
 			}
 
-			if (comp.IsStealth || comp.IsCombat)
+			if (comp.IsStealth)
 			{
 				comp.EnterKidnap(victim);
 			}

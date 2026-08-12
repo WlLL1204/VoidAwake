@@ -13,6 +13,7 @@ namespace VoidAwake
 		public static JobDef VoidAwake_TrapperKidnap;
 		public static ThingDef VoidAwake_BearTrap;
 		public static ThingDef VoidAwake_RabbitPassage;
+		public static ThingDef VoidAwake_Gun_RabbitShot;
 		public static HediffDef VoidAwake_TrapperStealth;
 		public static HediffDef VoidAwake_CaughtInTrap;
 		public static HediffDef VoidAwake_TrapperKidnapping;

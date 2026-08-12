@@ -20,6 +20,7 @@
 			<baseHealthScale>1</baseHealthScale>
 			<body>QuadrupedAnimalWithPaws</body>
 			<baseBodySize>0.5</baseBodySize>
+			<intelligence>ToolUser</intelligence>
 			<leatherDef>Leather_Human</leatherDef>
 			<needsRest>false</needsRest>
 			<fleshType>EntityFlesh</fleshType>
@@ -58,16 +59,6 @@
 			<MeatAmount>40</MeatAmount>
 			<ToxicResistance>0.5</ToxicResistance>
 		</statBases>
-		<tools>
-			<li>
-				<capacities>
-					<li>Bite</li>
-				</capacities>
-				<power>10</power>
-				<cooldownTime>2</cooldownTime>
-				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
-			</li>
-		</tools>
 	</ThingDef>
 
 	<PawnKindDef>
@@ -77,7 +68,7 @@
 		<overrideDeathOnDownedChance>0.25</overrideDeathOnDownedChance>
 		<overrideDebugActionCategory>Entity</overrideDebugActionCategory>
 		<immuneToTraps>true</immuneToTraps>
-		<combatPower>25</combatPower>
+		<combatPower>55</combatPower>
 		<ecoSystemWeight>0.5</ecoSystemWeight>
 		<defaultFactionDef>Entities</defaultFactionDef>
 		<startingHediffs>

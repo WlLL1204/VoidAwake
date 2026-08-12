@@ -565,6 +565,143 @@ namespace VoidAwake
 			return best;
 		}
 
+		/// <summary>Nearest hostile the trapper cannot walk to (combat passage goal).</summary>
+		public static IntVec3 FindNearestUnreachableHostilePosition(Pawn pawn)
+		{
+			if (pawn?.Map == null)
+			{
+				return IntVec3.Invalid;
+			}
+
+			Map map = pawn.Map;
+			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+			IntVec3 best = IntVec3.Invalid;
+			int bestDist = int.MaxValue;
+
+			for (int i = 0; i < pawns.Count; i++)
+			{
+				Pawn hostile = pawns[i];
+				if (!IsCombatHostile(pawn, hostile) || CanReachNormally(pawn, hostile.Position))
+				{
+					continue;
+				}
+
+				int dist = pawn.Position.DistanceToSquared(hostile.Position);
+				if (dist < bestDist)
+				{
+					bestDist = dist;
+					best = hostile.Position;
+				}
+			}
+
+			return best;
+		}
+
+		/// <summary>Hostile position worth entering an existing rabbit passage for during combat.</summary>
+		public static IntVec3 FindBestCombatGoalWithPassages(Pawn pawn)
+		{
+			IntVec3 goal = FindNearestUnreachableHostilePosition(pawn);
+			if (!goal.IsValid || pawn?.Map == null)
+			{
+				return IntVec3.Invalid;
+			}
+
+			if (CollectPassages(pawn.Map).Count == 0)
+			{
+				return IntVec3.Invalid;
+			}
+
+			if (!CanReachWithPassages(pawn, goal))
+			{
+				return IntVec3.Invalid;
+			}
+
+			return TryFindUsePassageToward(pawn, goal, out _) ? goal : IntVec3.Invalid;
+		}
+
+		/// <summary>
+		/// Dig a wall-crossing pair toward a hostile the trapper cannot walk to yet.
+		/// </summary>
+		public static bool TryFindCombatPassagePair(Pawn pawn, IntVec3 goal, out IntVec3 entrance, out IntVec3 exit)
+		{
+			entrance = IntVec3.Invalid;
+			exit = IntVec3.Invalid;
+			if (pawn?.Map == null || !goal.IsValid || CanReachNormally(pawn, goal))
+			{
+				return false;
+			}
+
+			if (HasOwnPassage(pawn.Map, pawn.thingIDNumber))
+			{
+				return false;
+			}
+
+			Map map = pawn.Map;
+			List<Building_VoidAwake_RabbitPassage> passages = CollectPassages(map);
+			HashSet<IntVec3> reachable = new HashSet<IntVec3>();
+			FloodWalkableFromPawn(pawn, reachable);
+			int bestScore = int.MaxValue;
+
+			foreach (IntVec3 innerCell in reachable)
+			{
+				if (!IsValidPassageCell(map, innerCell) || !HasUsableExitSpace(map, innerCell))
+				{
+					continue;
+				}
+
+				for (int i = 0; i < 4; i++)
+				{
+					IntVec3 dir = GenAdj.CardinalDirections[i];
+					IntVec3 outerCell = FindCellPastWall(map, innerCell, dir);
+					if (!outerCell.IsValid || reachable.Contains(outerCell))
+					{
+						continue;
+					}
+
+					if (!IsValidPassageCell(map, outerCell) || !HasUsableExitSpace(map, outerCell))
+					{
+						continue;
+					}
+
+					IntVec3 outerStand = FindStandableBeside(map, outerCell, innerCell);
+					if (!outerStand.IsValid)
+					{
+						continue;
+					}
+
+					if (!CanReachFrom(map, outerStand, goal)
+						&& !CanReachThroughPassages(map, passages, outerStand, goal, -1))
+					{
+						continue;
+					}
+
+					if (!FindDigStandCell(pawn, innerCell, outerCell).IsValid)
+					{
+						continue;
+					}
+
+					int score = innerCell.DistanceToSquared(pawn.Position);
+					if (score < bestScore)
+					{
+						bestScore = score;
+						entrance = innerCell;
+						exit = outerCell;
+					}
+				}
+			}
+
+			return entrance.IsValid && exit.IsValid;
+		}
+
+		private static bool IsCombatHostile(Pawn trapper, Pawn other)
+		{
+			return other != null
+				&& other != trapper
+				&& other.Spawned
+				&& !other.Dead
+				&& other.HostileTo(trapper);
+		}
+
 		public static void SpawnPassagePair(Map map, IntVec3 entrance, IntVec3 exit, Pawn owner)
 		{
 			if (map == null || !IsValidPassageCell(map, entrance) || !IsValidPassageCell(map, exit))

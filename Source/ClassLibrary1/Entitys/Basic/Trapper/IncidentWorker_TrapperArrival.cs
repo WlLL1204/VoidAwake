@@ -37,6 +37,7 @@ namespace VoidAwake
 
 				Pawn trapper = PawnGenerator.GeneratePawn(VoidAwake_TrapperDefOf.Trapper, Faction.OfEntities);
 				GenSpawn.Spawn(trapper, cell, map);
+				TrapperLoadoutUtility.EnsureRabbitShotEquipped(trapper);
 				EnsureStealth(trapper);
 				spawned.Add(trapper);
 			}

@@ -65,18 +65,24 @@
           </subNodes>
         </li>
 
-        <!-- Combat: fight, no trap placing -->
+        <!-- Combat: assault-like seek and fight; rabbit passages for flanking -->
         <li Class="VoidAwake.ThinkNode_ConditionalTrapperCombat">
           <subNodes>
-            <li Class="JobGiver_MetalhorrorFight" />
+            <li Class="JobGiver_AIFightEnemies">
+              <targetAcquireRadius>65</targetAcquireRadius>
+              <targetKeepRadius>72</targetKeepRadius>
+            </li>
+            <li Class="VoidAwake.JobGiver_TrapperCombatUseRabbitPassage" />
+            <li Class="JobGiver_AIGotoNearestHostile" />
+            <li Class="VoidAwake.JobGiver_TrapperCombatCreateRabbitPassage" />
             <li Class="ThinkNode_Tagger">
               <tagToGive>Idle</tagToGive>
               <subNodes>
                 <li Class="JobGiver_WanderAnywhere">
                   <maxDanger>Deadly</maxDanger>
                   <ticksBetweenWandersRange>180~720</ticksBetweenWandersRange>
-                  <wanderRadius>6</wanderRadius>
-                  <canBashDoors>true</canBashDoors>
+                  <wanderRadius>12</wanderRadius>
+                  <canBashDoors>false</canBashDoors>
                   <expireOnNearbyEnemy>true</expireOnNearbyEnemy>
                 </li>
               </subNodes>

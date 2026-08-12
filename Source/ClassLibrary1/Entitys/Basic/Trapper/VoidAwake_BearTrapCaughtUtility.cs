@@ -34,6 +34,11 @@ namespace VoidAwake
 			}
 
 			pawn.health.AddHediff(VoidAwake_TrapperDefOf.VoidAwake_CaughtInTrap);
+			if (!pawn.Downed)
+			{
+				pawn.health.forceDowned = true;
+			}
+
 			if (pawn.jobs?.curJob != null)
 			{
 				pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);

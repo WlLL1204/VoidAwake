@@ -183,7 +183,7 @@ namespace VoidAwake
 			{
 				IntVec3 doorCell = door.Position;
 				ThingDef trapDef = VoidAwake_TrapperDefOf.VoidAwake_BearTrap;
-				float damage = trapDef.GetStatValueAbstract(StatDefOf.TrapMeleeDamage);
+				float damage = trapDef.GetStatValueAbstract(StatDefOf.TrapMeleeDamage) * 2f;
 				float armorPenetration = damage * VerbProperties.DefaultArmorPenetrationPerDamage;
 
 				HashSet<Pawn> damaged = new HashSet<Pawn>();
@@ -210,6 +210,11 @@ namespace VoidAwake
 						BodyPartRecord hitPart = VoidAwake_BearTrapTargetingUtility.ChooseHitPart(pawn);
 						DamageInfo dinfo = new DamageInfo(DamageDefOf.Stab, damage, armorPenetration, -1f, traps[0], hitPart);
 						pawn.TakeDamage(dinfo);
+
+						if (!pawn.Dead)
+						{
+							VoidAwake_BearTrapCaughtUtility.TryApplyCaught(pawn);
+						}
 					}
 				}
 
