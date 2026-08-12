@@ -203,7 +203,11 @@ namespace VoidAwake
 
 		public void Notify_KidnapJobFailed()
 		{
-			nextKidnapJobTick = Find.TickManager.TicksGame + Props.kidnapRetryTicks;
+			int now = Find.TickManager.TicksGame;
+			if (now >= nextKidnapJobTick)
+			{
+				nextKidnapJobTick = now + Props.kidnapRetryTicks;
+			}
 		}
 
 		public void Notify_KidnapJobStarted()
@@ -381,10 +385,10 @@ namespace VoidAwake
 
 		}
 
+		/// <summary>Clears kidnap target before map exit. Keeps kidnapping hediff so the Trapper stays visible and slow until despawn.</summary>
 		public void PrepareExitAfterKidnap()
 		{
 			kidnapTarget = null;
-			RemoveKidnappingHediff();
 		}
 
 
@@ -518,6 +522,10 @@ namespace VoidAwake
 		public override void PostDestroy(DestroyMode mode, Map previousMap)
 
 		{
+
+			RemoveStealthHediff();
+
+			RemoveKidnappingHediff();
 
 			if (previousMap != null)
 

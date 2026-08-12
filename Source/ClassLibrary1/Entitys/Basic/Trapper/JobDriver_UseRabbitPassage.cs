@@ -30,31 +30,12 @@ namespace VoidAwake
 			enter.WithProgressBarToilDelay(PassageInd);
 			yield return enter;
 
-			yield return Toils_General.Do(TeleportThrough);
+			yield return Toils_General.Do(UsePassage);
 		}
 
-		private void TeleportThrough()
+		private void UsePassage()
 		{
-			Building_VoidAwake_RabbitPassage entrance = Passage;
-			Building_VoidAwake_RabbitPassage linked = entrance?.LinkedPassage;
-			if (entrance == null || linked == null || !pawn.Spawned)
-			{
-				return;
-			}
-
-			IntVec3 dest = RabbitPassageUtility.FindStandableBeside(Map, linked.Position, pawn.Position);
-			if (!dest.IsValid)
-			{
-				dest = linked.Position;
-				if (!dest.Standable(Map))
-				{
-					return;
-				}
-			}
-
-			pawn.Position = dest;
-			pawn.Notify_Teleported(false, true);
-			pawn.TryGetComp<VoidAwake_TrapperComp>()?.Notify_UsedPassage(linked.Position);
+			RabbitPassageUtility.TeleportThrough(pawn, Passage);
 		}
 	}
 }

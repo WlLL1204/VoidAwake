@@ -4,8 +4,6 @@ namespace VoidAwake
 {
 	public class HediffCompProperties_VoidAwake_TrapperKidnapping : HediffCompProperties
 	{
-		public float carryingCapacityOffset = 500f;
-
 		public HediffCompProperties_VoidAwake_TrapperKidnapping()
 		{
 			compClass = typeof(HediffComp_VoidAwake_TrapperKidnapping);

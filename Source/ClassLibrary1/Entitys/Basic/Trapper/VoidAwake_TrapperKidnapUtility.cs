@@ -7,7 +7,10 @@ namespace VoidAwake
 {
 	public static class VoidAwake_TrapperKidnapUtility
 	{
-		private const float KidnapCarryingCapacityBonus = 500f;
+		private const float DefaultKidnapCarryingCapacityBonus = 500f;
+
+		/// <summary>Matches <see cref="VoidAwake_TrapperDefOf.VoidAwake_TrapperKidnapping"/> statOffsets. Used before EnterKidnap applies the hediff.</summary>
+		public static float KidnapCarryingCapacityBonus => GetKidnapCarryingCapacityBonus();
 
 		public static bool HasKidnapTargets(Pawn trapper)
 		{
@@ -89,6 +92,35 @@ namespace VoidAwake
 		{
 			float capacity = trapper.GetStatValue(StatDefOf.CarryingCapacity) + KidnapCarryingCapacityBonus;
 			return capacity >= candidate.GetStatValue(StatDefOf.Mass);
+		}
+
+		private static float GetKidnapCarryingCapacityBonus()
+		{
+			HediffDef def = VoidAwake_TrapperDefOf.VoidAwake_TrapperKidnapping;
+			if (def?.stages == null)
+			{
+				return DefaultKidnapCarryingCapacityBonus;
+			}
+
+			for (int i = 0; i < def.stages.Count; i++)
+			{
+				HediffStage stage = def.stages[i];
+				if (stage.statOffsets == null)
+				{
+					continue;
+				}
+
+				for (int j = 0; j < stage.statOffsets.Count; j++)
+				{
+					StatModifier offset = stage.statOffsets[j];
+					if (offset.stat == StatDefOf.CarryingCapacity)
+					{
+						return offset.value;
+					}
+				}
+			}
+
+			return DefaultKidnapCarryingCapacityBonus;
 		}
 	}
 }

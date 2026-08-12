@@ -42,27 +42,9 @@ namespace VoidAwake
 				return;
 			}
 
-			Map map = pawn.Map;
 			IntVec3 entrance = job.GetTarget(EntranceInd).Cell;
 			IntVec3 exit = job.GetTarget(ExitInd).Cell;
-			if (!RabbitPassageUtility.IsValidPassageCell(map, entrance)
-				|| !RabbitPassageUtility.IsValidPassageCell(map, exit))
-			{
-				return;
-			}
-
-			RabbitPassageUtility.SpawnPassagePair(map, entrance, exit, pawn);
-
-			VoidAwake_TrapperComp comp = pawn.TryGetComp<VoidAwake_TrapperComp>();
-			if (comp == null)
-			{
-				return;
-			}
-
-			// The outer hole is the one still connected to the map edge on foot.
-			bool entranceIsOuter = map.reachability.CanReachMapEdge(entrance,
-				TraverseParms.For(TraverseMode.NoPassClosedDoors, Danger.Deadly));
-			comp.Notify_PassageCreated(entranceIsOuter ? entrance : exit);
+			RabbitPassageUtility.TrySpawnPassagePairAndNotify(pawn, entrance, exit);
 		}
 	}
 }

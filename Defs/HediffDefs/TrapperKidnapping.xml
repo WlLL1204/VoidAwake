@@ -17,9 +17,7 @@
 			</li>
 		</stages>
 		<comps>
-			<li Class="VoidAwake.HediffCompProperties_VoidAwake_TrapperKidnapping">
-				<carryingCapacityOffset>500</carryingCapacityOffset>
-			</li>
+			<li Class="VoidAwake.HediffCompProperties_VoidAwake_TrapperKidnapping" />
 			<li Class="HediffCompProperties_DisappearsOnDeath" />
 		</comps>
 	</HediffDef>

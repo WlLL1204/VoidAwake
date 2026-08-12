@@ -5,6 +5,23 @@ using Verse.AI;
 
 namespace VoidAwake
 {
+	public enum KidnapExitStep : byte
+	{
+		DirectExit = 0,
+		UsePassage = 1,
+		CreatePassage = 2
+	}
+
+	public struct KidnapExitPlan
+	{
+		public KidnapExitStep Step;
+		public IntVec3 ExitCell;
+		public Building_VoidAwake_RabbitPassage Passage;
+		public IntVec3 CreateEntrance;
+		public IntVec3 CreateExit;
+		public IntVec3 CreateStand;
+	}
+
 	public static class RabbitPassageUtility
 	{
 		private const int MaxDoorsPerSearch = 4;
@@ -242,6 +259,191 @@ namespace VoidAwake
 
 			entrance = best;
 			return entrance != null;
+		}
+
+		/// <summary>
+		/// Pick the next kidnap-exit action: walk to the map edge, use an existing passage, or dig
+		/// an exit-oriented pair when walled in.
+		/// </summary>
+		public static bool TryPlanKidnapExitStep(Pawn pawn, VoidAwake_TrapperComp comp, out KidnapExitPlan plan)
+		{
+			plan = default;
+			if (pawn?.Map == null)
+			{
+				return false;
+			}
+
+			if (CanReachOutsideNormally(pawn))
+			{
+				IntVec3 cell;
+				if (!CellFinder.TryFindRandomPawnExitCell(pawn, out cell))
+				{
+					cell = CellFinder.RandomEdgeCell(pawn.Map);
+				}
+
+				plan.Step = KidnapExitStep.DirectExit;
+				plan.ExitCell = cell;
+				return true;
+			}
+
+			if (TryFindUsePassageTowardOutside(pawn, out Building_VoidAwake_RabbitPassage passage))
+			{
+				plan.Step = KidnapExitStep.UsePassage;
+				plan.Passage = passage;
+				return true;
+			}
+
+			Map map = pawn.Map;
+			if (HasOwnPassage(map, pawn.thingIDNumber))
+			{
+				return false;
+			}
+
+			if (comp != null && !comp.CanSearchPassageNow)
+			{
+				return false;
+			}
+
+			if (TryFindExitPassagePair(pawn, out IntVec3 entrance, out IntVec3 exit))
+			{
+				IntVec3 stand = FindDigStandCell(pawn, entrance, exit);
+				if (!stand.IsValid)
+				{
+					comp?.Notify_PassageSearchFailed();
+					return false;
+				}
+
+				plan.Step = KidnapExitStep.CreatePassage;
+				plan.CreateEntrance = entrance;
+				plan.CreateExit = exit;
+				plan.CreateStand = stand;
+				return true;
+			}
+
+			comp?.Notify_PassageSearchFailed();
+			return false;
+		}
+
+		/// <summary>
+		/// Dig a wall-crossing pair from the trapper's reachable area toward the map edge.
+		/// Unlike <see cref="TryFindPassagePair"/>, this targets escape rather than trap doors.
+		/// </summary>
+		public static bool TryFindExitPassagePair(Pawn pawn, out IntVec3 entrance, out IntVec3 exit)
+		{
+			entrance = IntVec3.Invalid;
+			exit = IntVec3.Invalid;
+			if (pawn?.Map == null || CanReachOutsideNormally(pawn))
+			{
+				return false;
+			}
+
+			if (HasOwnPassage(pawn.Map, pawn.thingIDNumber))
+			{
+				return false;
+			}
+
+			Map map = pawn.Map;
+			HashSet<IntVec3> reachable = new HashSet<IntVec3>();
+			FloodWalkableFromPawn(pawn, reachable);
+			List<Building_VoidAwake_RabbitPassage> passages = CollectPassages(map);
+			int bestScore = int.MaxValue;
+
+			foreach (IntVec3 innerCell in reachable)
+			{
+				if (!IsValidPassageCell(map, innerCell) || !HasUsableExitSpace(map, innerCell))
+				{
+					continue;
+				}
+
+				for (int i = 0; i < 4; i++)
+				{
+					IntVec3 dir = GenAdj.CardinalDirections[i];
+					IntVec3 outerCell = FindCellPastWall(map, innerCell, dir);
+					if (!outerCell.IsValid || reachable.Contains(outerCell))
+					{
+						continue;
+					}
+
+					if (!IsValidPassageCell(map, outerCell) || !HasUsableExitSpace(map, outerCell))
+					{
+						continue;
+					}
+
+					IntVec3 outerStand = FindStandableBeside(map, outerCell, innerCell);
+					if (!outerStand.IsValid || !ExitLeadsOutside(map, passages, outerStand, -1))
+					{
+						continue;
+					}
+
+					if (!FindDigStandCell(pawn, innerCell, outerCell).IsValid)
+					{
+						continue;
+					}
+
+					int score = innerCell.DistanceToSquared(pawn.Position);
+					if (score < bestScore)
+					{
+						bestScore = score;
+						entrance = innerCell;
+						exit = outerCell;
+					}
+				}
+			}
+
+			return entrance.IsValid && exit.IsValid;
+		}
+
+		public static void TeleportThrough(Pawn pawn, Building_VoidAwake_RabbitPassage entrance)
+		{
+			if (pawn == null || entrance == null || !pawn.Spawned)
+			{
+				return;
+			}
+
+			Map map = pawn.Map;
+			Building_VoidAwake_RabbitPassage linked = entrance.LinkedPassage;
+			if (map == null || linked == null)
+			{
+				return;
+			}
+
+			IntVec3 dest = FindStandableBeside(map, linked.Position, pawn.Position);
+			if (!dest.IsValid)
+			{
+				dest = linked.Position;
+				if (!dest.Standable(map))
+				{
+					return;
+				}
+			}
+
+			pawn.Position = dest;
+			pawn.Notify_Teleported(false, true);
+			pawn.TryGetComp<VoidAwake_TrapperComp>()?.Notify_UsedPassage(linked.Position);
+		}
+
+		public static bool TrySpawnPassagePairAndNotify(Pawn owner, IntVec3 entrance, IntVec3 exit)
+		{
+			Map map = owner?.Map;
+			if (map == null
+				|| !IsValidPassageCell(map, entrance)
+				|| !IsValidPassageCell(map, exit))
+			{
+				return false;
+			}
+
+			SpawnPassagePair(map, entrance, exit, owner);
+
+			VoidAwake_TrapperComp comp = owner.TryGetComp<VoidAwake_TrapperComp>();
+			if (comp == null)
+			{
+				return true;
+			}
+
+			bool entranceIsOuter = map.reachability.CanReachMapEdge(entrance,
+				TraverseParms.For(TraverseMode.NoPassClosedDoors, Danger.Deadly));
+			comp.Notify_PassageCreated(entranceIsOuter ? entrance : exit);
+			return true;
 		}
 
 		public static IntVec3 FindStandableBeside(Map map, IntVec3 passageCell, IntVec3 preferAwayFrom)
@@ -695,6 +897,50 @@ namespace VoidAwake
 			}
 
 			return false;
+		}
+
+		/// <summary>Walkable cells normally reachable from the pawn, bounded for performance.</summary>
+		public static void FloodWalkableFromPawn(Pawn pawn, HashSet<IntVec3> into)
+		{
+			into.Clear();
+			if (pawn?.Map == null)
+			{
+				return;
+			}
+
+			Map map = pawn.Map;
+			IntVec3 start = pawn.Position;
+			if (!start.InBounds(map))
+			{
+				return;
+			}
+
+			Queue<IntVec3> queue = new Queue<IntVec3>();
+			if (into.Add(start))
+			{
+				queue.Enqueue(start);
+			}
+
+			while (queue.Count > 0 && into.Count < MaxFloodCells)
+			{
+				IntVec3 cell = queue.Dequeue();
+				for (int i = 0; i < 4; i++)
+				{
+					IntVec3 n = cell + GenAdj.CardinalDirections[i];
+					if (!n.InBounds(map) || into.Contains(n) || !IsFloodWalkable(map, n))
+					{
+						continue;
+					}
+
+					if (!CanReachNormally(pawn, n))
+					{
+						continue;
+					}
+
+					into.Add(n);
+					queue.Enqueue(n);
+				}
+			}
 		}
 
 		/// <summary>Walkable cells on the door's side, bounded so a huge base cannot stall the search.</summary>

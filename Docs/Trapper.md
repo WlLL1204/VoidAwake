@@ -17,11 +17,13 @@ flowchart TB
   Spawn[Edge spawn 1-3 Trapper]
   Comp[VoidAwake_TrapperComp]
   Stealth[Stealth: invisible + place traps]
+  Kidnap[Kidnap: visible + carry colonist]
   Combat[Combat: visible + fight]
   Trap[VoidAwake_BearTrap]
 
   Incident --> Spawn --> Comp
   Comp --> Stealth
+  Comp --> Kidnap
   Comp --> Combat
   Stealth --> Trap
   Trap -->|5 destroyed| Combat
@@ -37,6 +39,9 @@ flowchart TB
 | 兎の通り道 | [`RabbitPassageUtility.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/RabbitPassageUtility.cs) + [`RabbitPassage.xml`](../Defs/ThingDefs/Buildings/RabbitPassage.xml) |
 | 熊罠 | [`BearTrap.xml`](../Defs/ThingDefs/Buildings/BearTrap.xml) + [`Building_VoidAwake_BearTrap.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/Building_VoidAwake_BearTrap.cs) |
 | 透明 Hediff | [`TrapperStealth.xml`](../Defs/HediffDefs/TrapperStealth.xml) |
+| 拉致 Hediff | [`TrapperKidnapping.xml`](../Defs/HediffDefs/TrapperKidnapping.xml) |
+| 拉致 AI / Job | [`JobGiver_TrapperKidnap.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/JobGiver_TrapperKidnap.cs) / [`JobDriver_TrapperKidnap.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/JobDriver_TrapperKidnap.cs) |
+| 拉致レジストリ | [`GameComponent_VoidAwake_TrapperKidnaps.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/GameComponent_VoidAwake_TrapperKidnaps.cs) |
 | 襲来 Incident | [`Incidents_Trapper.xml`](../Defs/Storyteller/Incidents_Trapper.xml) + [`IncidentWorker_TrapperArrival.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/IncidentWorker_TrapperArrival.cs) |
 | Dev 起動 / 通り道デバッグ | [`DebugActions_Trapper.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/DebugActions_Trapper.cs)（VoidAwake → Trapper arrival / Trapper: rabbit passage debug / Trapper: prune rabbit passages） |
 | 妨害フレア連携 | [`Patch_TrapperStealth_DisruptInvisibility.cs`](../Source/ClassLibrary1/Entitys/Basic/Trapper/Patch_TrapperStealth_DisruptInvisibility.cs) |
@@ -48,11 +53,15 @@ flowchart TB
 ```mermaid
 stateDiagram-v2
   [*] --> Stealth
+  Stealth --> Kidnap: downedColonistReachable
+  Kidnap --> Stealth: noTargets_and_notCarrying
   Stealth --> Combat: damage_or_disruptor_or_5trapsDestroyed
+  Kidnap --> Combat: damage
   Combat --> Stealth: afterMin1h_and_noReachableColonist_3s
+  Kidnap --> despawn: kidnapComplete_ExitMap
 ```
 
-状態は [`VoidAwake_TrapperComp`](../Source/ClassLibrary1/Entitys/Basic/Trapper/VoidAwake_TrapperComp.cs) の `TrapperCombatState`（`Stealth` / `Combat`）。ThinkTree は [`ThinkNode_ConditionalTrapperStealth` / `Combat`](../Source/ClassLibrary1/Entitys/Basic/Trapper/ThinkNode_ConditionalTrapperState.cs) で分岐。
+状態は [`VoidAwake_TrapperComp`](../Source/ClassLibrary1/Entitys/Basic/Trapper/VoidAwake_TrapperComp.cs) の `TrapperCombatState`（`Stealth` / `Combat` / `Kidnap`）。ThinkTree は [`ThinkNode_ConditionalTrapperKidnap` / `Stealth` / `Combat`](../Source/ClassLibrary1/Entitys/Basic/Trapper/ThinkNode_ConditionalTrapperState.cs) で分岐。**Kidnap サブツリーが Stealth より先**に評価されるため、拉致中に罠設置 AI へ落ちない。
 
 ### Stealth（隠密）
 
@@ -61,6 +70,26 @@ stateDiagram-v2
 - 移動中は `footprintIntervalCells` = 2 マスごとに足跡 Fleck（`VoidAwake_TrapperFootstep` / `FootStep.png`）を残す
 - 設置クールダウン `placeCooldownTicks` = 2500（約1時間）
 - マップ上の罠設置数に上限はない（`maxTrapsOnMap` のような定数は未実装）
+
+### Kidnap（拉致）
+
+- 条件: Stealth 中（または Kidnap 再試行中）に **Downed 入植者**が通常到達 + 通り道経由で到達可能
+- Hediff `VoidAwake_TrapperKidnapping`（移動 0.45 倍・運搬容量 +500・**可視**）
+- AI: ThinkTree 上は `JobGiver_TrapperKidnap` のみ（罠設置は行わない）。**退出は同一 JobDriver 内**で通り道使用・掘削も行う
+- フロー: 対象へ接近 → 運搬 → **ExitLoop**（下記）→ `GameComponent_VoidAwake_TrapperKidnaps` に登録 → `ExitMap`
+- **ExitLoop**（[`TryPlanKidnapExitStep`](Source/ClassLibrary1/Entitys/Basic/Trapper/RabbitPassageUtility.cs)）:
+  1. 通常到達でマップ端へ → 直接退出
+  2. 不可なら既存通り道で外へ（`TryFindUsePassageTowardOutside`、多段ホップはループ）
+  3. 自分のペア未所持かつ探索 OK なら **出口向け**新規ペアを掘削（`TryFindExitPassagePair`）
+  4. それでも不可 → ジョブ失敗（担い中は finish action により kidnap クールダウンは抑制）
+- Stealth 用 `TryFindPassagePair` は**未到達ドア向け**。Kidnap 退出用 `TryFindExitPassagePair` は**現在地からマップ端**向け（外周壁で閉じ込められても脱出可能）
+- 対象は **Vanilla の kidnapped リストではなく独自レジストリ**（将来の救出イベント用）
+- ジョブ失敗時: `kidnapRetryTicks` = 120 tick のクールダウン（`Notify_KidnapJobFailed`、同一失敗での多重設定は idempotent）
+- 掘削探索失敗時: `passageSearchRetryTicks` = 600 tick（`Notify_PassageSearchFailed`）
+- ジョブ開始時: 同一 tick 再割当防止のため +1 tick ブロック（`Notify_KidnapJobStarted`）
+- 対象不在かつ非運搬中: `ExitKidnap()` で Stealth 復帰
+- マップ退出直前: `PrepareExitAfterKidnap()` で対象参照のみクリア。**Hediff は despawn まで維持**（退出失敗時も可視・低速のまま再試行可能）
+- 被ダメージ: Combat へ（全 Trapper 交戦伝播）
 
 ---
 
@@ -215,6 +244,8 @@ flowchart LR
 | 罠の透明度 | 不透明（Cutout） |
 | 紐 | グロー 0.34 + コア 0.16、脈動 0.9〜1.25 倍 |
 | 通り道の再探索待ち | 600 tick |
+| 拉致ジョブ再試行待ち | 120 tick |
+| 拉致運搬容量ボーナス | Hediff `CarryingCapacity` +500（[`TrapperKidnapping.xml`](../Defs/HediffDefs/TrapperKidnapping.xml) が単一ソース） |
 | 通り道の上限 | トラッパー1匹につき 1 ペア |
 | 通り道の自動整理 | 2000 tick ごと |
 | 浮いたドアコンボ | 隣接罠 3個以上で 9マスダメージ + ドア/罠破壊 + 全交戦 |
