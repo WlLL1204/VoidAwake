@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- entityDef を省略した既定テンプレート。収容可能なアノマリー全種にこの数値が使われる。
+	     個別に調整したい場合は entityDef 指定の Def を追加すれば上書きされる。 -->
+	<VoidAwake.VoidAwake_VoidMagicDef>
+		<defName>VoidAwake_VoidMagicDefault</defName>
+		<label>捻じれた繋がり</label>
+		<description>収容されたアノマリーの傍らで瞑想することで結ばれる繋がり。</description>
+		<maxConnection>100</maxConnection>
+		<connectionPerHourMeditating>5</connectionPerHourMeditating>
+		<decayPerDayLost>6</decayPerDayLost>
+		<decayPerDayIdle>1</decayPerDayIdle>
+		<idleGraceDays>3</idleGraceDays>
+		<tiers>
+			<li>
+				<label>微かな共鳴</label>
+				<threshold>25</threshold>
+			</li>
+			<li>
+				<label>共振</label>
+				<threshold>50</threshold>
+			</li>
+			<li>
+				<label>深き共鳴</label>
+				<threshold>75</threshold>
+			</li>
+			<li>
+				<label>同化</label>
+				<threshold>100</threshold>
+			</li>
+		</tiers>
+	</VoidAwake.VoidAwake_VoidMagicDef>
+
+</Defs>

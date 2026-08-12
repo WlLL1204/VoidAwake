@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <!-- タブ -->
+  <VoidAwake_VoidMagicTab>捻じれた魔術</VoidAwake_VoidMagicTab>
+  <VoidAwake_VoidMagicHeader>収容アノマリーとの繋がり：{0}件</VoidAwake_VoidMagicHeader>
+  <VoidAwake_VoidMagicNoLinks>まだ繋がりを持っていない。\n\n収容プラットフォームの近くに「捻じれた瞑想スポット」を設置し、そこで瞑想させよう。収容されたアノマリーとの繋がりが少しずつ深まっていく。</VoidAwake_VoidMagicNoLinks>
+  <VoidAwake_VoidMagicTierNone>未接続</VoidAwake_VoidMagicTierNone>
+  <VoidAwake_VoidMagicStatusNew>瞑想したことがない</VoidAwake_VoidMagicStatusNew>
+  <VoidAwake_VoidMagicStatusStable>収容中・維持</VoidAwake_VoidMagicStatusStable>
+  <VoidAwake_VoidMagicStatusLost>喪失 -{0}/日</VoidAwake_VoidMagicStatusLost>
+  <VoidAwake_VoidMagicStatusIdle>放置 -{0}/日</VoidAwake_VoidMagicStatusIdle>
+  <VoidAwake_VoidMagicAbilityPending>能力は未実装</VoidAwake_VoidMagicAbilityPending>
+  <VoidAwake_VoidMagicTooltipGain>瞑想：1時間あたり +{0}（範囲内のアノマリー数で分割）</VoidAwake_VoidMagicTooltipGain>
+  <VoidAwake_VoidMagicTooltipDecay>減衰：未収容の間は -{0}/日、{1}日瞑想しないと -{2}/日</VoidAwake_VoidMagicTooltipDecay>
+
+  <!-- 段階の変化 -->
+  <VoidAwake_VoidMagicTierGained>{0}は{1}との捻じれた繋がりを深めた：{2}。</VoidAwake_VoidMagicTierGained>
+  <VoidAwake_VoidMagicTierLost>{0}は{1}との捻じれた繋がりを失った：{2}。</VoidAwake_VoidMagicTierLost>
+
+  <!-- 瞑想スポット -->
+  <VoidAwake_VoidMeditateFloatMenu>捻じれた瞑想を行う</VoidAwake_VoidMeditateFloatMenu>
+  <VoidAwake_VoidMeditateRequiresAnomaly>Anomaly が必要</VoidAwake_VoidMeditateRequiresAnomaly>
+  <VoidAwake_VoidMeditateCannotMeditate>瞑想できない</VoidAwake_VoidMeditateCannotMeditate>
+  <VoidAwake_VoidMeditateNoAnomalyNear>範囲内に収容されたアノマリーがない</VoidAwake_VoidMeditateNoAnomalyNear>
+  <VoidAwake_VoidMeditationSpotNoAnomaly>範囲内に収容されたアノマリーがない。</VoidAwake_VoidMeditationSpotNoAnomaly>
+  <VoidAwake_VoidMeditationSpotAnomalies>範囲内のアノマリー：{0}</VoidAwake_VoidMeditationSpotAnomalies>
+  <VoidAwake_VoidMeditateInterrupted>範囲内に収容されたアノマリーがなくなり、{0}は瞑想をやめた。</VoidAwake_VoidMeditateInterrupted>
+
+</LanguageData>

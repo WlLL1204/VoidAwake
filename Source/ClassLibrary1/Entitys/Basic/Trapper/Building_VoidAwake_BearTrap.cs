@@ -2,107 +2,15 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace VoidAwake
 {
 	public class Building_VoidAwake_BearTrap : Building_TrapDamager
 	{
-		private const float OverlayExtraY = 0.04f;
+		private const int TrapHitCount = 5;
 
-		/// <summary>Shared graphic data with no shadow so overlays don't interrupt soft shadows.</summary>
-		private static readonly GraphicData NoShadowGraphicData = new GraphicData();
-
-		private static Graphic haygrassGraphic;
-		private static Graphic mossGraphic;
-		private static readonly Dictionary<string, Graphic> terrainSurfaceGraphics = new Dictionary<string, Graphic>();
-
-		private static Graphic HaygrassGraphic =>
-			haygrassGraphic ?? (haygrassGraphic = GraphicDatabase.Get<Graphic_Random>(
-				"Things/Plant/Haygrass",
-				ShaderDatabase.CutoutPlant,
-				Vector2.one,
-				Color.white,
-				Color.white,
-				NoShadowGraphicData,
-				null));
-
-		private static Graphic MossGraphic =>
-			mossGraphic ?? (mossGraphic = GraphicDatabase.Get<Graphic_Random>(
-				"Things/Plant/Moss",
-				ShaderDatabase.CutoutPlant,
-				Vector2.one,
-				Color.white,
-				Color.white,
-				NoShadowGraphicData,
-				null));
-
-		private static Graphic GetTerrainSurfaceGraphic(TerrainDef terrain)
-		{
-			if (terrain?.texturePath.NullOrEmpty() ?? true)
-			{
-				return null;
-			}
-
-			if (!terrainSurfaceGraphics.TryGetValue(terrain.texturePath, out Graphic graphic))
-			{
-				// Transparent: blends over the trap without opaque cutout punching holes in shadows.
-				graphic = GraphicDatabase.Get<Graphic_Single>(
-					terrain.texturePath,
-					ShaderDatabase.Transparent,
-					Vector2.one,
-					new Color(1f, 1f, 1f, 0.92f),
-					Color.white,
-					NoShadowGraphicData,
-					null);
-				terrainSurfaceGraphics[terrain.texturePath] = graphic;
-			}
-
-			return graphic;
-		}
-
-		private static Graphic GetOverlayForTerrain(TerrainDef terrain)
-		{
-			if (terrain == null)
-			{
-				return null;
-			}
-
-			string defName = terrain.defName;
-			if (defName == "Sand" || defName == "SoftSand" || defName == "Gravel" || defName == "Mud" || defName == "Ice")
-			{
-				return GetTerrainSurfaceGraphic(terrain);
-			}
-
-			if (defName == "MossyTerrain")
-			{
-				return MossGraphic;
-			}
-
-			if (terrain.HasTag("Soil"))
-			{
-				return HaygrassGraphic;
-			}
-
-			if (terrain.categoryType.ToString() == "Sand")
-			{
-				return GetTerrainSurfaceGraphic(terrain);
-			}
-
-			return null;
-		}
-
-		public override void Print(SectionLayer layer)
-		{
-			base.Print(layer);
-			if (!Spawned)
-			{
-				return;
-			}
-
-			TerrainDef terrain = Position.GetTerrain(Map);
-			Graphic overlay = GetOverlayForTerrain(terrain);
-			overlay?.Print(layer, this, OverlayExtraY);
-		}
+		private static readonly FloatRange TrapDamageRandomFactorRange = new FloatRange(0.8f, 1.2f);
 
 		protected override void DrawAt(Vector3 drawLoc, bool flip = false)
 		{
@@ -112,8 +20,35 @@ namespace VoidAwake
 
 		protected override void SpringSub(Pawn p)
 		{
-			base.SpringSub(p);
+			SoundDefOf.TrapSpring.PlayOneShot(new TargetInfo(Position, Map, false));
+			if (p == null)
+			{
+				return;
+			}
+
+			float totalDamage = this.GetStatValue(StatDefOf.TrapMeleeDamage, true) * TrapDamageRandomFactorRange.RandomInRange;
+			float damagePerHit = totalDamage / TrapHitCount;
+			float armorPenetration = damagePerHit * 0.015f;
+
+			for (int i = 0; i < TrapHitCount; i++)
+			{
+				BodyPartRecord hitPart = VoidAwake_BearTrapTargetingUtility.ChooseHitPart(p);
+				DamageInfo dinfo = new DamageInfo(DamageDefOf.Stab, damagePerHit, armorPenetration, -1f, this, hitPart, null, DamageInfo.SourceCategory.ThingOrUnknown, null);
+				DamageWorker.DamageResult damageResult = p.TakeDamage(dinfo);
+				if (i == 0)
+				{
+					BattleLogEntry_DamageTaken battleLogEntry = new BattleLogEntry_DamageTaken(p, RulePackDefOf.DamageEvent_TrapSpike, null);
+					Find.BattleLog.Add(battleLogEntry);
+					damageResult.AssociateWithLog(battleLogEntry);
+				}
+			}
+
 			VoidAwake_TrapperUtility.RevealAllTrappersOnMap(Map);
+
+			if (p != null && !p.Dead && p.kindDef?.immuneToTraps != true)
+			{
+				VoidAwake_BearTrapCaughtUtility.TryApplyCaught(p);
+			}
 		}
 
 		public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
@@ -136,8 +71,20 @@ namespace VoidAwake
 		/// <summary>Door cell → reserving trapper thingIDNumber. One trapper per door.</summary>
 		private Dictionary<IntVec3, int> doorReservations = new Dictionary<IntVec3, int>();
 
+		public const int PassagePruneIntervalTicks = 2000;
+
 		public MapComponent_VoidAwake_TrapperTraps(Map map) : base(map)
 		{
+		}
+
+		public override void MapComponentTick()
+		{
+			if (Find.TickManager.TicksGame % PassagePruneIntervalTicks != 0)
+			{
+				return;
+			}
+
+			RabbitPassageUtility.PruneRedundantPassages(map);
 		}
 
 		public void NotifyTrapDestroyed()
@@ -274,6 +221,100 @@ namespace VoidAwake
 
 	public static class VoidAwake_TrapperUtility
 	{
+		/// <summary>Plants and loose items (rock chunks) the trapper simply removes to free a cell.</summary>
+		public static bool IsClearableObstacle(Thing t)
+		{
+			if (t == null || t is Pawn || t is Corpse)
+			{
+				return false;
+			}
+
+			if (t.def.category == ThingCategory.Plant)
+			{
+				return true;
+			}
+
+			return t.def.category == ThingCategory.Item;
+		}
+
+		/// <summary>Standable check that treats plants and chunks as removable rather than blocking.</summary>
+		public static bool StandableIgnoringClearables(Map map, IntVec3 cell)
+		{
+			if (map == null || !cell.InBounds(map))
+			{
+				return false;
+			}
+
+			TerrainDef terrain = cell.GetTerrain(map);
+			if (terrain == null || terrain.passability == Traversability.Impassable)
+			{
+				return false;
+			}
+
+			List<Thing> things = map.thingGrid.ThingsListAtFast(cell);
+			for (int i = 0; i < things.Count; i++)
+			{
+				Thing t = things[i];
+				if (t.def.passability == Traversability.Standable)
+				{
+					continue;
+				}
+
+				if (!IsClearableObstacle(t))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		/// <summary>Remove every plant plus any blocking loose item so a trap or passage fits.</summary>
+		public static void ClearCellObstacles(Map map, IntVec3 cell)
+		{
+			if (map == null || !cell.InBounds(map))
+			{
+				return;
+			}
+
+			List<Thing> things = map.thingGrid.ThingsListAtFast(cell);
+			List<Thing> toRemove = null;
+			for (int i = 0; i < things.Count; i++)
+			{
+				Thing t = things[i];
+				if (!IsClearableObstacle(t))
+				{
+					continue;
+				}
+
+				bool blocks = t.def.passability != Traversability.Standable;
+				if (!blocks && t.def.category != ThingCategory.Plant)
+				{
+					continue;
+				}
+
+				if (toRemove == null)
+				{
+					toRemove = new List<Thing>();
+				}
+
+				toRemove.Add(t);
+			}
+
+			if (toRemove == null)
+			{
+				return;
+			}
+
+			for (int i = 0; i < toRemove.Count; i++)
+			{
+				if (!toRemove[i].Destroyed)
+				{
+					toRemove[i].Destroy(DestroyMode.Vanish);
+				}
+			}
+		}
+
 		public static void NotifyTrapDestroyed(Map map)
 		{
 			if (map == null)
@@ -335,6 +376,126 @@ namespace VoidAwake
 			{
 				revealingAll = false;
 			}
+		}
+	}
+
+	public static class VoidAwake_BearTrapTargetingUtility
+	{
+		public static BodyPartRecord ChooseHitPart(Pawn pawn)
+		{
+			if (pawn == null || pawn.Dead)
+			{
+				return null;
+			}
+
+			HediffSet hediffSet = pawn.health.hediffSet;
+			if (pawn.Downed)
+			{
+				BodyPartRecord head = ChooseHead(hediffSet);
+				if (head != null)
+				{
+					return head;
+				}
+			}
+			else
+			{
+				BodyPartRecord leg = ChooseLeg(hediffSet);
+				if (leg != null)
+				{
+					return leg;
+				}
+			}
+
+			return hediffSet.GetRandomNotMissingPart(DamageDefOf.Stab);
+		}
+
+		private static BodyPartRecord ChooseHead(HediffSet hediffSet)
+		{
+			foreach (BodyPartRecord part in hediffSet.GetNotMissingParts())
+			{
+				if (part.def == BodyPartDefOf.Head)
+				{
+					return part;
+				}
+			}
+
+			return ChooseFromGroup(hediffSet, BodyPartGroupDefOf.FullHead)
+				?? ChooseFromGroup(hediffSet, BodyPartGroupDefOf.UpperHead);
+		}
+
+		private static BodyPartRecord ChooseLeg(HediffSet hediffSet)
+		{
+			List<BodyPartRecord> candidates = null;
+			foreach (BodyPartRecord part in hediffSet.GetNotMissingParts())
+			{
+				if (!IsLegPart(part))
+				{
+					continue;
+				}
+
+				if (candidates == null)
+				{
+					candidates = new List<BodyPartRecord>();
+				}
+
+				candidates.Add(part);
+			}
+
+			if (candidates == null || candidates.Count == 0)
+			{
+				return null;
+			}
+
+			if (candidates.TryRandomElementByWeight(p => p.coverageAbs * p.def.GetHitChanceFactorFor(DamageDefOf.Stab), out BodyPartRecord result))
+			{
+				return result;
+			}
+
+			return candidates.RandomElement();
+		}
+
+		private static bool IsLegPart(BodyPartRecord part)
+		{
+			if (part.IsInGroup(BodyPartGroupDefOf.Legs))
+			{
+				return true;
+			}
+
+			List<BodyPartTagDef> tags = part.def.tags;
+			return tags.Contains(BodyPartTagDefOf.MovingLimbCore)
+				|| tags.Contains(BodyPartTagDefOf.MovingLimbSegment)
+				|| tags.Contains(BodyPartTagDefOf.MovingLimbDigit);
+		}
+
+		private static BodyPartRecord ChooseFromGroup(HediffSet hediffSet, BodyPartGroupDef group)
+		{
+			List<BodyPartRecord> candidates = null;
+			foreach (BodyPartRecord part in hediffSet.GetNotMissingParts())
+			{
+				if (!part.IsInGroup(group))
+				{
+					continue;
+				}
+
+				if (candidates == null)
+				{
+					candidates = new List<BodyPartRecord>();
+				}
+
+				candidates.Add(part);
+			}
+
+			if (candidates == null || candidates.Count == 0)
+			{
+				return null;
+			}
+
+			if (candidates.TryRandomElementByWeight(p => p.coverageAbs * p.def.GetHitChanceFactorFor(DamageDefOf.Stab), out BodyPartRecord result))
+			{
+				return result;
+			}
+
+			return candidates.RandomElement();
 		}
 	}
 }

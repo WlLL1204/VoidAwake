@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- 脱走時に起こる 1 イベント。letterLabel / letterText が設定されていれば脱走時にレターを送る。
+	     バニラの脱走レターは VoidAwake レターがある場合に自動で抑止される。
+
+	     chance                 : 発火確率（既定 1）
+	     onlyWhenInitiator      : true なら連鎖脱走側ではイベント自体を発火しない
+	     letterOnlyWhenInitiator: true ならレターは initiator の脱走時だけ（既定 true） -->
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Default</defName>
+		<label>収容破綻</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Default</workerClass>
+		<letterLabel>収容破綻</letterLabel>
+		<letterText>{PAWN_labelShort} が保持台から脱走した。通常とは異なる形で収容が破られた — 再発を防ぐには収容強度を高めよ。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<!-- ===== バニラ: 専用エンティティ ===== -->
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Metalhorror</defName>
+		<label>メタルホラー脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Metalhorror</workerClass>
+		<letterLabel>メタルホラー脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が拘束を破って脱出した。体が不自然にうねり、既にコロニー内へ広がっているかもしれない。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Revenant</defName>
+		<label>レヴナント脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Revenant</workerClass>
+		<letterLabel>レヴナント脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が拘束をすり抜けた。冷たい恐怖が暗闇へと続いている。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Sightstealer</defName>
+		<label>サイトスティーラー脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Sightstealer</workerClass>
+		<letterLabel>サイトスティーラー脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が逃げ出した。視界の端を警戒せよ — 既に狩りを始めているかもしれない。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Noctol</defName>
+		<label>ノクトル脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Noctol</workerClass>
+		<letterLabel>ノクトル脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が収容を破って脱出した。影の中を不気味な速度で動いている。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Gorehulk</defName>
+		<label>ゴアハルク脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Gorehulk</workerClass>
+		<letterLabel>ゴアハルク脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が拘束を破った。その巨体が通る場所すべてに破壊の跡を残す。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Devourer</defName>
+		<label>デヴァウラー脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Devourer</workerClass>
+		<letterLabel>デヴァウラー脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が脱出した。保持台の近くにいる者は、もはやその飢えから安全ではない。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Chimera</defName>
+		<label>キマイラ脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Chimera</workerClass>
+		<letterLabel>キマイラ脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が脱出した。分裂した精神が、近くのすべてへ牙を向けるかもしれない。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<!-- ===== バニラ: フレッシュビースト ===== -->
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Bulbfreak</defName>
+		<label>バルブフリーク脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Bulbfreak</workerClass>
+		<letterLabel>バルブフリーク脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が破裂するように脱出した。肉が歪み裂け — 小さな怪物が後を追うかもしれない。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Toughspike</defName>
+		<label>タフスパイク脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Toughspike</workerClass>
+		<letterLabel>タフスパイク脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が収容を破って脱出した。装甲のような外皮は弱い打撃をはね返す。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Trispike</defName>
+		<label>トライスパイク脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Trispike</workerClass>
+		<letterLabel>トライスパイク脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が拘束を破り、コロニー内に放たれた。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Fingerspike</defName>
+		<label>フィンガースパイク脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Fingerspike</workerClass>
+		<letterLabel>フィンガースパイク脱出</letterLabel>
+		<letterText>{PAWN_labelShort} がもぎ取るように脱出した。素早く、予想外の角度から襲ってくる。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Dreadmeld</defName>
+		<label>ドレッドメルド脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Dreadmeld</workerClass>
+		<letterLabel>ドレッドメルド脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が脱出した。収容されていた場所から、生きた肉が波のように広がり始める。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<!-- ===== バニラ: 球体 ===== -->
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Nociosphere</defName>
+		<label>ノシオスフィア脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Nociosphere</workerClass>
+		<letterLabel>ノシオスフィア解放</letterLabel>
+		<letterText>{PAWN_labelShort} はもはや拘束されていない。痛みと恐慌がコロニーに広がるかもしれない。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_FleshmassNucleus</defName>
+		<label>肉塊の核 脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_FleshmassNucleus</workerClass>
+		<letterLabel>肉塊の核 解放</letterLabel>
+		<letterText>{PAWN_labelShort} が脱出した。周囲の肉が制御なく増殖し始めるかもしれない。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<!-- ===== バニラ: ミュータント ===== -->
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Shambler</defName>
+		<label>シャンブラー脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Shambler</workerClass>
+		<letterLabel>シャンブラー脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が保持台から起き上がり、生者へとよろめいている。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Ghoul</defName>
+		<label>グール脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Ghoul</workerClass>
+		<letterLabel>グール脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が拘束を破った。痙攣する飢えが、近くの者へ向かうかもしれない。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_AwokenCorpse</defName>
+		<label>目覚めた死体 脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_AwokenCorpse</workerClass>
+		<letterLabel>目覚めた死体 脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が脱出した。死者が歩くはずがない — それが今、歩いている。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<!-- ===== VoidAwake 独自エンティティ ===== -->
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_Trapper</defName>
+		<label>トラッパー脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_Trapper</workerClass>
+		<letterLabel>トラッパー脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が保持台から消えた。罠は既に暗闇の中で待ち構えているかもしれない。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+	<VoidAwake.VoidAwake_EscapeEventDef>
+		<defName>VoidAwake_EscapeEvent_FlyingHed</defName>
+		<label>飛頭蛮 脱走</label>
+		<workerClass>VoidAwake.VoidAwake_EscapeEventWorker_FlyingHed</workerClass>
+		<letterLabel>飛頭蛮 脱出</letterLabel>
+		<letterText>{PAWN_labelShort} が拘束を破った。切断された首がコロニーを漂う — 空も警戒せよ。</letterText>
+	</VoidAwake.VoidAwake_EscapeEventDef>
+
+</Defs>

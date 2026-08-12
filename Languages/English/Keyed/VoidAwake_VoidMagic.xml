@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <!-- Tab -->
+  <VoidAwake_VoidMagicTab>Twisted arcana</VoidAwake_VoidMagicTab>
+  <VoidAwake_VoidMagicHeader>Bonds with contained anomalies: {0}</VoidAwake_VoidMagicHeader>
+  <VoidAwake_VoidMagicNoLinks>No bond has formed yet.\n\nBuild a void meditation spot next to a holding platform and order a colonist to meditate there. The bond with the contained anomaly will slowly deepen.</VoidAwake_VoidMagicNoLinks>
+  <VoidAwake_VoidMagicTierNone>not attuned</VoidAwake_VoidMagicTierNone>
+  <VoidAwake_VoidMagicStatusNew>never meditated</VoidAwake_VoidMagicStatusNew>
+  <VoidAwake_VoidMagicStatusStable>held - stable</VoidAwake_VoidMagicStatusStable>
+  <VoidAwake_VoidMagicStatusLost>anomaly lost -{0}/day</VoidAwake_VoidMagicStatusLost>
+  <VoidAwake_VoidMagicStatusIdle>neglected -{0}/day</VoidAwake_VoidMagicStatusIdle>
+  <VoidAwake_VoidMagicAbilityPending>ability not implemented yet</VoidAwake_VoidMagicAbilityPending>
+  <VoidAwake_VoidMagicTooltipGain>Meditation: +{0} per hour (split between anomalies in range)</VoidAwake_VoidMagicTooltipGain>
+  <VoidAwake_VoidMagicTooltipDecay>Decay: -{0}/day while the anomaly is not contained, -{2}/day after {1} days without meditating</VoidAwake_VoidMagicTooltipDecay>
+
+  <!-- Tier changes -->
+  <VoidAwake_VoidMagicTierGained>{0} deepened a twisted bond with {1}: {2}.</VoidAwake_VoidMagicTierGained>
+  <VoidAwake_VoidMagicTierLost>{0} lost the twisted bond with {1}: {2}.</VoidAwake_VoidMagicTierLost>
+
+  <!-- Meditation spot -->
+  <VoidAwake_VoidMeditateFloatMenu>Meditate on the twisted bond</VoidAwake_VoidMeditateFloatMenu>
+  <VoidAwake_VoidMeditateRequiresAnomaly>requires Anomaly</VoidAwake_VoidMeditateRequiresAnomaly>
+  <VoidAwake_VoidMeditateCannotMeditate>cannot meditate</VoidAwake_VoidMeditateCannotMeditate>
+  <VoidAwake_VoidMeditateNoAnomalyNear>no contained anomaly in range</VoidAwake_VoidMeditateNoAnomalyNear>
+  <VoidAwake_VoidMeditationSpotNoAnomaly>No contained anomaly in range.</VoidAwake_VoidMeditationSpotNoAnomaly>
+  <VoidAwake_VoidMeditationSpotAnomalies>Anomalies in range: {0}</VoidAwake_VoidMeditationSpotAnomalies>
+  <VoidAwake_VoidMeditateInterrupted>{0} stopped meditating: there is no contained anomaly in range.</VoidAwake_VoidMeditateInterrupted>
+
+</LanguageData>

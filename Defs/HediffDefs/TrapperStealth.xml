@@ -3,8 +3,8 @@
 	<HediffDef>
 		<hediffClass>HediffWithComps</hediffClass>
 		<defName>VoidAwake_TrapperStealth</defName>
-		<label>trapper stealth</label>
-		<description>This creature is psychically twisting nearby perceptions so it seems invisible while placing traps.</description>
+		<label>トラッパーの隠密</label>
+		<description>物陰に隠れこっそり移動している</description>
 		<isBad>false</isBad>
 		<comps>
 			<li Class="HediffCompProperties_Invisibility">

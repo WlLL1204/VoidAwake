@@ -59,7 +59,8 @@ namespace VoidAwake
 		}
 
 		/// <summary>
-		/// Next cell inside the door's 3x3 (9 cells). Prefer cells adjacent to the last trap.
+		/// Next trap cell among the four cells cardinally adjacent to the door.
+		/// Prefer cells adjacent to the last trap.
 		/// </summary>
 		public static IntVec3 FindNextCellAroundDoor(Pawn pawn, IntVec3 doorCell, IntVec3 lastTrapCell)
 		{
@@ -114,7 +115,7 @@ namespace VoidAwake
 
 				foreach (IntVec3 cell in CellsAroundDoor(doorCell))
 				{
-					if (IsValidTrapCell(pawn, cell))
+					if (IsNormallyReachableTrapCell(pawn, cell))
 					{
 						candidates.Add((cell, doorCell));
 					}
@@ -129,7 +130,7 @@ namespace VoidAwake
 			candidates.Sort((a, b) =>
 				a.cell.DistanceToSquared(pawn.Position).CompareTo(b.cell.DistanceToSquared(pawn.Position)));
 
-			int take = candidates.Count < 8 ? candidates.Count : 8;
+			int take = candidates.Count < 4 ? candidates.Count : 4;
 
 			// Prefer a door we can actually reserve; try nearby candidates until one sticks.
 			List<IntVec3> triedDoors = new List<IntVec3>();
@@ -171,26 +172,15 @@ namespace VoidAwake
 
 		public static IEnumerable<IntVec3> CellsAroundDoor(IntVec3 doorCell)
 		{
-			// 3x3 centered on door (9 cells), excluding the door cell itself.
-			for (int dx = -1; dx <= 1; dx++)
+			for (int i = 0; i < GenAdj.CardinalDirections.Length; i++)
 			{
-				for (int dz = -1; dz <= 1; dz++)
-				{
-					if (dx == 0 && dz == 0)
-					{
-						continue;
-					}
-
-					yield return doorCell + new IntVec3(dx, 0, dz);
-				}
+				yield return doorCell + GenAdj.CardinalDirections[i];
 			}
 		}
 
 		public static bool IsInDoorNeighborhood(IntVec3 doorCell, IntVec3 cell)
 		{
-			int dx = cell.x - doorCell.x;
-			int dz = cell.z - doorCell.z;
-			return dx >= -1 && dx <= 1 && dz >= -1 && dz <= 1 && !(dx == 0 && dz == 0);
+			return IsCardinalAdjacent(doorCell, cell);
 		}
 
 		private static List<IntVec3> CollectValidCellsAroundDoor(Pawn pawn, IntVec3 doorCell)
@@ -198,7 +188,7 @@ namespace VoidAwake
 			List<IntVec3> result = new List<IntVec3>();
 			foreach (IntVec3 cell in CellsAroundDoor(doorCell))
 			{
-				if (IsValidTrapCell(pawn, cell))
+				if (IsNormallyReachableTrapCell(pawn, cell))
 				{
 					result.Add(cell);
 				}
@@ -214,10 +204,10 @@ namespace VoidAwake
 			return (dx == 0 && (dz == 1 || dz == -1)) || (dz == 0 && (dx == 1 || dx == -1));
 		}
 
-		public static bool IsValidTrapCell(Pawn pawn, IntVec3 cell)
+		public static bool IsValidTrapCellPhysical(Pawn pawn, IntVec3 cell)
 		{
 			Map map = pawn.Map;
-			if (!cell.InBounds(map) || !cell.Standable(map))
+			if (!cell.InBounds(map) || !VoidAwake_TrapperUtility.StandableIgnoringClearables(map, cell))
 			{
 				return false;
 			}
@@ -242,13 +232,24 @@ namespace VoidAwake
 				return false;
 			}
 
-			// Reachable without bashing walls/doors — only cells the trapper can already walk to.
-			if (!pawn.CanReach(cell, PathEndMode.OnCell, Danger.Deadly, false, false, TraverseMode.NoPassClosedDoors))
+			return true;
+		}
+
+		public static bool IsValidTrapCell(Pawn pawn, IntVec3 cell)
+		{
+			if (!IsValidTrapCellPhysical(pawn, cell))
 			{
 				return false;
 			}
 
-			return true;
+			// Reachable via walk and/or rabbit passages (for discovery / FailOn).
+			return RabbitPassageUtility.CanReachWithPassages(pawn, cell);
+		}
+
+		/// <summary>True if the trapper can walk here without passages (safe for Goto place jobs).</summary>
+		public static bool IsNormallyReachableTrapCell(Pawn pawn, IntVec3 cell)
+		{
+			return IsValidTrapCellPhysical(pawn, cell) && RabbitPassageUtility.CanReachNormally(pawn, cell);
 		}
 	}
 }

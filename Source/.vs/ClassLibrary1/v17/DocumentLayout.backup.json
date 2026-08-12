@@ -46,7 +46,7 @@
               "RelativeDocumentMoniker": "ClassLibrary1\\Core\\VoidResearch\\GeneExtraction\\GeneExtraction_Dialog.cs",
               "ToolTip": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\VoidAwake\\Source\\ClassLibrary1\\Core\\VoidResearch\\GeneExtraction\\GeneExtraction_Dialog.cs",
               "RelativeToolTip": "ClassLibrary1\\Core\\VoidResearch\\GeneExtraction\\GeneExtraction_Dialog.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAQwC8AAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAABgAAAAAAAAAAAAQwCEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-09T23:36:33.218Z",
               "EditorCaption": ""
@@ -61,8 +61,7 @@
               "RelativeToolTip": "..\\Defs\\ThingDefs\\Animals\\VoidAwake_Chimera.xml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
-              "WhenOpened": "2026-08-09T08:15:24.405Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-08-09T08:15:24.405Z"
             },
             {
               "$type": "Document",
@@ -74,12 +73,7 @@
               "RelativeToolTip": "..\\Defs\\WorldErosion\\ClockEvent\\ClockEvents.xml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003576|",
-              "WhenOpened": "2026-08-09T07:43:16.049Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+              "WhenOpened": "2026-08-09T07:43:16.049Z"
             },
             {
               "$type": "Document",

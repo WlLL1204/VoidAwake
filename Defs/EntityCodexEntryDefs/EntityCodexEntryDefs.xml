@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 	<EntityCodexEntryDef>
-		<defName>TestAnomaly_DefName</defName><!--名前-->
-		<label>TeatAnomaly_LabelCodex</label><!--表示名-->
-		<useDescriptionFrom>TestAnomaly_DefName</useDescriptionFrom><!--ここに記述したDefNameのエンティティの説明-->
-		<uiIconPath>UI/Entities/Test</uiIconPath><!--UIアイコンのパッチ、-->
-		<category>Basic</category><!--カテゴリ、基礎とか上級とか究極とか-->
+		<defName>Trapper</defName>
+		<label>トラッパー</label>
+		<category>Basic</category>
+		<uiIconPath>Entitys/Trapper/Trapper_south</uiIconPath>
+		<useDescriptionFrom>Trapper</useDescriptionFrom>
 		<discoveryType>BecameVisible</discoveryType>
 		<linkedThings>
-			<li>TestAnomaly_DefName</li>
+			<li>Trapper</li>
 		</linkedThings>
-
+		<discoveredResearchProjects>
+			<li>VoidAwake_TrapperStudy</li>
+		</discoveredResearchProjects>
+		<provocationIncidents>
+			<li>VoidAwake_TrapperArrival</li>
+		</provocationIncidents>
 	</EntityCodexEntryDef>
 </Defs>

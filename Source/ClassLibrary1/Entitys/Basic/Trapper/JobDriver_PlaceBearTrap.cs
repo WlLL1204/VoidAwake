@@ -44,6 +44,8 @@ namespace VoidAwake
 				return;
 			}
 
+			VoidAwake_TrapperUtility.ClearCellObstacles(Map, cell);
+
 			Thing trap = ThingMaker.MakeThing(VoidAwake_TrapperDefOf.VoidAwake_BearTrap);
 			trap.SetFaction(Faction.OfEntities);
 			GenSpawn.Spawn(trap, cell, Map, WipeMode.Vanish);

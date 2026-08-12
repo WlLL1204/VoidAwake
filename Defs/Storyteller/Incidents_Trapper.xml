@@ -3,7 +3,7 @@
 
 	<IncidentDef ParentName="AnomalyIncidentBase">
 		<defName>VoidAwake_TrapperArrival</defName>
-		<label>trapper arrival</label>
+		<label>トラッパーの出現</label>
 		<targetTags>
 			<li>Map_PlayerHome</li>
 		</targetTags>

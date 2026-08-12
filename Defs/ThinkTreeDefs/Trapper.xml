@@ -31,6 +31,12 @@
 
         <li Class="JobGiver_ReactToCloseMeleeThreat" />
 
+        <li Class="VoidAwake.ThinkNode_ConditionalTrapperKidnap">
+          <subNodes>
+            <li Class="VoidAwake.JobGiver_TrapperKidnap" />
+          </subNodes>
+        </li>
+
         <li Class="ThinkNode_Subtree">
           <treeDef>MentalStateNonCritical</treeDef>
         </li>
@@ -39,19 +45,20 @@
           <treeDef>LordDuty</treeDef>
         </li>
 
-        <!-- Stealth: place traps, no aggressive fight -->
+        <!-- Stealth: place traps, escape outside, reuse a passage before digging a new one, wait -->
         <li Class="VoidAwake.ThinkNode_ConditionalTrapperStealth">
           <subNodes>
             <li Class="VoidAwake.JobGiver_TrapperPlaceTrap" />
+            <li Class="VoidAwake.JobGiver_TrapperEscapeOutside" />
+            <li Class="VoidAwake.JobGiver_TrapperUseRabbitPassage" />
+            <li Class="VoidAwake.JobGiver_TrapperCreateRabbitPassage" />
             <li Class="ThinkNode_Tagger">
               <tagToGive>Idle</tagToGive>
               <subNodes>
-                <li Class="JobGiver_WanderAnywhere">
+                <li Class="VoidAwake.JobGiver_TrapperWanderOutside">
                   <maxDanger>Deadly</maxDanger>
                   <ticksBetweenWandersRange>180~720</ticksBetweenWandersRange>
                   <wanderRadius>6</wanderRadius>
-                  <canBashDoors>false</canBashDoors>
-                  <expireOnNearbyEnemy>true</expireOnNearbyEnemy>
                 </li>
               </subNodes>
             </li>

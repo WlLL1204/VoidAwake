@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+	<VoidAwake_EscapeEvent_Default.letterLabel>収容破綻</VoidAwake_EscapeEvent_Default.letterLabel>
+	<VoidAwake_EscapeEvent_Default.letterText>{PAWN_labelShort} が保持台から脱走した。通常とは異なる形で収容が破られた — 再発を防ぐには収容強度を高めよ。</VoidAwake_EscapeEvent_Default.letterText>
+
+	<VoidAwake_EscapeEvent_Metalhorror.letterLabel>メタルホラー脱出</VoidAwake_EscapeEvent_Metalhorror.letterLabel>
+	<VoidAwake_EscapeEvent_Metalhorror.letterText>{PAWN_labelShort} が拘束を破って脱出した。体が不自然にうねり、既にコロニー内へ広がっているかもしれない。</VoidAwake_EscapeEvent_Metalhorror.letterText>
+
+	<VoidAwake_EscapeEvent_Revenant.letterLabel>レヴナント脱出</VoidAwake_EscapeEvent_Revenant.letterLabel>
+	<VoidAwake_EscapeEvent_Revenant.letterText>{PAWN_labelShort} が拘束をすり抜けた。冷たい恐怖が暗闇へと続いている。</VoidAwake_EscapeEvent_Revenant.letterText>
+
+	<VoidAwake_EscapeEvent_Sightstealer.letterLabel>サイトスティーラー脱出</VoidAwake_EscapeEvent_Sightstealer.letterLabel>
+	<VoidAwake_EscapeEvent_Sightstealer.letterText>{PAWN_labelShort} が逃げ出した。視界の端を警戒せよ — 既に狩りを始めているかもしれない。</VoidAwake_EscapeEvent_Sightstealer.letterText>
+
+	<VoidAwake_EscapeEvent_Noctol.letterLabel>ノクトル脱出</VoidAwake_EscapeEvent_Noctol.letterLabel>
+	<VoidAwake_EscapeEvent_Noctol.letterText>{PAWN_labelShort} が収容を破って脱出した。影の中を不気味な速度で動いている。</VoidAwake_EscapeEvent_Noctol.letterText>
+
+	<VoidAwake_EscapeEvent_Gorehulk.letterLabel>ゴアハルク脱出</VoidAwake_EscapeEvent_Gorehulk.letterLabel>
+	<VoidAwake_EscapeEvent_Gorehulk.letterText>{PAWN_labelShort} が拘束を破った。その巨体が通る場所すべてに破壊の跡を残す。</VoidAwake_EscapeEvent_Gorehulk.letterText>
+
+	<VoidAwake_EscapeEvent_Devourer.letterLabel>デヴァウラー脱出</VoidAwake_EscapeEvent_Devourer.letterLabel>
+	<VoidAwake_EscapeEvent_Devourer.letterText>{PAWN_labelShort} が脱出した。保持台の近くにいる者は、もはやその飢えから安全ではない。</VoidAwake_EscapeEvent_Devourer.letterText>
+
+	<VoidAwake_EscapeEvent_Chimera.letterLabel>キマイラ脱出</VoidAwake_EscapeEvent_Chimera.letterLabel>
+	<VoidAwake_EscapeEvent_Chimera.letterText>{PAWN_labelShort} が脱出した。分裂した精神が、近くのすべてへ牙を向けるかもしれない。</VoidAwake_EscapeEvent_Chimera.letterText>
+
+	<VoidAwake_EscapeEvent_Bulbfreak.letterLabel>バルブフリーク脱出</VoidAwake_EscapeEvent_Bulbfreak.letterLabel>
+	<VoidAwake_EscapeEvent_Bulbfreak.letterText>{PAWN_labelShort} が破裂するように脱出した。肉が歪み裂け — 小さな怪物が後を追うかもしれない。</VoidAwake_EscapeEvent_Bulbfreak.letterText>
+
+	<VoidAwake_EscapeEvent_Toughspike.letterLabel>タフスパイク脱出</VoidAwake_EscapeEvent_Toughspike.letterLabel>
+	<VoidAwake_EscapeEvent_Toughspike.letterText>{PAWN_labelShort} が収容を破って脱出した。装甲のような外皮は弱い打撃をはね返す。</VoidAwake_EscapeEvent_Toughspike.letterText>
+
+	<VoidAwake_EscapeEvent_Trispike.letterLabel>トライスパイク脱出</VoidAwake_EscapeEvent_Trispike.letterLabel>
+	<VoidAwake_EscapeEvent_Trispike.letterText>{PAWN_labelShort} が拘束を破り、コロニー内に放たれた。</VoidAwake_EscapeEvent_Trispike.letterText>
+
+	<VoidAwake_EscapeEvent_Fingerspike.letterLabel>フィンガースパイク脱出</VoidAwake_EscapeEvent_Fingerspike.letterLabel>
+	<VoidAwake_EscapeEvent_Fingerspike.letterText>{PAWN_labelShort} がもぎ取るように脱出した。素早く、予想外の角度から襲ってくる。</VoidAwake_EscapeEvent_Fingerspike.letterText>
+
+	<VoidAwake_EscapeEvent_Dreadmeld.letterLabel>ドレッドメルド脱出</VoidAwake_EscapeEvent_Dreadmeld.letterLabel>
+	<VoidAwake_EscapeEvent_Dreadmeld.letterText>{PAWN_labelShort} が脱出した。収容されていた場所から、生きた肉が波のように広がり始める。</VoidAwake_EscapeEvent_Dreadmeld.letterText>
+
+	<VoidAwake_EscapeEvent_Nociosphere.letterLabel>ノシオスフィア解放</VoidAwake_EscapeEvent_Nociosphere.letterLabel>
+	<VoidAwake_EscapeEvent_Nociosphere.letterText>{PAWN_labelShort} はもはや拘束されていない。痛みと恐慌がコロニーに広がるかもしれない。</VoidAwake_EscapeEvent_Nociosphere.letterText>
+
+	<VoidAwake_EscapeEvent_FleshmassNucleus.letterLabel>肉塊の核 解放</VoidAwake_EscapeEvent_FleshmassNucleus.letterLabel>
+	<VoidAwake_EscapeEvent_FleshmassNucleus.letterText>{PAWN_labelShort} が脱出した。周囲の肉が制御なく増殖し始めるかもしれない。</VoidAwake_EscapeEvent_FleshmassNucleus.letterText>
+
+	<VoidAwake_EscapeEvent_Shambler.letterLabel>シャンブラー脱出</VoidAwake_EscapeEvent_Shambler.letterLabel>
+	<VoidAwake_EscapeEvent_Shambler.letterText>{PAWN_labelShort} が保持台から起き上がり、生者へとよろめいている。</VoidAwake_EscapeEvent_Shambler.letterText>
+
+	<VoidAwake_EscapeEvent_Ghoul.letterLabel>グール脱出</VoidAwake_EscapeEvent_Ghoul.letterLabel>
+	<VoidAwake_EscapeEvent_Ghoul.letterText>{PAWN_labelShort} が拘束を破った。痙攣する飢えが、近くの者へ向かうかもしれない。</VoidAwake_EscapeEvent_Ghoul.letterText>
+
+	<VoidAwake_EscapeEvent_AwokenCorpse.letterLabel>目覚めた死体 脱出</VoidAwake_EscapeEvent_AwokenCorpse.letterLabel>
+	<VoidAwake_EscapeEvent_AwokenCorpse.letterText>{PAWN_labelShort} が脱出した。死者が歩くはずがない — それが今、歩いている。</VoidAwake_EscapeEvent_AwokenCorpse.letterText>
+
+	<VoidAwake_EscapeEvent_Trapper.letterLabel>トラッパー脱出</VoidAwake_EscapeEvent_Trapper.letterLabel>
+	<VoidAwake_EscapeEvent_Trapper.letterText>{PAWN_labelShort} が保持台から消えた。罠は既に暗闇の中で待ち構えているかもしれない。</VoidAwake_EscapeEvent_Trapper.letterText>
+
+	<VoidAwake_EscapeEvent_FlyingHed.letterLabel>飛頭蛮 脱出</VoidAwake_EscapeEvent_FlyingHed.letterLabel>
+	<VoidAwake_EscapeEvent_FlyingHed.letterText>{PAWN_labelShort} が拘束を破った。切断された首がコロニーを漂う — 空も警戒せよ。</VoidAwake_EscapeEvent_FlyingHed.letterText>
+
+</LanguageData>

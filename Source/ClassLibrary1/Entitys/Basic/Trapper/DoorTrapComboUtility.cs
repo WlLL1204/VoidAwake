@@ -9,26 +9,46 @@ namespace VoidAwake
 	{
 		public const int MinTrapsToTrigger = 3;
 
-		public const float TrapVisualAlpha = 0.85f;
+		private const float TripwireGlowWidth = 0.34f;
+
+		private const float TripwireCoreWidth = 0.16f;
 
 		private static bool triggering;
 
-		private static Material tripwireMaterial;
+		private static Material tripwireGlowMaterial;
 
-		public static Material TripwireMaterial
+		private static Material tripwireCoreMaterial;
+
+		/// <summary>Wide red halo. MoteGlow keeps it bright regardless of light level.</summary>
+		public static Material TripwireGlowMaterial
 		{
 			get
 			{
-				if (tripwireMaterial == null)
+				if (tripwireGlowMaterial == null)
 				{
-					// Fully opaque so connected traps stay easy to spot.
-					tripwireMaterial = MaterialPool.MatFrom(
+					tripwireGlowMaterial = MaterialPool.MatFrom(
 						GenDraw.LineTexPath,
-						ShaderDatabase.Transparent,
-						new Color(0.35f, 0.22f, 0.12f, 1f));
+						ShaderDatabase.MoteGlow,
+						new Color(1f, 0.15f, 0.08f, 1f));
 				}
 
-				return tripwireMaterial;
+				return tripwireGlowMaterial;
+			}
+		}
+
+		public static Material TripwireCoreMaterial
+		{
+			get
+			{
+				if (tripwireCoreMaterial == null)
+				{
+					tripwireCoreMaterial = MaterialPool.MatFrom(
+						GenDraw.LineTexPath,
+						ShaderDatabase.MoteGlow,
+						new Color(1f, 0.9f, 0.6f, 1f));
+				}
+
+				return tripwireCoreMaterial;
 			}
 		}
 
@@ -187,7 +207,8 @@ namespace VoidAwake
 							continue;
 						}
 
-						DamageInfo dinfo = new DamageInfo(DamageDefOf.Stab, damage, armorPenetration, -1f, traps[0]);
+						BodyPartRecord hitPart = VoidAwake_BearTrapTargetingUtility.ChooseHitPart(pawn);
+						DamageInfo dinfo = new DamageInfo(DamageDefOf.Stab, damage, armorPenetration, -1f, traps[0], hitPart);
 						pawn.TakeDamage(dinfo);
 					}
 				}
@@ -228,9 +249,9 @@ namespace VoidAwake
 			Map map = trap.Map;
 			IntVec3 trapCell = trap.Position;
 			List<Building_VoidAwake_BearTrap> shared = new List<Building_VoidAwake_BearTrap>(4);
-			Material mat = TripwireMaterial;
+			float pulse = 1.075f + 0.175f * Mathf.Sin(Time.realtimeSinceStartup * 3f);
 			Vector3 from = trap.TrueCenter();
-			from.y = AltitudeLayer.Projectile.AltitudeFor();
+			from.y = AltitudeLayer.MoteOverhead.AltitudeFor();
 
 			for (int i = 0; i < 4; i++)
 			{
@@ -267,7 +288,14 @@ namespace VoidAwake
 
 					Vector3 to = other.TrueCenter();
 					to.y = from.y;
-					GenDraw.DrawLineBetween(from, to, mat, 0.12f);
+					GenDraw.DrawLineBetween(from, to, TripwireGlowMaterial, TripwireGlowWidth * pulse);
+
+					// Slightly above the halo so the bright core is never z-fought away.
+					Vector3 coreFrom = from;
+					Vector3 coreTo = to;
+					coreFrom.y += 0.03f;
+					coreTo.y += 0.03f;
+					GenDraw.DrawLineBetween(coreFrom, coreTo, TripwireCoreMaterial, TripwireCoreWidth * pulse);
 				}
 			}
 		}

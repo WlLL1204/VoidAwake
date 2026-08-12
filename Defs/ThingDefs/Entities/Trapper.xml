@@ -3,8 +3,8 @@
 
 	<ThingDef ParentName="BasePawn">
 		<defName>Trapper</defName>
-		<label>Trapper</label>
-		<description>A void entity that slips unseen toward colony doors and leaves concealed bear traps in its wake.</description>
+		<label>トラッパー</label>
+		<description>可愛らしい兎のアノマリー。普段は身を隠し罠を張り狩りをする、獲物が罠に掛かったり、罠を見破られたと感じた時に姿を現す</description>
 		<tradeability>None</tradeability>
 		<hiddenWhileUndiscovered>true</hiddenWhileUndiscovered>
 		<comps>
@@ -12,6 +12,8 @@
 				<placeCooldownTicks>2500</placeCooldownTicks>
 				<stealthReturnDelayTicks>180</stealthReturnDelayTicks>
 				<combatMinDurationTicks>2500</combatMinDurationTicks>
+				<passageUseTicks>120</passageUseTicks>
+				<kidnapRetryTicks>120</kidnapRetryTicks>
 			</li>
 		</comps>
 		<race>
@@ -70,7 +72,7 @@
 
 	<PawnKindDef>
 		<defName>Trapper</defName>
-		<label>Trapper</label>
+		<label>トラッパー</label>
 		<race>Trapper</race>
 		<overrideDeathOnDownedChance>0.25</overrideDeathOnDownedChance>
 		<overrideDebugActionCategory>Entity</overrideDebugActionCategory>

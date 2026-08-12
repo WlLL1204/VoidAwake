@@ -20,4 +20,19 @@ namespace VoidAwake
 			return comp != null && comp.IsCombat;
 		}
 	}
+
+	public class ThinkNode_ConditionalTrapperKidnap : ThinkNode_Conditional
+	{
+		protected override bool Satisfied(Pawn pawn)
+		{
+			VoidAwake_TrapperComp comp = pawn.TryGetComp<VoidAwake_TrapperComp>();
+			if (comp == null)
+			{
+				return false;
+			}
+
+			return comp.IsKidnap
+				|| (comp.IsStealth && VoidAwake_TrapperKidnapUtility.HasKidnapTargets(pawn));
+		}
+	}
 }

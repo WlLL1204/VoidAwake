@@ -3,14 +3,14 @@
 
 	<ThingDef ParentName="BuildingBase">
 		<defName>VoidAwake_BearTrap</defName>
-		<label>bear trap</label>
-		<description>A concealed void-forged snare. Springs when disturbed, then breaks apart.</description>
+		<label>トラバサミ</label>
+		<description>トラッパーによって仕掛けられた特殊なトラバサミ</description>
 		<thingClass>VoidAwake.Building_VoidAwake_BearTrap</thingClass>
 		<graphicData>
 			<texPath>Entitys/Trapper/bearTrap</texPath>
 			<graphicClass>Graphic_Single</graphicClass>
-			<shaderType>Transparent</shaderType>
-			<color>(1, 1, 1, 0.85)</color>
+			<shaderType>Cutout</shaderType>
+			<color>(1, 1, 1, 1)</color>
 			<drawSize>1</drawSize>
 		</graphicData>
 		<altitudeLayer>Building</altitudeLayer>

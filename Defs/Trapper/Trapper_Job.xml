@@ -3,7 +3,31 @@
 	<JobDef>
 		<defName>VoidAwake_PlaceBearTrap</defName>
 		<driverClass>VoidAwake.JobDriver_PlaceBearTrap</driverClass>
-		<reportString>placing a trap.</reportString>
+		<reportString>罠を設置している。</reportString>
+		<allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+	</JobDef>
+	<JobDef>
+		<defName>VoidAwake_CreateRabbitPassage</defName>
+		<driverClass>VoidAwake.JobDriver_CreateRabbitPassage</driverClass>
+		<reportString>兎の通り道を掘っている。</reportString>
+		<allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+	</JobDef>
+	<JobDef>
+		<defName>VoidAwake_UseRabbitPassage</defName>
+		<driverClass>VoidAwake.JobDriver_UseRabbitPassage</driverClass>
+		<reportString>兎の通り道をすり抜けている。</reportString>
+		<allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+	</JobDef>
+	<JobDef>
+		<defName>VoidAwake_DisarmBearTrap</defName>
+		<driverClass>VoidAwake.JobDriver_DisarmBearTrap</driverClass>
+		<reportString>罠を解除している。</reportString>
+		<allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+	</JobDef>
+	<JobDef>
+		<defName>VoidAwake_TrapperKidnap</defName>
+		<driverClass>VoidAwake.JobDriver_TrapperKidnap</driverClass>
+		<reportString>入植者を拉致している。</reportString>
 		<allowOpportunisticPrefix>false</allowOpportunisticPrefix>
 	</JobDef>
 </Defs>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <VoidAwake_VoidMagicDefault.label>捻じれた繋がり</VoidAwake_VoidMagicDefault.label>
+  <VoidAwake_VoidMagicDefault.description>収容されたアノマリーの傍らで瞑想することで結ばれる繋がり。</VoidAwake_VoidMagicDefault.description>
+  <VoidAwake_VoidMagicDefault.tiers.0.label>微かな共鳴</VoidAwake_VoidMagicDefault.tiers.0.label>
+  <VoidAwake_VoidMagicDefault.tiers.1.label>共振</VoidAwake_VoidMagicDefault.tiers.1.label>
+  <VoidAwake_VoidMagicDefault.tiers.2.label>深き共鳴</VoidAwake_VoidMagicDefault.tiers.2.label>
+  <VoidAwake_VoidMagicDefault.tiers.3.label>同化</VoidAwake_VoidMagicDefault.tiers.3.label>
+
+</LanguageData>

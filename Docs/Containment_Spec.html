@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>収容・脱走イベント 仕様書 | VoidAwake</title>
+<style>
+	:root {
+		--bg: #14161a;
+		--panel: #1c1f26;
+		--panel2: #22262f;
+		--line: #333945;
+		--text: #e6e8ec;
+		--muted: #9aa3b2;
+		--accent: #3db8a8;
+		--accent2: #7ed9cb;
+		--good: #6bd39a;
+		--warn: #ffb84d;
+	}
+
+	* { box-sizing: border-box; }
+
+	html { scroll-behavior: smooth; }
+
+	body {
+		margin: 0;
+		background: var(--bg);
+		color: var(--text);
+		font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+		font-size: 15px;
+		line-height: 1.75;
+	}
+
+	.wrap {
+		max-width: 1040px;
+		margin: 0 auto;
+		padding: 0 24px 96px;
+	}
+
+	header.hero {
+		background: linear-gradient(160deg, #142826 0%, #1c1f26 60%);
+		border-bottom: 1px solid var(--line);
+		padding: 48px 24px 40px;
+		margin-bottom: 40px;
+	}
+
+	header.hero .inner { max-width: 1040px; margin: 0 auto; }
+
+	header.hero h1 {
+		margin: 0 0 8px;
+		font-size: 34px;
+		letter-spacing: 0.02em;
+	}
+
+	header.hero h1 small {
+		display: block;
+		font-size: 14px;
+		font-weight: normal;
+		color: var(--accent2);
+		letter-spacing: 0.16em;
+		margin-bottom: 10px;
+	}
+
+	header.hero p.lead {
+		margin: 0;
+		max-width: 68ch;
+		color: var(--muted);
+	}
+
+	.meta {
+		margin-top: 20px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.tag {
+		display: inline-block;
+		background: rgba(61, 184, 168, 0.12);
+		border: 1px solid rgba(61, 184, 168, 0.4);
+		color: var(--accent2);
+		border-radius: 999px;
+		padding: 2px 12px;
+		font-size: 12px;
+		letter-spacing: 0.04em;
+	}
+
+	nav.toc {
+		background: var(--panel);
+		border: 1px solid var(--line);
+		border-radius: 10px;
+		padding: 18px 24px;
+		margin-bottom: 40px;
+	}
+
+	nav.toc h2 {
+		margin: 0 0 10px;
+		font-size: 13px;
+		letter-spacing: 0.18em;
+		color: var(--muted);
+		border: none;
+		padding: 0;
+	}
+
+	nav.toc ol {
+		margin: 0;
+		padding-left: 20px;
+		columns: 2;
+		column-gap: 32px;
+	}
+
+	nav.toc a { color: var(--text); text-decoration: none; }
+	nav.toc a:hover { color: var(--accent2); text-decoration: underline; }
+
+	section { margin-bottom: 48px; }
+
+	h2 {
+		font-size: 22px;
+		margin: 0 0 16px;
+		padding-bottom: 8px;
+		border-bottom: 2px solid var(--accent);
+	}
+
+	h3 {
+		font-size: 16px;
+		margin: 28px 0 10px;
+		color: var(--accent2);
+	}
+
+	p { margin: 0 0 14px; }
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 0 0 18px;
+		font-size: 14px;
+		background: var(--panel);
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	caption {
+		caption-side: top;
+		text-align: left;
+		color: var(--muted);
+		font-size: 13px;
+		padding: 0 0 6px;
+	}
+
+	th, td {
+		border-bottom: 1px solid var(--line);
+		padding: 9px 14px;
+		text-align: left;
+		vertical-align: top;
+	}
+
+	thead th {
+		background: var(--panel2);
+		color: var(--accent2);
+		font-weight: 600;
+		white-space: nowrap;
+	}
+
+	tbody tr:last-child th, tbody tr:last-child td { border-bottom: none; }
+
+	tbody th {
+		font-weight: 600;
+		white-space: nowrap;
+		width: 30%;
+		color: var(--text);
+	}
+
+	td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+	code {
+		font-family: Consolas, "SF Mono", Menlo, monospace;
+		font-size: 0.92em;
+		background: rgba(255, 255, 255, 0.07);
+		border-radius: 4px;
+		padding: 1px 5px;
+	}
+
+	ul, ol { margin: 0 0 14px; padding-left: 22px; }
+	li { margin-bottom: 5px; }
+
+	.note, .warn {
+		border-left: 3px solid var(--good);
+		background: rgba(107, 211, 154, 0.08);
+		padding: 12px 16px;
+		border-radius: 0 8px 8px 0;
+		margin: 0 0 18px;
+		font-size: 14px;
+	}
+
+	.warn {
+		border-left-color: var(--warn);
+		background: rgba(255, 184, 77, 0.08);
+	}
+
+	.flow {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+		margin: 0 0 18px;
+	}
+
+	.flow .step {
+		background: var(--panel2);
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		padding: 8px 14px;
+		font-size: 13px;
+		white-space: nowrap;
+	}
+
+	.flow .step.hot { border-color: var(--accent); color: var(--accent2); }
+
+	.flow .arrow { color: var(--muted); font-size: 15px; }
+
+	.cols {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+	}
+
+	.cols > * { flex: 1 1 320px; min-width: 0; }
+
+	footer {
+		border-top: 1px solid var(--line);
+		color: var(--muted);
+		font-size: 13px;
+		padding-top: 18px;
+	}
+
+	@media print {
+		:root {
+			--bg: #ffffff;
+			--panel: #ffffff;
+			--panel2: #f2f2f2;
+			--line: #bbbbbb;
+			--text: #111111;
+			--muted: #555555;
+			--accent: #1a7a6c;
+			--accent2: #0f5c50;
+		}
+
+		body { font-size: 10.5pt; line-height: 1.55; }
+		header.hero { background: none; padding: 0 0 16px; margin-bottom: 20px; }
+		nav.toc { display: none; }
+		section { break-inside: avoid; margin-bottom: 22px; }
+		h2 { font-size: 15pt; }
+		table { font-size: 9.5pt; break-inside: avoid; }
+		.tag { border-color: #999; color: #0f5c50; background: none; }
+		a { color: inherit; text-decoration: none; }
+	}
+</style>
+</head>
+<body>
+
+<header class="hero">
+	<div class="inner">
+		<h1><small>VOIDAWAKE / CONTAINMENT SPECIFICATION</small>収容・脱走イベント 仕様書</h1>
+		<p class="lead">
+			保持台の収容強度が足りていれば脱走を完全に止め、脱走が起きた場合はアノマリー種ごとの特殊イベントを発火する枠組み。
+			本書は現行実装（XML の Def と C#）から読み取った仕様のみを記載しています。
+		</p>
+		<div class="meta">
+			<span class="tag">Containment</span>
+			<span class="tag">VoidAwake_ContainmentEscapeDef</span>
+			<span class="tag">VoidAwake_EscapeEventDef</span>
+			<span class="tag">最終更新 2026-08-12</span>
+		</div>
+	</div>
+</header>
+
+<div class="wrap">
+
+<nav class="toc">
+	<h2>目次</h2>
+	<ol>
+		<li><a href="#overview">概要</a></li>
+		<li><a href="#block">完全収容（脱走阻止）</a></li>
+		<li><a href="#flow">脱走時の処理フロー</a></li>
+		<li><a href="#defs">Def の 2 層構造</a></li>
+		<li><a href="#entities">対象アノマリー一覧</a></li>
+		<li><a href="#worker">イベントワーカー契約</a></li>
+		<li><a href="#extend">拡張手順</a></li>
+		<li><a href="#debug">デバッグ</a></li>
+		<li><a href="#files">ファイル対応表</a></li>
+	</ol>
+</nav>
+
+<section id="overview">
+	<h2>1. 概要</h2>
+	<p>
+		本機能は Anomaly の保持台（Holding Platform）収容に対する VoidAwake 側のルール変更と拡張枠です。
+		大きく二つの柱があります。
+	</p>
+	<ul>
+		<li><strong>完全収容</strong> — 足場の収容強度がエンティティの必要収容強度以上なら、脱走抽選も連鎖脱走も絶対に発生しない。</li>
+		<li><strong>特殊脱走イベント</strong> — 脱走が起きたとき、そのアノマリーに紐づくイベント Def を順に発火する。各 Def にはアノマリー別の脱走レターが設定されている。ワーカー本体は現状ほぼ空実装。</li>
+	</ul>
+
+	<table>
+		<caption>バニラとの差分</caption>
+		<thead>
+			<tr><th>項目</th><th>バニラ</th><th>VoidAwake</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>収容強度が足りているとき</th>
+				<td>脱走間隔（MTB）が延びるだけ（最大約 8 倍）。ゼロにはならない</td>
+				<td>脱走間隔が <code>Never</code>。抽選そのものが起きない</td>
+			</tr>
+			<tr>
+				<th>収容強度が足りないとき</th>
+				<td>従来どおり MTB 抽選</td>
+				<td>従来どおり（本パッチは介入しない）</td>
+			</tr>
+			<tr>
+				<th>脱走発生時</th>
+				<td>台から排出・敵ターゲット設定・同室連鎖・汎用脅威レター</td>
+				<td>バニラ処理のあと、アノマリー別イベントを発火（レター含む）。VoidAwake レターがある initiator 脱走ではバニラレターを抑止</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="note">
+		イベントワーカーはほぼ空実装ですが、各イベント Def には <code>letterLabel</code> / <code>letterText</code> が設定されており、
+		脱走時にアノマリー別レターが送られます。個別演出はワーカーの <code>DoEscapeEvent</code> を実装すれば足せます。
+	</div>
+</section>
+
+<section id="block">
+	<h2>2. 完全収容（脱走阻止）</h2>
+
+	<h3>判定式</h3>
+	<p>
+		足場がエンティティを「安全に収容している」とみなす条件は、バニラの <code>Thing.SafelyContains</code> と同じです。
+	</p>
+	<p>
+		<code>CompEntityHolder.ContainmentStrength &gt;= entity.GetStatValue(MinimumContainmentStrength)</code>
+	</p>
+	<p>
+		保持台の検査文が赤字（収容強度不足）でなければ脱走しない、という対応になります。
+		保持スポット（<code>HoldingSpot</code>）は <code>containmentFactor</code> 0.7 が掛かるため、同じ部屋でも保持台より不利です。
+	</p>
+
+	<h3>差し込み点</h3>
+	<p>
+		バニラの脱走抽選は <code>CompHoldingPlatformTarget.CaptivityTick</code> が 2500 tick ごとに行い、
+		<code>ContainmentUtility.InitiateEscapeMtbDays</code> が負なら抽選しません。
+		同室の連鎖脱走も同じ関数が <code>&lt;= 0</code> なら参加しません。
+		<code>InitiateEscapeMtbDays</code> は冒頭で <code>CanParticipateInEscape</code> を呼び、false なら即 <code>-1</code> を返します。
+	</p>
+	<p>
+		したがって VoidAwake は <code>ContainmentUtility.CanParticipateInEscape</code> の Postfix 一箇所だけを変更します。
+		収容強度が足りていれば <code>__result = false</code> にし、ITab 用の内訳文字列に
+		<code>VoidAwake_FactorSafelyContained</code>（日本語: 収容強度が十分）を追記します。
+	</p>
+
+	<table>
+		<thead>
+			<tr><th>結果</th><th>プレイヤーに見えるもの</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>完全収容中</th>
+				<td>エンティティタブの脱走間隔が <code>Never</code>。ツールチップ内訳に「収容強度が十分: x0%」</td>
+			</tr>
+			<tr>
+				<th>強度不足</th>
+				<td>従来どおり日数表示の脱走間隔</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="warn">
+		Dev ギズモや <code>ForceEscapeRoom</code> による強制脱走は、この阻止パッチを経由しません。
+		収容強度が足りていても強制脱走できます（イベント確認用）。
+	</div>
+</section>
+
+<section id="flow">
+	<h2>3. 脱走時の処理フロー</h2>
+
+	<div class="flow">
+		<span class="step">CaptivityTick<br/>2500 tick</span><span class="arrow">&rarr;</span>
+		<span class="step">InitiateEscapeMtbDays</span><span class="arrow">&rarr;</span>
+		<span class="step hot">CanParticipateInEscape<br/>（強度足りれば false）</span><span class="arrow">&rarr;</span>
+		<span class="step">MTB 抽選</span><span class="arrow">&rarr;</span>
+		<span class="step">Escape(initiator)</span>
+	</div>
+	<div class="flow">
+		<span class="step">Prefix: 足場 / Map / Cell 退避</span><span class="arrow">&rarr;</span>
+		<span class="step">EjectContents → 敵設定 → 連鎖 → バニラレター（抑止可）</span><span class="arrow">&rarr;</span>
+		<span class="step hot">Postfix: イベント順に発火（レター送信）</span>
+	</div>
+
+	<p>
+		<code>Escape</code> は冒頭で <code>EjectContents</code> を呼ぶため、Postfix 時点では <code>HeldPlatform</code> が null になります。
+		そのため Prefix で足場・Map・座標を <code>VoidAwake_EscapeContext</code> に退避してからイベントへ渡します。
+	</p>
+	<p>
+		連鎖脱走では各ポーンが個別に <code>Escape(initiator: false)</code> を呼びます。
+		各ポーンごとに自分のまとめ Def のイベントが発火します。
+	</p>
+</section>
+
+<section id="defs">
+	<h2>4. Def の 2 層構造</h2>
+	<p>
+		Def は「イベント 1 件」と「アノマリー 1 体分のまとめ」に分かれています。
+		同じイベントを複数アノマリーで使い回したり、1 体に複数イベントを組み合わせたりできます。
+	</p>
+
+	<table>
+		<thead>
+			<tr><th>Def</th><th>役割</th><th>主なフィールド</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th><code>VoidAwake_ContainmentEscapeDef</code></th>
+				<td>アノマリー 1 体分の脱走設定</td>
+				<td><code>entityDef</code> / <code>mutantDef</code> / <code>events</code></td>
+			</tr>
+			<tr>
+				<th><code>VoidAwake_EscapeEventDef</code></th>
+				<td>脱走時に起こる 1 イベント（再利用可）</td>
+				<td><code>workerClass</code> / <code>chance</code>（既定 1） / <code>onlyWhenInitiator</code> / <code>letterLabel</code> / <code>letterText</code> / <code>letterDef</code> / <code>letterOnlyWhenInitiator</code></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<h3>解決優先度</h3>
+	<p><code>ContainmentEscapeUtility.ContainmentEscapeDefFor</code> が次の順でまとめ Def を選びます。</p>
+	<ol>
+		<li><code>entityDef</code> と <code>mutantDef</code> の両方が一致</li>
+		<li><code>mutantDef</code> のみ指定された Def が一致</li>
+		<li><code>entityDef</code> のみ指定された Def が一致</li>
+		<li>どちらも未指定の Def（<code>VoidAwake_ContainmentEscape_Default</code>）</li>
+	</ol>
+	<p>
+		4 のフォールバックがあるため、DLC や他 Mod でアノマリーが増えても専用 Def を書くまでは既定イベントが走ります。
+	</p>
+
+	<div class="note">
+		イベント固有のパラメータが必要になったら、<code>VoidAwake_EscapeEventDef</code> を継承した Def を作り、
+		XML の <code>Class=</code> で指定します。
+	</div>
+</section>
+
+<section id="entities">
+	<h2>5. 対象アノマリー一覧</h2>
+	<p>
+		専用まとめ Def を用意しているのは、バニラの収容可能アノマリー 17 種と本 Mod のエンティティです。
+		マッチキーが <code>entityDef</code> のものと、<code>mutantDef</code> のみのものとがあります。
+	</p>
+
+	<table>
+		<caption>バニラ — 専用エンティティ（entityDef）</caption>
+		<thead>
+			<tr><th>ThingDef</th><th>まとめ Def</th><th>イベント Def</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>Metalhorror</td><td>VoidAwake_ContainmentEscape_Metalhorror</td><td>VoidAwake_EscapeEvent_Metalhorror</td></tr>
+			<tr><td>Revenant</td><td>VoidAwake_ContainmentEscape_Revenant</td><td>VoidAwake_EscapeEvent_Revenant</td></tr>
+			<tr><td>Sightstealer</td><td>VoidAwake_ContainmentEscape_Sightstealer</td><td>VoidAwake_EscapeEvent_Sightstealer</td></tr>
+			<tr><td>Noctol</td><td>VoidAwake_ContainmentEscape_Noctol</td><td>VoidAwake_EscapeEvent_Noctol</td></tr>
+			<tr><td>Gorehulk</td><td>VoidAwake_ContainmentEscape_Gorehulk</td><td>VoidAwake_EscapeEvent_Gorehulk</td></tr>
+			<tr><td>Devourer</td><td>VoidAwake_ContainmentEscape_Devourer</td><td>VoidAwake_EscapeEvent_Devourer</td></tr>
+			<tr><td>Chimera</td><td>VoidAwake_ContainmentEscape_Chimera</td><td>VoidAwake_EscapeEvent_Chimera</td></tr>
+		</tbody>
+	</table>
+
+	<table>
+		<caption>バニラ — フレッシュビースト（entityDef）</caption>
+		<thead>
+			<tr><th>ThingDef</th><th>まとめ Def</th><th>イベント Def</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>Bulbfreak</td><td>VoidAwake_ContainmentEscape_Bulbfreak</td><td>VoidAwake_EscapeEvent_Bulbfreak</td></tr>
+			<tr><td>Toughspike</td><td>VoidAwake_ContainmentEscape_Toughspike</td><td>VoidAwake_EscapeEvent_Toughspike</td></tr>
+			<tr><td>Trispike</td><td>VoidAwake_ContainmentEscape_Trispike</td><td>VoidAwake_EscapeEvent_Trispike</td></tr>
+			<tr><td>Fingerspike</td><td>VoidAwake_ContainmentEscape_Fingerspike</td><td>VoidAwake_EscapeEvent_Fingerspike</td></tr>
+			<tr><td>Dreadmeld</td><td>VoidAwake_ContainmentEscape_Dreadmeld</td><td>VoidAwake_EscapeEvent_Dreadmeld</td></tr>
+		</tbody>
+	</table>
+
+	<table>
+		<caption>バニラ — 球体（entityDef）</caption>
+		<thead>
+			<tr><th>ThingDef</th><th>まとめ Def</th><th>イベント Def</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>Nociosphere</td><td>VoidAwake_ContainmentEscape_Nociosphere</td><td>VoidAwake_EscapeEvent_Nociosphere</td></tr>
+			<tr><td>FleshmassNucleus</td><td>VoidAwake_ContainmentEscape_FleshmassNucleus</td><td>VoidAwake_EscapeEvent_FleshmassNucleus</td></tr>
+		</tbody>
+	</table>
+	<div class="note">
+		球体 2 種は <code>baseEscapeIntervalMtbDays</code> が <code>-1</code> のため自然脱走しません。
+		Dev の強制脱走ではイベント経路が通るため Def を用意しています。
+	</div>
+
+	<table>
+		<caption>バニラ — ミュータント（mutantDef のみ）</caption>
+		<thead>
+			<tr><th>MutantDef</th><th>まとめ Def</th><th>イベント Def</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>Shambler</td><td>VoidAwake_ContainmentEscape_Shambler</td><td>VoidAwake_EscapeEvent_Shambler</td></tr>
+			<tr><td>Ghoul</td><td>VoidAwake_ContainmentEscape_Ghoul</td><td>VoidAwake_EscapeEvent_Ghoul</td></tr>
+			<tr><td>AwokenCorpse</td><td>VoidAwake_ContainmentEscape_AwokenCorpse</td><td>VoidAwake_EscapeEvent_AwokenCorpse</td></tr>
+		</tbody>
+	</table>
+	<div class="note">
+		シャンブラーは人型だけでなく動物にもなり得るため、<code>entityDef</code> を省略して <code>mutantDef</code> だけで一致させています。
+	</div>
+
+	<table>
+		<caption>VoidAwake 独自</caption>
+		<thead>
+			<tr><th>マッチ</th><th>まとめ Def</th><th>イベント</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>Trapper</td><td>VoidAwake_ContainmentEscape_Trapper</td><td>VoidAwake_EscapeEvent_Trapper</td></tr>
+			<tr><td>FlyingHed</td><td>VoidAwake_ContainmentEscape_FlyingHed</td><td>VoidAwake_EscapeEvent_FlyingHed</td></tr>
+			<tr><td>TestAnomaly_DefName</td><td>VoidAwake_ContainmentEscape_TestAnomaly</td><td>VoidAwake_EscapeEvent_Default（既定を流用）</td></tr>
+			<tr><td>（未定義の全種）</td><td>VoidAwake_ContainmentEscape_Default</td><td>VoidAwake_EscapeEvent_Default</td></tr>
+		</tbody>
+	</table>
+</section>
+
+<section id="worker">
+	<h2>6. イベントワーカー契約</h2>
+
+	<table>
+		<thead>
+			<tr><th>型</th><th>役割</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th><code>VoidAwake_EscapeEventWorker</code></th>
+				<td>基底。仮想メソッド <code>DoEscapeEvent(VoidAwake_EscapeContext ctx)</code>。既定は空</td>
+			</tr>
+			<tr>
+				<th><code>VoidAwake_EscapeContext</code></th>
+				<td>脱走時の状況。足場は既に排出済みなので、位置は Prefix 退避値</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table>
+		<caption>VoidAwake_EscapeContext のフィールド</caption>
+		<thead>
+			<tr><th>フィールド</th><th>内容</th></tr>
+		</thead>
+		<tbody>
+			<tr><th><code>pawn</code></th><td>脱走したエンティティ</td></tr>
+			<tr><th><code>platform</code></th><td>脱走直前に収容していた保持台</td></tr>
+			<tr><th><code>map</code> / <code>cell</code></th><td>脱走地点</td></tr>
+			<tr><th><code>initiator</code></th><td>自力で脱走を開始したなら true。連鎖側は false</td></tr>
+		</tbody>
+	</table>
+
+	<table>
+		<caption>イベント発火時のフィルタ</caption>
+		<thead>
+			<tr><th>フィールド</th><th>挙動</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th><code>chance</code></th>
+				<td>1 未満なら <code>Rand.Chance</code> で抽選。既定 1（常に発火）</td>
+			</tr>
+			<tr>
+				<th><code>onlyWhenInitiator</code></th>
+				<td>true なら連鎖脱走側（initiator = false）では発火しない</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p>
+		<code>Notify_Escaped</code> はまとめ Def の <code>events</code> を順に回し、フィルタ通過後にワーカーを呼びます。
+		例外はイベント単位の try/catch で握るため、1 つ落ちても後続イベントとバニラの脱走処理は完走します。
+	</p>
+
+	<div class="warn">
+		現状、すべてのアノマリー用ワーカー（<code>EscapeEventWorkers_Vanilla.cs</code>）は空実装です。
+	</div>
+</section>
+
+<section id="extend">
+	<h2>7. 拡張手順</h2>
+	<p>新しいアノマリーに専用脱走イベントを付ける手順は次の 3 ステップです。</p>
+	<ol>
+		<li>
+			<code>VoidAwake_EscapeEventWorker</code> を継承したクラスを追加し、<code>DoEscapeEvent</code> を実装する
+			（当面は <code>Events/EscapeEventWorkers_Vanilla.cs</code> に並べ、育ったら個別ファイルへ切り出す）。
+		</li>
+		<li>
+			<code>Defs/Containment/EscapeEventDefs.xml</code> にイベント Def を 1 件足し、<code>workerClass</code> にそのクラスを指定する。
+		</li>
+		<li>
+			<code>Defs/Containment/ContainmentEscapeDefs.xml</code> にまとめ Def を 1 件足し、<code>events</code> でそのイベントを参照する。
+			人型ミュータントなら <code>mutantDef</code>、通常エンティティなら <code>entityDef</code>。
+		</li>
+	</ol>
+
+	<div class="cols">
+		<div>
+			<h3>イベント Def 例</h3>
+			<p><code>&lt;VoidAwake.VoidAwake_EscapeEventDef&gt;</code><br>
+			<code>&nbsp;&nbsp;&lt;defName&gt;VoidAwake_EscapeEvent_Revenant&lt;/defName&gt;</code><br>
+			<code>&nbsp;&nbsp;&lt;workerClass&gt;VoidAwake.VoidAwake_EscapeEventWorker_Revenant&lt;/workerClass&gt;</code><br>
+			<code>&lt;/VoidAwake.VoidAwake_EscapeEventDef&gt;</code></p>
+		</div>
+		<div>
+			<h3>まとめ Def 例</h3>
+			<p><code>&lt;VoidAwake.VoidAwake_ContainmentEscapeDef&gt;</code><br>
+			<code>&nbsp;&nbsp;&lt;defName&gt;VoidAwake_ContainmentEscape_Revenant&lt;/defName&gt;</code><br>
+			<code>&nbsp;&nbsp;&lt;entityDef&gt;Revenant&lt;/entityDef&gt;</code><br>
+			<code>&nbsp;&nbsp;&lt;events&gt;&lt;li&gt;VoidAwake_EscapeEvent_Revenant&lt;/li&gt;&lt;/events&gt;</code><br>
+			<code>&lt;/VoidAwake.VoidAwake_ContainmentEscapeDef&gt;</code></p>
+		</div>
+	</div>
+</section>
+
+<section id="debug">
+	<h2>8. デバッグ</h2>
+	<p>完全収容中は自然脱走が起きないため、イベント確認には強制脱走を使います。</p>
+
+	<table>
+		<thead>
+			<tr><th>手段</th><th>内容</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>保持台ギズモ <code>DEV: Escape (room)</code></th>
+				<td>その保持台がある部屋の収容エンティティを全て脱走させる。収容強度は無視</td>
+			</tr>
+			<tr>
+				<th><code>VoidAwake → Containment: force escape in room</code></th>
+				<td>マップツール。クリックしたセルの部屋に対して同じ処理</td>
+			</tr>
+			<tr>
+				<th><code>VoidAwake → Containment: dump escape events</code></th>
+				<td>収容可能なアノマリーごとに解決される Def とイベントをログ出力。<code>(DEFAULT)</code> 付きが専用イベント未定義</td>
+			</tr>
+			<tr>
+				<th>バニラ <code>DEV: Escape</code> / <code>Timed escape</code></th>
+				<td>選択中の 1 体のみ</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p>
+		部屋の判定範囲はバニラの連鎖脱走と同じ「部屋内および隣接」（<code>Room.ContainedAndAdjacentThings</code>）。
+		<code>ForceEscapeRoom</code> は最初の 1 体だけ <code>initiator: true</code> で呼ぶため、レターは 1 通に収まります。
+	</p>
+</section>
+
+<section id="files">
+	<h2>9. ファイル対応表</h2>
+
+	<table>
+		<thead>
+			<tr><th>役割</th><th>パス</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>まとめ Def</th>
+				<td><code>Defs/Containment/ContainmentEscapeDefs.xml</code><br>
+					<code>Source/.../Containment/VoidAwake_ContainmentEscapeDef.cs</code></td>
+			</tr>
+			<tr>
+				<th>イベント Def</th>
+				<td><code>Defs/Containment/EscapeEventDefs.xml</code><br>
+					<code>Source/.../Containment/VoidAwake_EscapeEventDef.cs</code></td>
+			</tr>
+			<tr>
+				<th>ワーカー基底・Context</th>
+				<td><code>Source/.../Containment/VoidAwake_EscapeEventWorker.cs</code></td>
+			</tr>
+			<tr>
+				<th>空スタブ（アノマリー別）</th>
+				<td><code>Source/.../Containment/Events/EscapeEventWorkers_Vanilla.cs</code></td>
+			</tr>
+			<tr>
+				<th>判定・解決・発火</th>
+				<td><code>Source/.../Containment/ContainmentEscapeUtility.cs</code></td>
+			</tr>
+			<tr>
+				<th>Harmony パッチ</th>
+				<td><code>Source/.../Containment/Patch_ContainmentEscape.cs</code></td>
+			</tr>
+			<tr>
+				<th>Dev デバッグ</th>
+				<td><code>Source/.../Containment/DebugActions_Containment.cs</code></td>
+			</tr>
+			<tr>
+				<th>文言</th>
+				<td><code>Languages/English/Keyed/VoidAwake_Containment.xml</code><br>
+					<code>Languages/Japanese/Keyed/VoidAwake_Containment.xml</code><br>
+					<code>Languages/Japanese/DefInjected/VoidAwake_EscapeEventDef/EscapeEventDefs.xml</code>（レター日本語）</td>
+			</tr>
+			<tr>
+				<th>実装メモ</th>
+				<td><code>Docs/Containment.md</code></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p>
+		Harmony の登録は既存の <code>VoidAwake_PlaySettings_Patch.cs</code> にある <code>PatchAll()</code> が拾うため、
+		収容機能専用の初期化コードはありません。
+	</p>
+</section>
+
+<footer>
+	VoidAwake — 収容・脱走イベント仕様書。実装メモは <code>Containment.md</code>。数値とパスはリポジトリ現状に準拠。
+</footer>
+
+</div>
+</body>
+</html>
