@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- texPath は暫定でバニラのフレッシュビースト絵を参照している。
+	     緑化テクスチャを用意したら、このファイルの texPath と
+	     Races_Corruption.xml の uiIconPath を差し替える。 -->
+
+	<PawnKindDef ParentName="BaseFleshbeastKind">
+		<defName>VoidAwake_CorruptedBulbfreak</defName>
+		<label>腐敗したバルブフリーク</label>
+		<race>VoidAwake_CorruptedBulbfreak</race>
+		<overrideDeathOnDownedChance>0.9</overrideDeathOnDownedChance>
+		<combatPower>360</combatPower>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Fleshbeast/Bulbfreak/Bulbfreak</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>3</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<PawnKindDef ParentName="BaseFleshbeastKind">
+		<defName>VoidAwake_CorruptedToughspike</defName>
+		<label>腐敗したタフスパイク</label>
+		<race>VoidAwake_CorruptedToughspike</race>
+		<abilities>
+			<li>SpikeLaunch_Toughspike</li>
+		</abilities>
+		<combatPower>70</combatPower>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Fleshbeast/Toughspike/Toughspike</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>2.2</drawSize>
+				</bodyGraphicData>
+				<dessicatedBodyGraphicData>
+					<texPath>Things/Pawn/Fleshbeast/Toughspike/Dessicated_Toughspike</texPath>
+					<drawSize>2</drawSize>
+					<attachPoints>
+						<li>
+							<offset>(-.3, 0, .45)</offset>
+							<type>PlatformRestraint0</type>
+						</li>
+						<li>
+							<offset>(.3, 0, .45)</offset>
+							<type>PlatformRestraint1</type>
+						</li>
+						<li>
+							<offset>(.17, 0, -.43)</offset>
+							<type>PlatformRestraint2</type>
+						</li>
+						<li>
+							<offset>(-.2, 0, -.45)</offset>
+							<type>PlatformRestraint3</type>
+						</li>
+					</attachPoints>
+				</dessicatedBodyGraphicData>
+				<silhouetteGraphicData>
+					<texPath>Things/Pawn/Fleshbeast/Toughspike/Toughspike_MenuIcon</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>2</drawSize>
+				</silhouetteGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<PawnKindDef ParentName="BaseFleshbeastKind">
+		<defName>VoidAwake_CorruptedTrispike</defName>
+		<label>腐敗したトライスパイク</label>
+		<race>VoidAwake_CorruptedTrispike</race>
+		<overrideDeathOnDownedChance>0.9</overrideDeathOnDownedChance>
+		<abilities>
+			<li>SpikeLaunch_Toughspike</li>
+		</abilities>
+		<combatPower>90</combatPower>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Fleshbeast/Trispike/Trispike</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>2</drawSize>
+					<drawOffset>(0, 0, 0.1)</drawOffset>
+				</bodyGraphicData>
+				<silhouetteGraphicData>
+					<texPath>Things/Pawn/Fleshbeast/Trispike/Trispike_MenuIcon</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>2</drawSize>
+				</silhouetteGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<PawnKindDef ParentName="BaseFleshbeastKind">
+		<defName>VoidAwake_CorruptedFingerspike</defName>
+		<label>腐敗したフィンガースパイク</label>
+		<race>VoidAwake_CorruptedFingerspike</race>
+		<abilities>
+			<li>SpikeLaunch_Fingerspike</li>
+		</abilities>
+		<combatPower>25</combatPower>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Fleshbeast/Fingerspike/Fingerspike</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>2</drawSize>
+				</bodyGraphicData>
+				<silhouetteGraphicData>
+					<texPath>Things/Pawn/Fleshbeast/Fingerspike/Fingerspike_MenuIcon</texPath>
+					<graphicClass>Graphic_Single</graphicClass>
+					<drawSize>2</drawSize>
+				</silhouetteGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+	<!-- ===== 上級 ===== -->
+
+	<PawnKindDef ParentName="BaseFleshbeastKind">
+		<defName>VoidAwake_CorruptedDreadmeld</defName>
+		<label>腐敗したドレッドメルド</label>
+		<race>VoidAwake_CorruptedDreadmeld</race>
+		<forceDeathOnDowned>true</forceDeathOnDowned>
+		<combatPower>650</combatPower>
+		<isBoss>true</isBoss>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<texPath>Things/Pawn/Fleshbeast/Dreadmeld/Dreadmeld</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>4</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+		<startingHediffs>
+			<li>
+				<def>Regeneration</def>
+				<severity>1</severity>
+			</li>
+		</startingHediffs>
+	</PawnKindDef>
+
+	<PawnKindDef ParentName="BaseFleshbeastKind">
+		<defName>VoidAwake_CorruptedBrain</defName>
+		<label>腐敗した脳</label>
+		<race>VoidAwake_CorruptedBrain</race>
+		<combatPower>150</combatPower>
+		<lifeStages>
+			<li>
+				<bodyGraphicData>
+					<!-- 仮素材。専用テクスチャができたら差し替える -->
+					<texPath>UI/Entities/Test</texPath>
+					<graphicClass>Graphic_Multi</graphicClass>
+					<drawSize>2</drawSize>
+				</bodyGraphicData>
+			</li>
+		</lifeStages>
+	</PawnKindDef>
+
+</Defs>

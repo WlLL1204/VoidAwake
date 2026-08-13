@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<EntityCodexEntryDef>
+		<defName>VoidAwake_Corruption</defName>
+		<label>コラプション</label>
+		<description>腐敗が及んだ肉塊から生まれた怪物たち。元のフレッシュビーストと同じく複数の神経系を宿し、より小さな個体へと分かれていく。</description>
+		<category>Basic</category>
+		<uiIconPath>UI/CodexEntries/Fleshbeasts</uiIconPath>
+		<linkedThings>
+			<li>VoidAwake_CorruptedFingerspike</li>
+			<li>VoidAwake_CorruptedTrispike</li>
+			<li>VoidAwake_CorruptedToughspike</li>
+			<li>VoidAwake_CorruptedBulbfreak</li>
+		</linkedThings>
+		<orderInCategory>210</orderInCategory>
+	</EntityCodexEntryDef>
+
+	<EntityCodexEntryDef>
+		<defName>VoidAwake_CorruptedDreadmeld</defName>
+		<label>腐敗したドレッドメルド</label>
+		<category>Advanced</category>
+		<useDescriptionFrom>VoidAwake_CorruptedDreadmeld</useDescriptionFrom>
+		<uiIconPath>UI/CodexEntries/Dreadmeld</uiIconPath>
+		<discoveryType>BecameVisible</discoveryType>
+		<linkedThings>
+			<li>VoidAwake_CorruptedDreadmeld</li>
+		</linkedThings>
+		<orderInCategory>210</orderInCategory>
+	</EntityCodexEntryDef>
+
+	<EntityCodexEntryDef>
+		<defName>VoidAwake_CorruptedBrain</defName>
+		<label>腐敗した脳</label>
+		<category>Advanced</category>
+		<useDescriptionFrom>VoidAwake_CorruptedBrain</useDescriptionFrom>
+		<uiIconPath>UI/Entities/Test</uiIconPath>
+		<discoveryType>BecameVisible</discoveryType>
+		<linkedThings>
+			<li>VoidAwake_CorruptedBrain</li>
+		</linkedThings>
+		<orderInCategory>220</orderInCategory>
+	</EntityCodexEntryDef>
+</Defs>

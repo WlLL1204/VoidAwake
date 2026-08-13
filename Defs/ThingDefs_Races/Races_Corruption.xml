@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- コラプション: バニラのフレッシュビーストが腐敗変異したアノマリー群。
+	     能力値・攻撃・収容設定はバニラと同一で、分裂先だけ腐敗種同士に繋げている。 -->
+
+	<ThingDef ParentName="BaseFleshbeast">
+		<defName>VoidAwake_CorruptedBulbfreak</defName>
+		<label>腐敗したバルブフリーク</label>
+		<description>無数の小型フレッシュビーストが融合し、腐敗しきった巨大な塊。全体が一つの神経系で繋がっており、二本の大きな爪で獲物を引き裂く。姿を見る前に、腐った肉の耐え難い臭気で存在を知ることになる。動きは鈍く倒すのは容易だが、死ぬと小型のフレッシュビーストの群れに弾け飛ぶ。</description>
+		<statBases>
+			<MoveSpeed>3.8</MoveSpeed>
+			<MinimumContainmentStrength>75</MinimumContainmentStrength>
+			<ToxicResistance>0.5</ToxicResistance>
+		</statBases>
+		<uiIconPath>Things/Pawn/Fleshbeast/Bulbfreak/Bulbfreak_MenuIcon</uiIconPath>
+		<race>
+			<body>Bulbfreak</body>
+			<baseBodySize>3.5</baseBodySize>
+			<baseHealthScale>0.3</baseHealthScale>
+			<lifeExpectancy>15</lifeExpectancy>
+			<soundMoving>Pawn_Fleshbeast_Bulbfreak_Moving</soundMoving>
+			<deathAction Class="DeathActionProperties_Divide">
+				<divideBloodFilthCountRange>3~4</divideBloodFilthCountRange>
+				<dividePawnCount>4</dividePawnCount>
+				<dividePawnKindOptions>
+					<li>VoidAwake_CorruptedToughspike</li>
+					<li>VoidAwake_CorruptedTrispike</li>
+				</dividePawnKindOptions>
+			</deathAction>
+			<renderTree>Bulbfreak</renderTree>
+			<lifeStageAges>
+				<li>
+					<def>EntityFullyFormed</def>
+					<soundWounded>Pawn_Fleshbeast_Bulbfreak_Wounded</soundWounded>
+					<soundDeath>Pawn_Fleshbeast_Bulbfreak_Death</soundDeath>
+					<soundCall>Pawn_Fleshbeast_Bulbfreak_Call</soundCall>
+				</li>
+			</lifeStageAges>
+		</race>
+		<comps>
+			<li Class="CompProperties_AttachPoints">
+				<points>
+					<li>
+						<offset>(-.71, 0, .71)</offset>
+						<type>PlatformRestraint0</type>
+					</li>
+					<li>
+						<offset>(.71, 0, .71)</offset>
+						<type>PlatformRestraint1</type>
+					</li>
+					<li>
+						<offset>(.71, 0, -.71)</offset>
+						<type>PlatformRestraint2</type>
+					</li>
+					<li>
+						<offset>(-.71, 0, -.71)</offset>
+						<type>PlatformRestraint3</type>
+					</li>
+				</points>
+			</li>
+			<li Class="CompProperties_Studiable">
+				<frequencyTicks>120000</frequencyTicks>
+				<knowledgeCategory>Advanced</knowledgeCategory>
+				<anomalyKnowledge>2.5</anomalyKnowledge>
+				<minMonolithLevelForStudy>1</minMonolithLevelForStudy>
+				<requiresHoldingPlatform>true</requiresHoldingPlatform>
+			</li>
+			<li Class="CompProperties_ProducesBioferrite">
+				<bioferriteDensity>2</bioferriteDensity>
+			</li>
+		</comps>
+		<tools>
+			<li>
+				<label>触手</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>2</cooldownTime>
+				<alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+				<linkedBodyPartsGroup>FirstTentacle</linkedBodyPartsGroup>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Blunt</soundMeleeHit>
+			</li>
+			<li>
+				<label>触手</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>2</cooldownTime>
+				<alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+				<linkedBodyPartsGroup>SecondTentacle</linkedBodyPartsGroup>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Blunt</soundMeleeHit>
+			</li>
+			<li>
+				<label>触手</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>2</cooldownTime>
+				<alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+				<linkedBodyPartsGroup>ThirdTentacle</linkedBodyPartsGroup>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Blunt</soundMeleeHit>
+			</li>
+			<li>
+				<label>触手</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>2</cooldownTime>
+				<alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+				<linkedBodyPartsGroup>FourthTentacle</linkedBodyPartsGroup>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Blunt</soundMeleeHit>
+			</li>
+			<li>
+				<label>触手</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>2</cooldownTime>
+				<alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+				<linkedBodyPartsGroup>FifthTentacle</linkedBodyPartsGroup>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Blunt</soundMeleeHit>
+			</li>
+			<li>
+				<label>頭</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>3</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+				<chanceFactor>0.2</chanceFactor>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Blunt</soundMeleeHit>
+			</li>
+		</tools>
+	</ThingDef>
+
+	<ThingDef ParentName="BaseFleshbeast">
+		<defName>VoidAwake_CorruptedToughspike</defName>
+		<label>腐敗したタフスパイク</label>
+		<description>二本の棘状の腕と硬い甲殻を持つ、人間ほどの大きさの腐肉の生物。硬化したケラチンの棘を投擲し、離れた場所から獲物を仕留める。\n\n腐敗したタフスパイクの死体は、早く解体しなければ融けた肉の水溜まりへと崩れてしまう。</description>
+		<statBases>
+			<MoveSpeed>4.3</MoveSpeed>
+			<MinimumContainmentStrength>50</MinimumContainmentStrength>
+			<ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+			<ArmorRating_Blunt>0.16</ArmorRating_Blunt>
+			<ToxicResistance>0.5</ToxicResistance>
+		</statBases>
+		<uiIconPath>Things/Pawn/Fleshbeast/Toughspike/Toughspike_MenuIcon</uiIconPath>
+		<race>
+			<body>Toughspike</body>
+			<baseBodySize>1</baseBodySize>
+			<baseHealthScale>1</baseHealthScale>
+			<lifeExpectancy>15</lifeExpectancy>
+			<renderTree>Toughspike</renderTree>
+			<canBecomeShambler>true</canBecomeShambler>
+			<lifeStageAges>
+				<li>
+					<def>FullyFormed_Toughspike</def>
+					<soundWounded>Pawn_Fleshbeast_Toughspike_Wounded</soundWounded>
+					<soundDeath>Pawn_Fleshbeast_Toughspike_Death</soundDeath>
+					<soundCall>Pawn_Fleshbeast_Toughspike_Call</soundCall>
+				</li>
+			</lifeStageAges>
+		</race>
+		<comps>
+			<li Class="CompProperties_AttachPoints">
+				<points>
+					<li>
+						<offset>(-.35, 0, .5)</offset>
+						<type>PlatformRestraint0</type>
+					</li>
+					<li>
+						<offset>(.35, 0, .5)</offset>
+						<type>PlatformRestraint1</type>
+					</li>
+					<li>
+						<offset>(.3, 0, -.45)</offset>
+						<type>PlatformRestraint2</type>
+					</li>
+					<li>
+						<offset>(-.3, 0, -.45)</offset>
+						<type>PlatformRestraint3</type>
+					</li>
+				</points>
+			</li>
+			<li Class="CompProperties_Studiable">
+				<frequencyTicks>120000</frequencyTicks>
+				<knowledgeCategory>Basic</knowledgeCategory>
+				<minMonolithLevelForStudy>1</minMonolithLevelForStudy>
+				<anomalyKnowledge>2</anomalyKnowledge>
+				<requiresHoldingPlatform>true</requiresHoldingPlatform>
+			</li>
+			<li Class="CompProperties_ProducesBioferrite">
+				<bioferriteDensity>2</bioferriteDensity>
+			</li>
+		</comps>
+		<tools>
+			<li>
+				<label>左の棘</label>
+				<labelNoLocation>棘</labelNoLocation>
+				<capacities>
+					<li>Stab</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>LeftSpike</linkedBodyPartsGroup>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Spike</soundMeleeHit>
+			</li>
+			<li>
+				<label>右の棘</label>
+				<labelNoLocation>棘</labelNoLocation>
+				<capacities>
+					<li>Stab</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>RightSpike</linkedBodyPartsGroup>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Spike</soundMeleeHit>
+			</li>
+			<li>
+				<label>頭</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>3</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+				<chanceFactor>0.2</chanceFactor>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Blunt</soundMeleeHit>
+			</li>
+		</tools>
+	</ThingDef>
+
+	<ThingDef ParentName="BaseFleshbeast">
+		<defName>VoidAwake_CorruptedTrispike</defName>
+		<label>腐敗したトライスパイク</label>
+		<description>複数の小型フレッシュビーストが腐り合って一つになった、人間ほどの大きさの生物。それぞれの肢が単独で生存できる。死ぬと肢がもぎ取れるように分かれ、個々のフィンガースパイクとなって襲いかかることがある。</description>
+		<statBases>
+			<MoveSpeed>4.3</MoveSpeed>
+			<MinimumContainmentStrength>40</MinimumContainmentStrength>
+			<ToxicResistance>0.5</ToxicResistance>
+		</statBases>
+		<uiIconPath>Things/Pawn/Fleshbeast/Trispike/Trispike_MenuIcon</uiIconPath>
+		<race>
+			<body>Trispike</body>
+			<baseBodySize>1</baseBodySize>
+			<baseHealthScale>0.3</baseHealthScale>
+			<lifeExpectancy>10</lifeExpectancy>
+			<renderTree>Trispike</renderTree>
+			<deathAction Class="DeathActionProperties_Divide">
+				<divideBloodFilthCountRange>1~2</divideBloodFilthCountRange>
+				<dividePawnCount>3</dividePawnCount>
+				<dividePawnKindOptions>
+					<li>VoidAwake_CorruptedFingerspike</li>
+				</dividePawnKindOptions>
+			</deathAction>
+			<lifeStageAges>
+				<li>
+					<def>EntityFullyFormed</def>
+					<soundWounded>Pawn_Fleshbeast_Trispike_Wounded</soundWounded>
+					<soundDeath>Pawn_Fleshbeast_Trispike_Death</soundDeath>
+					<soundCall>Pawn_Fleshbeast_Trispike_Call</soundCall>
+				</li>
+			</lifeStageAges>
+		</race>
+		<comps>
+			<li Class="CompProperties_AttachPoints">
+				<points>
+					<li>
+						<offset>(-.35, 0, .35)</offset>
+						<type>PlatformRestraint0</type>
+					</li>
+					<li>
+						<offset>(.35, 0, .35)</offset>
+						<type>PlatformRestraint1</type>
+					</li>
+					<li>
+						<offset>(.35, 0, -.35)</offset>
+						<type>PlatformRestraint2</type>
+					</li>
+					<li>
+						<offset>(-.35, 0, -.35)</offset>
+						<type>PlatformRestraint3</type>
+					</li>
+				</points>
+			</li>
+			<li Class="CompProperties_Studiable">
+				<frequencyTicks>120000</frequencyTicks>
+				<knowledgeCategory>Basic</knowledgeCategory>
+				<minMonolithLevelForStudy>1</minMonolithLevelForStudy>
+				<anomalyKnowledge>2</anomalyKnowledge>
+				<requiresHoldingPlatform>true</requiresHoldingPlatform>
+			</li>
+			<li Class="CompProperties_ProducesBioferrite">
+				<bioferriteDensity>2</bioferriteDensity>
+			</li>
+		</comps>
+		<tools>
+			<li>
+				<label>左の棘</label>
+				<labelNoLocation>棘</labelNoLocation>
+				<capacities>
+					<li>Stab</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>LeftSpike</linkedBodyPartsGroup>
+				<alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Spike</soundMeleeHit>
+			</li>
+			<li>
+				<label>右の棘</label>
+				<labelNoLocation>棘</labelNoLocation>
+				<capacities>
+					<li>Stab</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>RightSpike</linkedBodyPartsGroup>
+				<alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Spike</soundMeleeHit>
+			</li>
+			<li>
+				<label>上の棘</label>
+				<labelNoLocation>棘</labelNoLocation>
+				<capacities>
+					<li>Stab</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>MiddleSpike</linkedBodyPartsGroup>
+				<alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+				<chanceFactor>0.5</chanceFactor>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Spike</soundMeleeHit>
+			</li>
+			<li>
+				<label>頭</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>3</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+				<chanceFactor>0.2</chanceFactor>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Blunt</soundMeleeHit>
+			</li>
+		</tools>
+	</ThingDef>
+
+	<ThingDef ParentName="BaseFleshbeast">
+		<defName>VoidAwake_CorruptedFingerspike</defName>
+		<label>腐敗したフィンガースパイク</label>
+		<description>一本の棘状の肢を持つ、犬ほどの大きさの腐肉の生物。短い脚にもかかわらず、驚くほど速く動き回る。</description>
+		<statBases>
+			<MoveSpeed>5.1</MoveSpeed>
+			<MinimumContainmentStrength>20</MinimumContainmentStrength>
+			<ToxicResistance>0.5</ToxicResistance>
+		</statBases>
+		<uiIconPath>Things/Pawn/Fleshbeast/Fingerspike/Fingerspike_MenuIcon</uiIconPath>
+		<race>
+			<body>Fingerspike</body>
+			<baseBodySize>0.6</baseBodySize>
+			<baseHealthScale>0.5</baseHealthScale>
+			<lifeExpectancy>10</lifeExpectancy>
+			<renderTree>Fingerspike</renderTree>
+			<deathAction Class="DeathActionProperties_Vanish">
+				<workerClass>DeathActionWorker_Vanish</workerClass>
+				<filth>Filth_TwistedFlesh</filth>
+				<filthCountRange>1~3</filthCountRange>
+				<meatExplosionSize>Small</meatExplosionSize>
+			</deathAction>
+			<lifeStageAges>
+				<li>
+					<def>EntityFullyFormed</def>
+					<soundWounded>Pawn_Fleshbeast_Fingerspike_Wounded</soundWounded>
+					<soundDeath>Pawn_Fleshbeast_Fingerspike_Death</soundDeath>
+					<soundCall>Pawn_Fleshbeast_Fingerspike_Call</soundCall>
+				</li>
+			</lifeStageAges>
+		</race>
+		<comps>
+			<li Class="CompProperties_AttachPoints">
+				<points>
+					<li>
+						<offset>(-.21, 0, .21)</offset>
+						<type>PlatformRestraint0</type>
+					</li>
+					<li>
+						<offset>(.21, 0, .21)</offset>
+						<type>PlatformRestraint1</type>
+					</li>
+					<li>
+						<offset>(.21, 0, -.21)</offset>
+						<type>PlatformRestraint2</type>
+					</li>
+					<li>
+						<offset>(-.21, 0, -.21)</offset>
+						<type>PlatformRestraint3</type>
+					</li>
+				</points>
+			</li>
+			<li Class="CompProperties_CanBeDormant">
+				<maxDistAwakenByOther>3</maxDistAwakenByOther>
+				<wakeUpDelayRange>100~200</wakeUpDelayRange>
+				<jobDormancy>true</jobDormancy>
+			</li>
+			<li Class="CompProperties_WakeUpDormant">
+				<wakeUpOnDamage>true</wakeUpOnDamage>
+				<wakeUpCheckRadius>4.9</wakeUpCheckRadius>
+				<wakeUpIfAnyTargetClose>true</wakeUpIfAnyTargetClose>
+				<wakeUpWithDelay>true</wakeUpWithDelay>
+				<activateMessageKey>MessageFingerspikeDisturbed</activateMessageKey>
+				<activatePluralMessageKey>MessageFingerspikeDisturbedPlural</activatePluralMessageKey>
+				<wakeUpTargetingParams>
+					<canTargetBuildings>false</canTargetBuildings>
+					<canTargetAnimals>false</canTargetAnimals>
+					<canTargetMechs>false</canTargetMechs>
+					<canTargetHumans>true</canTargetHumans>
+				</wakeUpTargetingParams>
+			</li>
+			<li Class="CompProperties_Studiable">
+				<frequencyTicks>120000</frequencyTicks>
+				<knowledgeCategory>Basic</knowledgeCategory>
+				<minMonolithLevelForStudy>1</minMonolithLevelForStudy>
+				<anomalyKnowledge>1</anomalyKnowledge>
+				<requiresHoldingPlatform>true</requiresHoldingPlatform>
+			</li>
+			<li Class="CompProperties_ProducesBioferrite">
+				<bioferriteDensity>2</bioferriteDensity>
+			</li>
+		</comps>
+		<tools>
+			<li>
+				<label>棘</label>
+				<labelNoLocation>棘</labelNoLocation>
+				<capacities>
+					<li>Stab</li>
+				</capacities>
+				<power>7</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>MiddleSpike</linkedBodyPartsGroup>
+				<alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+				<chanceFactor>0.5</chanceFactor>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Spike</soundMeleeHit>
+			</li>
+			<li>
+				<label>頭</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>3</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+				<chanceFactor>0.2</chanceFactor>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Blunt</soundMeleeHit>
+			</li>
+		</tools>
+	</ThingDef>
+
+	<!-- ===== 上級 ===== -->
+
+	<ThingDef ParentName="BaseFleshbeast">
+		<defName>VoidAwake_CorruptedDreadmeld</defName>
+		<label>腐敗したドレッドメルド</label>
+		<description>数十体の小型フレッシュビーストが腐敗し、緩やかに共有された中枢神経系で繋がった巨大な集合体。巨大な爪で固い岩盤を掘り進み、坑道を築く。地上に姿を見せることは稀で、生きた肉で組み上げた洞窟の奥に潜んでいる。その洞窟を支える肉塊とは精神的に繋がっている。</description>
+		<statBases>
+			<MoveSpeed>1.5</MoveSpeed>
+			<PsychicSensitivity>0.5</PsychicSensitivity>
+			<ToxicResistance>0.8</ToxicResistance>
+		</statBases>
+		<uiIconPath>Things/Pawn/Fleshbeast/Dreadmeld/Dreadmeld_MenuIcon</uiIconPath>
+		<race>
+			<body>Dreadmeld</body>
+			<baseBodySize>5</baseBodySize>
+			<baseHealthScale>10</baseHealthScale>
+			<lifeExpectancy>50</lifeExpectancy>
+			<soundMoving>Pawn_Fleshbeast_Dreadmeld_Moving</soundMoving>
+			<deathAction Class="DeathActionProperties_Divide">
+				<divideBloodFilthCountRange>3~4</divideBloodFilthCountRange>
+				<dividePawnKindAdditionalForced>
+					<li>VoidAwake_CorruptedToughspike</li>
+					<li>VoidAwake_CorruptedTrispike</li>
+					<li>VoidAwake_CorruptedBulbfreak</li>
+				</dividePawnKindAdditionalForced>
+			</deathAction>
+			<renderTree>Dreadmeld</renderTree>
+			<lifeStageAges>
+				<li>
+					<def>EntityFullyFormed</def>
+					<soundWounded>Pawn_Fleshbeast_Dreadmeld_Wounded</soundWounded>
+					<soundDeath>Pawn_Fleshbeast_Dreadmeld_Death</soundDeath>
+					<soundCall>Pawn_Fleshbeast_Dreadmeld_Call</soundCall>
+				</li>
+			</lifeStageAges>
+		</race>
+		<tools>
+			<li>
+				<label>左の棘</label>
+				<labelNoLocation>棘</labelNoLocation>
+				<capacities>
+					<li>Stab</li>
+				</capacities>
+				<power>14</power>
+				<cooldownTime>2</cooldownTime>
+				<alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+				<linkedBodyPartsGroup>LeftSpike</linkedBodyPartsGroup>
+				<soundMeleeHit>Pawn_Dreadmeld_Attack_Spike</soundMeleeHit>
+			</li>
+			<li>
+				<label>右の棘</label>
+				<labelNoLocation>棘</labelNoLocation>
+				<capacities>
+					<li>Stab</li>
+				</capacities>
+				<power>14</power>
+				<cooldownTime>2</cooldownTime>
+				<alwaysTreatAsWeapon>true</alwaysTreatAsWeapon>
+				<linkedBodyPartsGroup>RightSpike</linkedBodyPartsGroup>
+				<soundMeleeHit>Pawn_Dreadmeld_Attack_Spike</soundMeleeHit>
+			</li>
+			<li>
+				<label>頭</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>3</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+				<chanceFactor>0.2</chanceFactor>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Blunt</soundMeleeHit>
+			</li>
+		</tools>
+		<comps>
+			<li>
+				<compClass>CompDreadmeld</compClass>
+			</li>
+			<li Class="CompProperties_LetterOnRevealed">
+				<label>腐敗したドレッドメルドが現れた</label>
+				<text>腐敗したドレッドメルドを発見した！この巨大な生物は、数十体の小型フレッシュビーストが腐り合って出来ているようだ。\n\nこの洞窟を支える肉塊と精神的に繋がっているらしい。これを殺せば、洞窟全体が崩れ落ちるかもしれない。</text>
+				<letterDef>ThreatBig</letterDef>
+			</li>
+		</comps>
+		<killedLeavings>
+			<Shard>3</Shard>
+			<Bioferrite>30</Bioferrite>
+		</killedLeavings>
+	</ThingDef>
+
+	<!-- 腐敗した脳: 器だけ用意した状態。固有の能力・見た目・分裂挙動はいずれも未実装で、
+	     テクスチャは他の未完成エンティティと同じ UI/Entities/Test を暫定で使っている。 -->
+
+	<ThingDef ParentName="BaseFleshbeast">
+		<defName>VoidAwake_CorruptedBrain</defName>
+		<label>腐敗した脳</label>
+		<description>コラプションの群れを束ねているとみられる、剥き出しの巨大な脳。腐り落ちた襞の隙間から、絶えず脈動が伝わってくる。</description>
+		<statBases>
+			<MoveSpeed>2.6</MoveSpeed>
+			<MinimumContainmentStrength>90</MinimumContainmentStrength>
+		</statBases>
+		<race>
+			<body>Fingerspike</body>
+			<baseBodySize>1.4</baseBodySize>
+			<baseHealthScale>2</baseHealthScale>
+			<lifeExpectancy>50</lifeExpectancy>
+			<lifeStageAges>
+				<li>
+					<def>EntityFullyFormed</def>
+					<soundWounded>Pawn_Fleshbeast_Bulbfreak_Wounded</soundWounded>
+					<soundDeath>Pawn_Fleshbeast_Bulbfreak_Death</soundDeath>
+					<soundCall>Pawn_Fleshbeast_Bulbfreak_Call</soundCall>
+				</li>
+			</lifeStageAges>
+		</race>
+		<comps>
+			<li Class="CompProperties_AttachPoints">
+				<points>
+					<li>
+						<offset>(-.35, 0, .35)</offset>
+						<type>PlatformRestraint0</type>
+					</li>
+					<li>
+						<offset>(.35, 0, .35)</offset>
+						<type>PlatformRestraint1</type>
+					</li>
+					<li>
+						<offset>(.35, 0, -.35)</offset>
+						<type>PlatformRestraint2</type>
+					</li>
+					<li>
+						<offset>(-.35, 0, -.35)</offset>
+						<type>PlatformRestraint3</type>
+					</li>
+				</points>
+			</li>
+			<li Class="CompProperties_Studiable">
+				<frequencyTicks>120000</frequencyTicks>
+				<knowledgeCategory>Advanced</knowledgeCategory>
+				<anomalyKnowledge>3</anomalyKnowledge>
+				<minMonolithLevelForStudy>1</minMonolithLevelForStudy>
+				<requiresHoldingPlatform>true</requiresHoldingPlatform>
+			</li>
+			<li Class="CompProperties_ProducesBioferrite">
+				<bioferriteDensity>3</bioferriteDensity>
+			</li>
+		</comps>
+		<tools>
+			<li>
+				<label>頭</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>3</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+				<chanceFactor>0.2</chanceFactor>
+				<soundMeleeHit>Pawn_Fleshbeast_Attack_Blunt</soundMeleeHit>
+			</li>
+		</tools>
+	</ThingDef>
+
+</Defs>
