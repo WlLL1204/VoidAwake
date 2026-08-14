@@ -10,9 +10,25 @@
 					<targetAcquireRadius>18</targetAcquireRadius>
 					<targetKeepRadius>22</targetKeepRadius>
 				</li>
-				<li Class="JobGiver_WanderNearDutyLocation">
-					<wanderRadius>0.1</wanderRadius>
-					<locomotionUrgencyOutsideRadius>Sprint</locomotionUrgencyOutsideRadius>
+		<li Class="JobGiver_WanderNearDutyLocation">
+			<wanderRadius>0.1</wanderRadius>
+			<locomotionUrgencyOutsideRadius>Sprint</locomotionUrgencyOutsideRadius>
+		</li>
+			</subNodes>
+		</thinkNode>
+	</DutyDef>
+
+	<DutyDef>
+		<defName>VoidAwake_GhostShipWander</defName>
+		<alwaysShowWeapon>true</alwaysShowWeapon>
+		<thinkNode Class="ThinkNode_Priority">
+			<subNodes>
+				<li Class="JobGiver_AIFightEnemies">
+					<targetAcquireRadius>40</targetAcquireRadius>
+					<targetKeepRadius>55</targetKeepRadius>
+				</li>
+				<li Class="JobGiver_WanderAnywhere">
+					<wanderRadius>40</wanderRadius>
 				</li>
 			</subNodes>
 		</thinkNode>

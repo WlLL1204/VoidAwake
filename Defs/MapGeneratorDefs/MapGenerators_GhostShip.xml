@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<MapGeneratorDef>
+		<defName>VoidAwake_GhostShipInterior</defName>
+		<label>幽霊船内部</label>
+		<ignoreAreaRevealedLetter>true</ignoreAreaRevealedLetter>
+		<disableShadows>true</disableShadows>
+		<disableCallAid>true</disableCallAid>
+		<isUnderground>true</isUnderground>
+		<pocketMapProperties>
+			<biome>VoidAwake_GhostShipInterior</biome>
+			<temperature>8</temperature>
+		</pocketMapProperties>
+		<genSteps>
+			<li>VoidAwake_GhostShipInterior</li>
+			<li>Fog</li>
+			<li>VoidAwake_GhostShipClearOceanFog</li>
+		</genSteps>
+	</MapGeneratorDef>
+
+</Defs>

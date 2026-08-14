@@ -28,10 +28,57 @@
 			<isEdifice>false</isEdifice>
 			<claimable>false</claimable>
 		</building>
+		<portal>
+			<pocketMapGenerator>VoidAwake_GhostShipInterior</pocketMapGenerator>
+			<exitDef>VoidAwake_GhostShipExit</exitDef>
+			<pocketMapSize>108</pocketMapSize>
+			<enteredLetterLabel>幽霊船の内部</enteredLetterLabel>
+			<enteredLetterText>霧の向こうに、朽ちた甲板が広がっています。仮の船内です。</enteredLetterText>
+			<enteredLetterDef>NeutralEvent</enteredLetterDef>
+		</portal>
+		<inspectorTabs>
+			<li>ITab_ContentsMapPortal</li>
+		</inspectorTabs>
 		<statBases>
 			<MaxHitPoints>1000</MaxHitPoints>
 			<Flammability>0</Flammability>
 		</statBases>
+	</ThingDef>
+
+	<ThingDef ParentName="PocketMapExit">
+		<defName>VoidAwake_GhostShipExit</defName>
+		<label>船の出口</label>
+		<description>コロニーの岸へ戻る出口。</description>
+		<size>(1,1)</size>
+		<terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+		<drawerType>MapMeshAndRealTime</drawerType>
+		<graphicData>
+			<graphicClass>Graphic_Single</graphicClass>
+			<texPath>Things/Building/Misc/CaveExit/CaveExit</texPath>
+			<drawSize>(1,1)</drawSize>
+		</graphicData>
+		<statBases>
+			<Flammability>0</Flammability>
+		</statBases>
+	</ThingDef>
+
+	<ThingDef ParentName="Wall">
+		<defName>VoidAwake_GhostShipWall</defName>
+		<label>幽霊船の壁</label>
+		<description>幽霊船の船体。破壊できない。</description>
+		<useHitPoints>false</useHitPoints>
+		<destroyable>false</destroyable>
+		<designationCategory Inherit="False" IsNull="True" />
+		<statBases>
+			<Flammability>0</Flammability>
+		</statBases>
+		<building>
+			<deconstructible>false</deconstructible>
+			<repairable>false</repairable>
+			<isInert>true</isInert>
+			<isWall>true</isWall>
+			<isPlaceOverableWall>true</isPlaceOverableWall>
+		</building>
 	</ThingDef>
 
 </Defs>

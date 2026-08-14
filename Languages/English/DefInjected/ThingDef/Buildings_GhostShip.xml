@@ -3,5 +3,11 @@
 
 	<VoidAwake_GhostShip.label>ghost ship</VoidAwake_GhostShip.label>
 	<VoidAwake_GhostShip.description>A void-touched vessel that orbits the flooded shore, releasing ghosts and firing its guns.</VoidAwake_GhostShip.description>
+	<VoidAwake_GhostShip.portal.enteredLetterLabel>Ghost ship interior</VoidAwake_GhostShip.portal.enteredLetterLabel>
+	<VoidAwake_GhostShip.portal.enteredLetterText>Through the mist, a rotting deck stretches out. This is a placeholder interior.</VoidAwake_GhostShip.portal.enteredLetterText>
+	<VoidAwake_GhostShipExit.label>ship exit</VoidAwake_GhostShipExit.label>
+	<VoidAwake_GhostShipExit.description>An exit back to the colony shore.</VoidAwake_GhostShipExit.description>
+	<VoidAwake_GhostShipWall.label>ghost ship hull</VoidAwake_GhostShipWall.label>
+	<VoidAwake_GhostShipWall.description>The ghost ship's hull. It cannot be destroyed.</VoidAwake_GhostShipWall.description>
 
 </LanguageData>

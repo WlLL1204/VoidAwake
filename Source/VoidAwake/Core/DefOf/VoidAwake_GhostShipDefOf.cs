@@ -9,6 +9,10 @@ namespace VoidAwake
 	{
 		public static IncidentDef VoidAwake_GhostShipArrival;
 		public static ThingDef VoidAwake_GhostShip;
+		public static ThingDef VoidAwake_GhostShipExit;
+		public static ThingDef VoidAwake_GhostShipWall;
+		public static MapGeneratorDef VoidAwake_GhostShipInterior;
+		public static TerrainDef VoidAwake_GhostShipStairs;
 		public static PawnKindDef VoidAwake_Ghost;
 		public static PawnKindDef VoidAwake_GhostMusket;
 		public static PawnKindDef VoidAwake_GhostAcid;
@@ -19,6 +23,7 @@ namespace VoidAwake
 		public static ThingDef VoidAwake_AcidSlick;
 		public static ThingDef Bullet_Shell_HighExplosive;
 		public static DutyDef VoidAwake_GhostHoldLanding;
+		public static DutyDef VoidAwake_GhostShipWander;
 
 		static VoidAwake_GhostShipDefOf() => DefOfHelper.EnsureInitializedInCtor(typeof(VoidAwake_GhostShipDefOf));
 	}

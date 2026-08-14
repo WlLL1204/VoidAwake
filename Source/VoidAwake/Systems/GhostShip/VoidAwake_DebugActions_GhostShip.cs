@@ -1,3 +1,4 @@
+using System.Linq;
 using LudeonTK;
 using RimWorld;
 using Verse;
@@ -132,6 +133,27 @@ namespace VoidAwake
 			}
 
 			Messages.Message("Spawned ghost: " + ghost.LabelShort, MessageTypeDefOf.TaskCompletion, false);
+		}
+
+		[DebugAction("VoidAwake", "GhostShip: jump to interior", false, false, false, false, false, 0, false,
+			allowedGameStates = AllowedGameStates.PlayingOnMap)]
+		private static void JumpToInterior()
+		{
+			Map map = Find.CurrentMap;
+			if (map == null)
+			{
+				return;
+			}
+
+			VoidAwake_Building_GhostShip ship = map.listerThings.ThingsOfDef(VoidAwake_GhostShipDefOf.VoidAwake_GhostShip)
+				.FirstOrDefault() as VoidAwake_Building_GhostShip;
+			if (ship == null)
+			{
+				Messages.Message("No ghost ship on this map.", MessageTypeDefOf.RejectInput, false);
+				return;
+			}
+
+			ship.DevJumpToInterior();
 		}
 	}
 }

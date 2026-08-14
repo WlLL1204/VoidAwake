@@ -23,6 +23,11 @@ namespace VoidAwake
 
         private void Sync()
         {
+            if (map.IsPocketMap || !map.Tile.Valid)
+            {
+                return;
+            }
+
             var erosion = Find.World.GetComponent<VoidAwake_WorldComponent_VoidErosion>();
             if (erosion == null) return;
 

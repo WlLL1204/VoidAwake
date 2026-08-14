@@ -2,11 +2,13 @@
 <LanguageData>
 
 	<VoidAwake_GhostShip_Enter>Enter ghost ship</VoidAwake_GhostShip_Enter>
-	<VoidAwake_GhostShip_EnterDesc>Board the ghost ship. (Portal not implemented yet.)</VoidAwake_GhostShip_EnterDesc>
+	<VoidAwake_GhostShip_EnterDesc>Send colonists into the ghost ship's interior.</VoidAwake_GhostShip_EnterDesc>
 	<VoidAwake_GhostShip_EnterLocked>The ship is still circling. Entry unlocks after one full orbit.</VoidAwake_GhostShip_EnterLocked>
-	<VoidAwake_GhostShip_EnterStub>Ghost ship boarding is not implemented yet.</VoidAwake_GhostShip_EnterStub>
 	<VoidAwake_GhostShip_StatusOrbiting>Orbiting — entry locked until the ship completes one circuit.</VoidAwake_GhostShip_StatusOrbiting>
-	<VoidAwake_GhostShip_StatusUnlocked>Docked — entry unlocked (stub).</VoidAwake_GhostShip_StatusUnlocked>
+	<VoidAwake_GhostShip_StatusUnlocked>Docked — boarding unlocked.</VoidAwake_GhostShip_StatusUnlocked>
+	<VoidAwake_GhostShip_DevViewInterior>View interior (Dev)</VoidAwake_GhostShip_DevViewInterior>
+	<VoidAwake_GhostShip_DevViewInteriorDesc>Generate the pocket map and jump the camera inside the ship.</VoidAwake_GhostShip_DevViewInteriorDesc>
+	<VoidAwake_GhostShip_DevViewInteriorFailed>Could not generate the ship interior map.</VoidAwake_GhostShip_DevViewInteriorFailed>
 	<VoidAwake_GhostShip_OrbitStarted>A ghost ship circles the flooded shore, releasing the dead and firing its guns.</VoidAwake_GhostShip_OrbitStarted>
 	<VoidAwake_GhostShip_Unlocked>The ghost ship completes its circuit and drifts in. Boarding is unlocked.</VoidAwake_GhostShip_Unlocked>
 	<VoidAwake_GhostShip_AssaultStarted>The released ghosts surge inland as one.</VoidAwake_GhostShip_AssaultStarted>

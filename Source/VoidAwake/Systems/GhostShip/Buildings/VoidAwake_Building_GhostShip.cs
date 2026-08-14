@@ -5,7 +5,7 @@ using Verse;
 
 namespace VoidAwake
 {
-	public class VoidAwake_Building_GhostShip : Building
+	public class VoidAwake_Building_GhostShip : MapPortal
 	{
 		public bool CanEnter;
 		private Vector3 orbitDrawPos;
@@ -38,6 +38,17 @@ namespace VoidAwake
 			useOrbitDraw = false;
 		}
 
+		public override bool IsEnterable(out string reason)
+		{
+			if (!CanEnter && !Prefs.DevMode)
+			{
+				reason = "VoidAwake_GhostShip_EnterLocked".Translate();
+				return false;
+			}
+
+			return base.IsEnterable(out reason);
+		}
+
 		public override IEnumerable<Gizmo> GetGizmos()
 		{
 			foreach (Gizmo g in base.GetGizmos())
@@ -45,29 +56,35 @@ namespace VoidAwake
 				yield return g;
 			}
 
-			Command_Action enter = new Command_Action
+			if (!Prefs.DevMode)
 			{
-				defaultLabel = "VoidAwake_GhostShip_Enter".Translate(),
-				defaultDesc = "VoidAwake_GhostShip_EnterDesc".Translate(),
-				action = TryEnterStub,
-			};
-			if (!CanEnter)
-			{
-				enter.Disable("VoidAwake_GhostShip_EnterLocked".Translate());
+				yield break;
 			}
 
-			yield return enter;
+			yield return new Command_Action
+			{
+				defaultLabel = "VoidAwake_GhostShip_DevViewInterior".Translate(),
+				defaultDesc = "VoidAwake_GhostShip_DevViewInteriorDesc".Translate(),
+				action = DevJumpToInterior,
+			};
 		}
 
-		private void TryEnterStub()
+		public void DevJumpToInterior()
 		{
-			if (!CanEnter)
+			Map other = GetOtherMap();
+			if (other == null)
 			{
+				Messages.Message("VoidAwake_GhostShip_DevViewInteriorFailed".Translate(), this, MessageTypeDefOf.RejectInput, false);
 				return;
 			}
 
-			Log.Message("[VoidAwake] Ghost ship enter stub: portal not implemented yet.");
-			Messages.Message("VoidAwake_GhostShip_EnterStub".Translate(), this, MessageTypeDefOf.NeutralEvent, false);
+			IntVec3 cell = GetDestinationLocation();
+			if (!cell.IsValid)
+			{
+				cell = other.Center;
+			}
+
+			CameraJumper.TryJump(cell, other, CameraJumper.MovementMode.Pan);
 		}
 
 		public override string GetInspectString()
@@ -83,6 +100,13 @@ namespace VoidAwake
 		{
 			base.ExposeData();
 			Scribe_Values.Look(ref CanEnter, "canEnter", false);
+		}
+
+		protected override Map GeneratePocketMapInt()
+		{
+			int fallback = def?.portal?.pocketMapSize ?? 40;
+			IntVec3 size = VoidAwake_GhostShipMapUtility.MapSizeOrFallback(fallback);
+			return PocketMapUtility.GeneratePocketMap(size, def.portal.pocketMapGenerator, GetExtraGenSteps(), Map);
 		}
 	}
 }

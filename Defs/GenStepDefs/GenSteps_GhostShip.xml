@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<GenStepDef>
+		<defName>VoidAwake_GhostShipInterior</defName>
+		<order>200</order>
+		<genStep Class="VoidAwake.VoidAwake_GenStep_GhostShipInterior" />
+	</GenStepDef>
+
+	<GenStepDef>
+		<defName>VoidAwake_GhostShipClearOceanFog</defName>
+		<order>1510</order>
+		<genStep Class="VoidAwake.VoidAwake_GenStep_GhostShipClearOceanFog" />
+	</GenStepDef>
+
+</Defs>

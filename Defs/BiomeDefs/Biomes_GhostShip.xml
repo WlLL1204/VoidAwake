@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<BiomeDef>
+		<defName>VoidAwake_GhostShipInterior</defName>
+		<label>幽霊船</label>
+		<description>霧と朽ちた甲板だけの、陸から切り離された船内。</description>
+		<generatesNaturally>false</generatesNaturally>
+		<animalDensity>0</animalDensity>
+		<plantDensity>0</plantDensity>
+		<wildAnimalsCanWanderInto>false</wildAnimalsCanWanderInto>
+		<baseWeatherCommonalities>
+			<Clear>1</Clear>
+		</baseWeatherCommonalities>
+		<diseaseMtbDays>90</diseaseMtbDays>
+	</BiomeDef>
+
+</Defs>

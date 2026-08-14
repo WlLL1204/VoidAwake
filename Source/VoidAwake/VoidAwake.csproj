@@ -437,10 +437,15 @@
     <Compile Include="Systems\Containment\VoidAwake_Patch_ContainmentEscape.cs" />
     <Compile Include="Systems\Endgame\VoidAwake_Patch_EscapeShipFindTile.cs" />
     <Compile Include="Systems\GhostShip\Utility\VoidAwake_GhostShipOceanUtility.cs" />
+    <Compile Include="Systems\GhostShip\Utility\VoidAwake_GhostShipMapUtility.cs" />
     <Compile Include="Systems\GhostShip\Utility\VoidAwake_GhostUtility.cs" />
     <Compile Include="Systems\GhostShip\AI\VoidAwake_LordJob_GhostHoldLanding.cs" />
     <Compile Include="Systems\GhostShip\AI\VoidAwake_LordToil_GhostHoldLanding.cs" />
+    <Compile Include="Systems\GhostShip\AI\VoidAwake_LordJob_GhostShipWander.cs" />
+    <Compile Include="Systems\GhostShip\AI\VoidAwake_LordToil_GhostShipWander.cs" />
     <Compile Include="Systems\GhostShip\Buildings\VoidAwake_Building_GhostShip.cs" />
+    <Compile Include="Systems\GhostShip\VoidAwake_GenStep_GhostShipInterior.cs" />
+    <Compile Include="Systems\GhostShip\VoidAwake_GenStep_GhostShipClearOceanFog.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_Comp_AcidSlick.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_Projectile_AcidFlask.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_DebugActions_GhostShip.cs" />

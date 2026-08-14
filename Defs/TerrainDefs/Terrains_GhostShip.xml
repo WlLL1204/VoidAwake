@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<TerrainDef ParentName="FloorBase">
+		<defName>VoidAwake_GhostShipStairs</defName>
+		<label>船の階段</label>
+		<description>幽霊船の甲板へ続く木の階段。</description>
+		<texturePath>Entities/Pirate/Kaidan</texturePath>
+		<edgeType>Hard</edgeType>
+		<renderPrecedence>260</renderPrecedence>
+		<isPaintable>false</isPaintable>
+		<designationCategory Inherit="False" IsNull="True" />
+		<statBases>
+			<Beauty>0</Beauty>
+			<Flammability>0.22</Flammability>
+		</statBases>
+		<constructEffect>ConstructWood</constructEffect>
+	</TerrainDef>
+
+</Defs>

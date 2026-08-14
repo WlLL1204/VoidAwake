@@ -214,8 +214,7 @@ namespace VoidAwake
 
         public VoidAwake_VoidErosionLevel GetErosionLevel(PlanetTile tile)//タイルの浸食レベルを調べる
         {
-
-            if (!originTile.Valid || radiusInTiles <= 0f)
+            if (!tile.Valid || !originTile.Valid || radiusInTiles <= 0f)
                 return VoidAwake_VoidErosionLevel.None;
 
             float dist = Find.WorldGrid.ApproxDistanceInTiles(originTile, tile);
