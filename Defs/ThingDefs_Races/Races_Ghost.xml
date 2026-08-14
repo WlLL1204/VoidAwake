@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<ThingDef Name="VoidAwake_GhostRaceBase" ParentName="Human" Abstract="True">
+		<hiddenWhileUndiscovered>true</hiddenWhileUndiscovered>
+		<tradeability>None</tradeability>
+		<race>
+			<useMeatFrom>Human</useMeatFrom>
+			<linkedCorpseKind>Human</linkedCorpseKind>
+			<canBecomeShambler>false</canBecomeShambler>
+			<knowledgeCategory>Advanced</knowledgeCategory>
+			<anomalyKnowledge>2</anomalyKnowledge>
+			<hasUnnaturalCorpse>false</hasUnnaturalCorpse>
+		</race>
+	</ThingDef>
+
+	<ThingDef ParentName="VoidAwake_GhostRaceBase">
+		<defName>VoidAwake_Ghost</defName>
+		<label>亡霊</label>
+		<description>白骨と化した亡霊。長剣を持ち、痛みを感じずに襲ってくる。</description>
+	</ThingDef>
+
+	<ThingDef ParentName="VoidAwake_GhostRaceBase">
+		<defName>VoidAwake_GhostMusket</defName>
+		<label>マスケットの亡霊</label>
+		<description>マスケットを持つ白骨の亡霊。射程は長いが、撃つまでに時間がかかる。</description>
+		<uiIconPath>Entities/Pirate/Gun</uiIconPath>
+	</ThingDef>
+
+	<ThingDef ParentName="VoidAwake_GhostRaceBase">
+		<defName>VoidAwake_GhostAcid</defName>
+		<label>硫酸瓶の亡霊</label>
+		<description>硫酸瓶を投げる白骨の亡霊。着弾地点の周囲を短時間ただれさせる。</description>
+		<uiIconPath>Things/Item/Equipment/WeaponRanged/Molotov</uiIconPath>
+	</ThingDef>
+
+</Defs>

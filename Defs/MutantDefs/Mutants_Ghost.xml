@@ -8,6 +8,9 @@
 		<hediff>VoidAwake_Ghost</hediff>
 		<thinkTree>Humanlike</thinkTree>
 		<thinkTreeConstant>HumanlikeConstant</thinkTreeConstant>
+		<workDisables Inherit="False">
+			<li>AllWork</li>
+		</workDisables>
 		<disableApparel>true</disableApparel>
 		<entitledToMedicalCare>false</entitledToMedicalCare>
 		<canTravelInCaravan>false</canTravelInCaravan>
@@ -17,6 +20,9 @@
 		<tameable>false</tameable>
 		<defaultFaction>Entities</defaultFaction>
 		<deathOnDownedChance>0.35</deathOnDownedChance>
+		<anomalyKnowledgeOffset>2</anomalyKnowledgeOffset>
+		<knowledgeCategory>Advanced</knowledgeCategory>
+		<codexEntry>VoidAwake_GhostPirates</codexEntry>
 		<allowedDevelopmentalStages>Adult</allowedDevelopmentalStages>
 		<skinColorOverride>(0.92, 0.90, 0.82)</skinColorOverride>
 		<hairColorOverride>(0.85, 0.82, 0.75)</hairColorOverride>

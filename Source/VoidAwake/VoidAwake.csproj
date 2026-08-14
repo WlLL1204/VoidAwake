@@ -441,6 +441,8 @@
     <Compile Include="Systems\GhostShip\AI\VoidAwake_LordJob_GhostHoldLanding.cs" />
     <Compile Include="Systems\GhostShip\AI\VoidAwake_LordToil_GhostHoldLanding.cs" />
     <Compile Include="Systems\GhostShip\Buildings\VoidAwake_Building_GhostShip.cs" />
+    <Compile Include="Systems\GhostShip\VoidAwake_Comp_AcidSlick.cs" />
+    <Compile Include="Systems\GhostShip\VoidAwake_Projectile_AcidFlask.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_DebugActions_GhostShip.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_IncidentWorker_GhostShipArrival.cs" />
     <Compile Include="Systems\PsychicRituals\VoidAwake_PsychicRitualDef_CreateChimera.cs" />

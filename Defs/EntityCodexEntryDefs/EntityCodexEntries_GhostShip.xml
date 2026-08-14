@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<EntityCodexEntryDef>
+		<defName>VoidAwake_GhostPirates</defName>
+		<label>呪われた海賊団</label>
+		<description>呪われた海賊たちは自ら海域を作り出し内陸にも侵略を始めました。</description>
+		<category>Advanced</category>
+		<uiIconPath>Entities/Pirate/Ship/PirateShip_south</uiIconPath>
+		<discoveryType>Spawn</discoveryType>
+		<linkedThings>
+			<li>VoidAwake_GhostShip</li>
+			<li>VoidAwake_Ghost</li>
+			<li>VoidAwake_GhostMusket</li>
+			<li>VoidAwake_GhostAcid</li>
+		</linkedThings>
+		<provocationIncidents>
+			<li>VoidAwake_GhostShipArrival</li>
+		</provocationIncidents>
+		<orderInCategory>250</orderInCategory>
+	</EntityCodexEntryDef>
+
+</Defs>

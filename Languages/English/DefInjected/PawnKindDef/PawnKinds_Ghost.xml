@@ -2,5 +2,7 @@
 <LanguageData>
 
 	<VoidAwake_Ghost.label>ghost</VoidAwake_Ghost.label>
+	<VoidAwake_GhostMusket.label>musket ghost</VoidAwake_GhostMusket.label>
+	<VoidAwake_GhostAcid.label>acid-flask ghost</VoidAwake_GhostAcid.label>
 
 </LanguageData>

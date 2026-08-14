@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<ThingDef>
+		<defName>VoidAwake_AcidSlick</defName>
+		<label>酸溜まり</label>
+		<description>短時間ただれさせる硫酸の溜まり。</description>
+		<thingClass>ThingWithComps</thingClass>
+		<category>Ethereal</category>
+		<tickerType>Normal</tickerType>
+		<altitudeLayer>Filth</altitudeLayer>
+		<drawerType>RealtimeOnly</drawerType>
+		<useHitPoints>false</useHitPoints>
+		<selectable>false</selectable>
+		<neverMultiSelect>true</neverMultiSelect>
+		<graphicData>
+			<texPath>Things/Mote/BrightFlash</texPath>
+			<graphicClass>Graphic_Single</graphicClass>
+			<shaderType>Transparent</shaderType>
+			<color>(90, 180, 70, 140)</color>
+			<drawSize>(3.2, 3.2)</drawSize>
+		</graphicData>
+		<comps>
+			<li Class="VoidAwake.VoidAwake_CompProperties_AcidSlick">
+				<durationTicks>480</durationTicks>
+				<damageIntervalTicks>30</damageIntervalTicks>
+				<damageAmount>4</damageAmount>
+				<chebyshevRadius>1</chebyshevRadius>
+			</li>
+		</comps>
+	</ThingDef>
+
+</Defs>

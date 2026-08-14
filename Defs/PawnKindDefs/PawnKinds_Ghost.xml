@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-	<PawnKindDef>
-		<defName>VoidAwake_Ghost</defName>
-		<label>亡霊</label>
-		<race>Human</race>
+	<PawnKindDef Name="VoidAwake_GhostKindBase" Abstract="True">
 		<mutant>VoidAwake_GhostMutant</mutant>
-		<combatPower>65</combatPower>
 		<isFighter>true</isFighter>
 		<defaultFactionDef>Entities</defaultFactionDef>
 		<chemicalAddictionChance>0</chemicalAddictionChance>
@@ -27,6 +23,27 @@
 				<Baseliner MayRequire="Ludeon.RimWorld.Biotech">1</Baseliner>
 			</xenotypeChances>
 		</xenotypeSet>
+	</PawnKindDef>
+
+	<PawnKindDef ParentName="VoidAwake_GhostKindBase">
+		<defName>VoidAwake_Ghost</defName>
+		<label>亡霊</label>
+		<race>VoidAwake_Ghost</race>
+		<combatPower>65</combatPower>
+	</PawnKindDef>
+
+	<PawnKindDef ParentName="VoidAwake_GhostKindBase">
+		<defName>VoidAwake_GhostMusket</defName>
+		<label>マスケットの亡霊</label>
+		<race>VoidAwake_GhostMusket</race>
+		<combatPower>80</combatPower>
+	</PawnKindDef>
+
+	<PawnKindDef ParentName="VoidAwake_GhostKindBase">
+		<defName>VoidAwake_GhostAcid</defName>
+		<label>硫酸瓶の亡霊</label>
+		<race>VoidAwake_GhostAcid</race>
+		<combatPower>70</combatPower>
 	</PawnKindDef>
 
 </Defs>

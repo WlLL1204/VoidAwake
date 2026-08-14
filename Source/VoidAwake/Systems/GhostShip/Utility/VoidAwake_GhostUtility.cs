@@ -6,6 +6,10 @@ namespace VoidAwake
 {
 	public static class VoidAwake_GhostUtility
 	{
+		public const int SpawnWeightMelee = 5;
+		public const int SpawnWeightMusket = 3;
+		public const int SpawnWeightAcid = 2;
+
 		public static Pawn TrySpawnGhost(Map map, IntVec3 cell, Faction faction = null)
 		{
 			if (map == null || !cell.InBounds(map))
@@ -19,8 +23,9 @@ namespace VoidAwake
 				return null;
 			}
 
+			PawnKindDef kind = RollGhostKind();
 			PawnGenerationRequest request = new PawnGenerationRequest(
-				VoidAwake_GhostShipDefOf.VoidAwake_Ghost,
+				kind,
 				fac,
 				PawnGenerationContext.NonPlayer,
 				forceGenerateNewPawn: true,
@@ -47,11 +52,45 @@ namespace VoidAwake
 			}
 
 			PrepareGhostAppearance(pawn);
-			EquipLongSword(pawn);
+			EquipLoadout(pawn);
 
 			GenSpawn.Spawn(pawn, cell, map, WipeMode.Vanish);
 			pawn.Drawer?.renderer?.EnsureGraphicsInitialized();
 			return pawn;
+		}
+
+		public static PawnKindDef RollGhostKind()
+		{
+			int roll = Rand.Range(0, SpawnWeightMelee + SpawnWeightMusket + SpawnWeightAcid);
+			if (roll < SpawnWeightMelee)
+			{
+				return VoidAwake_GhostShipDefOf.VoidAwake_Ghost;
+			}
+
+			if (roll < SpawnWeightMelee + SpawnWeightMusket)
+			{
+				return VoidAwake_GhostShipDefOf.VoidAwake_GhostMusket ?? VoidAwake_GhostShipDefOf.VoidAwake_Ghost;
+			}
+
+			return VoidAwake_GhostShipDefOf.VoidAwake_GhostAcid ?? VoidAwake_GhostShipDefOf.VoidAwake_Ghost;
+		}
+
+		public static bool IsGhostPawn(Pawn pawn)
+		{
+			if (pawn == null)
+			{
+				return false;
+			}
+
+			if (pawn.mutant?.Def == VoidAwake_GhostShipDefOf.VoidAwake_GhostMutant)
+			{
+				return true;
+			}
+
+			PawnKindDef kind = pawn.kindDef;
+			return kind == VoidAwake_GhostShipDefOf.VoidAwake_Ghost
+				|| kind == VoidAwake_GhostShipDefOf.VoidAwake_GhostMusket
+				|| kind == VoidAwake_GhostShipDefOf.VoidAwake_GhostAcid;
 		}
 
 		private static void PrepareGhostAppearance(Pawn pawn)
@@ -75,15 +114,15 @@ namespace VoidAwake
 			pawn.Drawer?.renderer?.SetAllGraphicsDirty();
 		}
 
-		public static void EquipLongSword(Pawn pawn)
+		public static void EquipLoadout(Pawn pawn)
 		{
 			if (pawn?.equipment == null)
 			{
 				return;
 			}
 
-			ThingDef swordDef = VoidAwake_GhostShipDefOf.MeleeWeapon_LongSword;
-			if (swordDef == null)
+			ThingDef weaponDef = WeaponDefFor(pawn.kindDef);
+			if (weaponDef == null)
 			{
 				return;
 			}
@@ -93,8 +132,24 @@ namespace VoidAwake
 				pawn.equipment.DestroyEquipment(pawn.equipment.Primary);
 			}
 
-			ThingWithComps sword = (ThingWithComps)ThingMaker.MakeThing(swordDef, GenStuff.DefaultStuffFor(swordDef));
-			pawn.equipment.AddEquipment(sword);
+			ThingDef stuff = weaponDef.MadeFromStuff ? GenStuff.DefaultStuffFor(weaponDef) : null;
+			ThingWithComps weapon = (ThingWithComps)ThingMaker.MakeThing(weaponDef, stuff);
+			pawn.equipment.AddEquipment(weapon);
+		}
+
+		private static ThingDef WeaponDefFor(PawnKindDef kind)
+		{
+			if (kind == VoidAwake_GhostShipDefOf.VoidAwake_GhostMusket)
+			{
+				return VoidAwake_GhostShipDefOf.VoidAwake_Gun_GhostMusket;
+			}
+
+			if (kind == VoidAwake_GhostShipDefOf.VoidAwake_GhostAcid)
+			{
+				return VoidAwake_GhostShipDefOf.VoidAwake_Weapon_AcidFlask;
+			}
+
+			return VoidAwake_GhostShipDefOf.MeleeWeapon_LongSword;
 		}
 
 		public static void LeapFrom(Pawn pawn, Vector3 start, IntVec3 dest)
@@ -126,7 +181,6 @@ namespace VoidAwake
 				return false;
 			}
 
-			// ジャンプ中は flyer が保持しているので生存扱い
 			return !(pawn.ParentHolder is PawnFlyer);
 		}
 	}

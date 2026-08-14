@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+	<VoidAwake_Gun_GhostMusket.label>musket</VoidAwake_Gun_GhostMusket.label>
+	<VoidAwake_Gun_GhostMusket.description>An old musket used by ghosts. Long range, slow to fire.</VoidAwake_Gun_GhostMusket.description>
+	<VoidAwake_Weapon_AcidFlask.label>acid flask</VoidAwake_Weapon_AcidFlask.label>
+	<VoidAwake_Weapon_AcidFlask.description>A bottle of sulfuric acid. Splashes a short-lived pool that burns the living.</VoidAwake_Weapon_AcidFlask.description>
+	<VoidAwake_Proj_AcidFlask.label>acid flask</VoidAwake_Proj_AcidFlask.label>
+
+</LanguageData>

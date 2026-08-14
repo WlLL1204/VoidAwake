@@ -11,6 +11,7 @@
 			<li>Map_PlayerHome</li>
 		</targetTags>
 		<workerClass>VoidAwake.VoidAwake_IncidentWorker_GhostShipArrival</workerClass>
+		<codexEntry>VoidAwake_GhostPirates</codexEntry>
 		<baseChance>0</baseChance>
 		<pointsScaleable>true</pointsScaleable>
 		<category>ThreatBig</category>
