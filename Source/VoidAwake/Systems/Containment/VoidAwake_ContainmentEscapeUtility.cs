@@ -201,6 +201,9 @@ namespace VoidAwake
                 return;
             }
 
+            // 専用 Def が無いアノマリーでも心情は必ず付けたいので、イベント解決より先に処理する。
+            TryGiveEscapeThoughtToColonists(ctx);
+
             VoidAwake_ContainmentEscapeDef escapeDef = ContainmentEscapeDefFor(ctx.pawn);
             if (escapeDef?.events == null)
             {
@@ -232,6 +235,25 @@ namespace VoidAwake
                     Log.Error("[VoidAwake] Escape event " + eventDef.defName + " (" + escapeDef.defName + ") for "
                         + ctx.pawn.def.defName + " threw an exception: " + ex);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 脱走を知ったマップの入植者全員に記憶を与える。
+        /// 連鎖脱走で同時に複数体出ても 1 回で済むよう、initiator 側でのみ発火する。
+        /// </summary>
+        private static void TryGiveEscapeThoughtToColonists(VoidAwake_EscapeContext ctx)
+        {
+            if (!ctx.initiator)
+            {
+                return;
+            }
+
+            List<Pawn> colonists = ctx.map.mapPawns.FreeColonistsSpawned;
+            for (int i = 0; i < colonists.Count; i++)
+            {
+                colonists[i].needs?.mood?.thoughts?.memories
+                    ?.TryGainMemory(VoidAwake_ThoughtDefOf.VoidAwake_EntityEscaped);
             }
         }
 

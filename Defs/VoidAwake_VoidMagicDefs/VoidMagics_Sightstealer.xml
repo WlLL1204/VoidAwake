@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- サイトスティーラー専用。entityDef 指定があるため VoidAwake_VoidMagicDefault を上書きする。
+	     対象を一時的に失っただけで能力が消えないよう、喪失減衰は既定の 6 より緩めてある。 -->
+	<VoidAwake.VoidAwake_VoidMagicDef>
+		<defName>VoidAwake_VoidMagic_Sightstealer</defName>
+		<label>sightstealer resonance</label>
+		<description>A bond with a contained sightstealer. As it deepens, their psychic veil begins to answer the one who meditates beside them.</description>
+		<entityDef>Sightstealer</entityDef>
+		<maxConnection>100</maxConnection>
+		<connectionPerHourMeditating>5</connectionPerHourMeditating>
+		<decayPerDayLost>4</decayPerDayLost>
+		<decayPerDayIdle>1</decayPerDayIdle>
+		<idleGraceDays>3</idleGraceDays>
+		<tiers>
+			<li>
+				<label>night eyes</label>
+				<threshold>25</threshold>
+				<hediff>VoidAwake_NightEyes</hediff>
+			</li>
+			<li>
+				<label>stolen presence</label>
+				<threshold>50</threshold>
+				<abilities>
+					<li>VoidAwake_StealPresence</li>
+				</abilities>
+			</li>
+			<li>
+				<label>hunting cry</label>
+				<threshold>75</threshold>
+				<abilities>
+					<li>VoidAwake_HuntingScream</li>
+				</abilities>
+			</li>
+			<li>
+				<label>veil of the pack</label>
+				<threshold>100</threshold>
+				<abilities>
+					<li>VoidAwake_VeilOfThePack</li>
+				</abilities>
+			</li>
+		</tiers>
+	</VoidAwake.VoidAwake_VoidMagicDef>
+
+</Defs>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <VoidAwake_VoidMagic_Sightstealer.label>サイトスティーラーとの共鳴</VoidAwake_VoidMagic_Sightstealer.label>
+  <VoidAwake_VoidMagic_Sightstealer.description>収容されたサイトスティーラーとの繋がり。深まるにつれ、その姿を覆う心霊の帳が、傍らで瞑想する者にも応え始める。</VoidAwake_VoidMagic_Sightstealer.description>
+  <VoidAwake_VoidMagic_Sightstealer.tiers.0.label>夜目</VoidAwake_VoidMagic_Sightstealer.tiers.0.label>
+  <VoidAwake_VoidMagic_Sightstealer.tiers.1.label>気配を盗む</VoidAwake_VoidMagic_Sightstealer.tiers.1.label>
+  <VoidAwake_VoidMagic_Sightstealer.tiers.2.label>狩りの叫び</VoidAwake_VoidMagic_Sightstealer.tiers.2.label>
+  <VoidAwake_VoidMagic_Sightstealer.tiers.3.label>群れの帳</VoidAwake_VoidMagic_Sightstealer.tiers.3.label>
+
+</LanguageData>

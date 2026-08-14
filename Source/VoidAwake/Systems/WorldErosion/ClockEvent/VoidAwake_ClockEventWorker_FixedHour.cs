@@ -24,13 +24,15 @@ namespace VoidAwake
     }
 
     /// <summary>時計の時4で必ず発火する固定イベント枠。</summary>
-    public class VoidAwake_ClockEventWorker_FixedHour4 : VoidAwake_ClockEventWorker_FixedHourBase
-    {
-    }
+    //public class VoidAwake_ClockEventWorker_FixedHour4 : VoidAwake_ClockEventWorker_FixedHourBase
+    //{
+    //}
+// このクラスは不要なので削除
 
     /// <summary>時計の時7で必ず発火する固定イベント枠。</summary>
     public class VoidAwake_ClockEventWorker_FixedHour7 : VoidAwake_ClockEventWorker_FixedHourBase
     {
+
     }
 
     /// <summary>時計の時10で必ず発火する固定イベント枠。</summary>

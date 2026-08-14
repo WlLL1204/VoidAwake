@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+	<VoidAwake_GhostShip_Enter>幽霊船に入る</VoidAwake_GhostShip_Enter>
+	<VoidAwake_GhostShip_EnterDesc>幽霊船に乗り込む。（ポータルは未実装）</VoidAwake_GhostShip_EnterDesc>
+	<VoidAwake_GhostShip_EnterLocked>船はまだ周回中です。一周すると進入できます。</VoidAwake_GhostShip_EnterLocked>
+	<VoidAwake_GhostShip_EnterStub>幽霊船への進入はまだ実装されていません。</VoidAwake_GhostShip_EnterStub>
+	<VoidAwake_GhostShip_StatusOrbiting>周回中 — 一周するまで進入不可。</VoidAwake_GhostShip_StatusOrbiting>
+	<VoidAwake_GhostShip_StatusUnlocked>停泊 — 進入解禁（スタブ）。</VoidAwake_GhostShip_StatusUnlocked>
+	<VoidAwake_GhostShip_OrbitStarted>幽霊船が浸食された岸を周回し、亡霊を放ち砲撃を始めた。</VoidAwake_GhostShip_OrbitStarted>
+	<VoidAwake_GhostShip_Unlocked>幽霊船が一周して接岸した。進入が可能になった。</VoidAwake_GhostShip_Unlocked>
+	<VoidAwake_GhostShip_AssaultStarted>放出された亡霊が一斉に内陸へ押し寄せた。</VoidAwake_GhostShip_AssaultStarted>
+
+</LanguageData>

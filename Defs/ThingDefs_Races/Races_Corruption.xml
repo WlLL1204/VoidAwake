@@ -4,10 +4,31 @@
 	<!-- コラプション: バニラのフレッシュビーストが腐敗変異したアノマリー群。
 	     能力値・攻撃・収容設定はバニラと同一で、分裂先だけ腐敗種同士に繋げている。 -->
 
-	<ThingDef ParentName="BaseFleshbeast">
+	<ThingDef Name="VoidAwake_BaseCorruption" ParentName="BaseFleshbeast" Abstract="True">
+		<statBases>
+			<!-- 自分が撒いた胞子で肺腐敗病・胞子寄生にならないように -->
+			<ToxicEnvironmentResistance>1</ToxicEnvironmentResistance>
+		</statBases>
+		<comps>
+			<!-- 腐敗の胞子。バニラの腐敗臭ガスを撒き、肺腐敗病はバニラ側の連鎖に任せる。
+			     排出量は amountPerEmission × bodySize なので、体格差がそのまま反映される。
+			     胞子寄生は届く範囲の相手に直接進行させる。実効半径は parasiteRadius × sqrt(bodySize)
+			     なので、フィンガースパイク約2.7、タフスパイク約3.5、バルブフリーク約6.5、ドレッドメルド約7.8。 -->
+			<li Class="VoidAwake.VoidAwake_CompProperties_CorruptionSpore">
+				<amountPerEmission>100</amountPerEmission>
+				<intervalTicks>60</intervalTicks>
+				<effecterEmitting>VoidAwake_CorruptionSporeEmitting</effecterEmitting>
+				<parasiteHediff>VoidAwake_SporeParasite</parasiteHediff>
+				<parasiteRadius>3.5</parasiteRadius>
+				<parasiteHoursToLethal>3</parasiteHoursToLethal>
+			</li>
+		</comps>
+	</ThingDef>
+
+	<ThingDef ParentName="VoidAwake_BaseCorruption">
 		<defName>VoidAwake_CorruptedBulbfreak</defName>
 		<label>腐敗したバルブフリーク</label>
-		<description>無数の小型フレッシュビーストが融合し、腐敗しきった巨大な塊。全体が一つの神経系で繋がっており、二本の大きな爪で獲物を引き裂く。姿を見る前に、腐った肉の耐え難い臭気で存在を知ることになる。動きは鈍く倒すのは容易だが、死ぬと小型のフレッシュビーストの群れに弾け飛ぶ。</description>
+		<description>無数の小型フレッシュビーストが融合し、腐敗しきった巨大な塊。全体が一つの神経系で繋がっており、二本の大きな爪で獲物を引き裂く。姿を見る前に、腐った肉の耐え難い臭気で存在を知ることになる。動きは鈍く倒すのは容易だが、死ぬと小型のフレッシュビーストの群れに弾け飛ぶ。\n\n巨体から絶え間なく腐敗の胞子を広範囲に撒き散らす。長く近くにいた者は肺腐敗病を発症し、やがて胞子そのものに寄生されて死に至る。</description>
 		<statBases>
 			<MoveSpeed>3.8</MoveSpeed>
 			<MinimumContainmentStrength>75</MinimumContainmentStrength>
@@ -141,10 +162,10 @@
 		</tools>
 	</ThingDef>
 
-	<ThingDef ParentName="BaseFleshbeast">
+	<ThingDef ParentName="VoidAwake_BaseCorruption">
 		<defName>VoidAwake_CorruptedToughspike</defName>
 		<label>腐敗したタフスパイク</label>
-		<description>二本の棘状の腕と硬い甲殻を持つ、人間ほどの大きさの腐肉の生物。硬化したケラチンの棘を投擲し、離れた場所から獲物を仕留める。\n\n腐敗したタフスパイクの死体は、早く解体しなければ融けた肉の水溜まりへと崩れてしまう。</description>
+		<description>二本の棘状の腕と硬い甲殻を持つ、人間ほどの大きさの腐肉の生物。硬化したケラチンの棘を投擲し、離れた場所から獲物を仕留める。\n\n甲殻の隙間から腐敗の胞子を絶え間なく漏らしており、長く近くにいた者は肺腐敗病を発症し、やがて胞子そのものに寄生されて死に至る。\n\n腐敗したタフスパイクの死体は、早く解体しなければ融けた肉の水溜まりへと崩れてしまう。</description>
 		<statBases>
 			<MoveSpeed>4.3</MoveSpeed>
 			<MinimumContainmentStrength>50</MinimumContainmentStrength>
@@ -239,10 +260,10 @@
 		</tools>
 	</ThingDef>
 
-	<ThingDef ParentName="BaseFleshbeast">
+	<ThingDef ParentName="VoidAwake_BaseCorruption">
 		<defName>VoidAwake_CorruptedTrispike</defName>
 		<label>腐敗したトライスパイク</label>
-		<description>複数の小型フレッシュビーストが腐り合って一つになった、人間ほどの大きさの生物。それぞれの肢が単独で生存できる。死ぬと肢がもぎ取れるように分かれ、個々のフィンガースパイクとなって襲いかかることがある。</description>
+		<description>複数の小型フレッシュビーストが腐り合って一つになった、人間ほどの大きさの生物。それぞれの肢が単独で生存できる。死ぬと肢がもぎ取れるように分かれ、個々のフィンガースパイクとなって襲いかかることがある。\n\n腐敗の胞子を絶え間なく撒き散らしており、長く近くにいた者は肺腐敗病を発症し、やがて胞子そのものに寄生されて死に至る。</description>
 		<statBases>
 			<MoveSpeed>4.3</MoveSpeed>
 			<MinimumContainmentStrength>40</MinimumContainmentStrength>
@@ -356,10 +377,10 @@
 		</tools>
 	</ThingDef>
 
-	<ThingDef ParentName="BaseFleshbeast">
+	<ThingDef ParentName="VoidAwake_BaseCorruption">
 		<defName>VoidAwake_CorruptedFingerspike</defName>
 		<label>腐敗したフィンガースパイク</label>
-		<description>一本の棘状の肢を持つ、犬ほどの大きさの腐肉の生物。短い脚にもかかわらず、驚くほど速く動き回る。</description>
+		<description>一本の棘状の肢を持つ、犬ほどの大きさの腐肉の生物。短い脚にもかかわらず、驚くほど速く動き回る。\n\n撒き散らす腐敗の胞子は一体では僅かだが、群れで湧けば辺り一帯が肺腐敗病と胞子寄生の温床になる。</description>
 		<statBases>
 			<MoveSpeed>5.1</MoveSpeed>
 			<MinimumContainmentStrength>20</MinimumContainmentStrength>
@@ -469,10 +490,10 @@
 
 	<!-- ===== 上級 ===== -->
 
-	<ThingDef ParentName="BaseFleshbeast">
+	<ThingDef ParentName="VoidAwake_BaseCorruption">
 		<defName>VoidAwake_CorruptedDreadmeld</defName>
 		<label>腐敗したドレッドメルド</label>
-		<description>数十体の小型フレッシュビーストが腐敗し、緩やかに共有された中枢神経系で繋がった巨大な集合体。巨大な爪で固い岩盤を掘り進み、坑道を築く。地上に姿を見せることは稀で、生きた肉で組み上げた洞窟の奥に潜んでいる。その洞窟を支える肉塊とは精神的に繋がっている。</description>
+		<description>数十体の小型フレッシュビーストが腐敗し、緩やかに共有された中枢神経系で繋がった巨大な集合体。巨大な爪で固い岩盤を掘り進み、坑道を築く。地上に姿を見せることは稀で、生きた肉で組み上げた洞窟の奥に潜んでいる。その洞窟を支える肉塊とは精神的に繋がっている。\n\n吐き出す腐敗の胞子の量は他のコラプションとは比較にならず、周囲の空気そのものが肺を蝕む毒となる。その只中に踏み込んだ者は、抗う間もなく胞子に体を作り変えられる。</description>
 		<statBases>
 			<MoveSpeed>1.5</MoveSpeed>
 			<PsychicSensitivity>0.5</PsychicSensitivity>
@@ -560,10 +581,10 @@
 	<!-- 腐敗した脳: 器だけ用意した状態。固有の能力・見た目・分裂挙動はいずれも未実装で、
 	     テクスチャは他の未完成エンティティと同じ UI/Entities/Test を暫定で使っている。 -->
 
-	<ThingDef ParentName="BaseFleshbeast">
+	<ThingDef ParentName="VoidAwake_BaseCorruption">
 		<defName>VoidAwake_CorruptedBrain</defName>
 		<label>腐敗した脳</label>
-		<description>コラプションの群れを束ねているとみられる、剥き出しの巨大な脳。腐り落ちた襞の隙間から、絶えず脈動が伝わってくる。</description>
+		<description>コラプションの群れを束ねているとみられる、剥き出しの巨大な脳。腐り落ちた襞の隙間から、絶えず脈動が伝わってくる。\n\n襞の奥から腐敗の胞子を吐き出し続けており、長く近くにいた者は肺腐敗病を発症し、やがて胞子そのものに寄生されて死に至る。</description>
 		<statBases>
 			<MoveSpeed>2.6</MoveSpeed>
 			<MinimumContainmentStrength>90</MinimumContainmentStrength>

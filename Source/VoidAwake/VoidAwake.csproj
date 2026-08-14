@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -382,6 +382,8 @@
     <Compile Include="Core\DefOf\VoidAwake_JobDefOf.cs" />
     <Compile Include="Core\DefOf\VoidAwake_ResearchProjectDefOf.cs" />
     <Compile Include="Core\DefOf\VoidAwake_ThingDefOf.cs" />
+    <Compile Include="Core\DefOf\VoidAwake_ThoughtDefOf.cs" />
+    <Compile Include="Core\DefOf\VoidAwake_GhostShipDefOf.cs" />
     <Compile Include="Core\DefOf\VoidAwake_TrapperDefOf.cs" />
     <Compile Include="Core\DefOf\VoidAwake_VoidMagicDefOf.cs" />
     <Compile Include="Core\VoidAwake_HarmonyInit.cs" />
@@ -389,6 +391,8 @@
     <Compile Include="Core\VoidAwake_Patch_PlaySettings.cs" />
     <Compile Include="Core\VoidAwake_Settings.cs" />
     <Compile Include="Entities\ChainOfTragedy\VoidAwake_ChainOfTragedy.cs" />
+    <Compile Include="Entities\Corruption\VoidAwake_CompCorruptionSpore.cs" />
+    <Compile Include="Entities\Corruption\VoidAwake_HediffComp_SporeParasite.cs" />
     <Compile Include="Entities\FlyingHed\VoidAwake_FlyingHed.cs" />
     <Compile Include="Entities\Trapper\AI\VoidAwake_JobGiver_TrapperCombatCreateRabbitPassage.cs" />
     <Compile Include="Entities\Trapper\AI\VoidAwake_JobGiver_TrapperCombatUseRabbitPassage.cs" />
@@ -432,6 +436,13 @@
     <Compile Include="Systems\Containment\VoidAwake_EscapeEventWorker.cs" />
     <Compile Include="Systems\Containment\VoidAwake_Patch_ContainmentEscape.cs" />
     <Compile Include="Systems\Endgame\VoidAwake_Patch_EscapeShipFindTile.cs" />
+    <Compile Include="Systems\GhostShip\Utility\VoidAwake_GhostShipOceanUtility.cs" />
+    <Compile Include="Systems\GhostShip\Utility\VoidAwake_GhostUtility.cs" />
+    <Compile Include="Systems\GhostShip\AI\VoidAwake_LordJob_GhostHoldLanding.cs" />
+    <Compile Include="Systems\GhostShip\AI\VoidAwake_LordToil_GhostHoldLanding.cs" />
+    <Compile Include="Systems\GhostShip\Buildings\VoidAwake_Building_GhostShip.cs" />
+    <Compile Include="Systems\GhostShip\VoidAwake_DebugActions_GhostShip.cs" />
+    <Compile Include="Systems\GhostShip\VoidAwake_IncidentWorker_GhostShipArrival.cs" />
     <Compile Include="Systems\PsychicRituals\VoidAwake_PsychicRitualDef_CreateChimera.cs" />
     <Compile Include="Systems\PsychicRituals\VoidAwake_PsychicRitualToil_CreateChimera.cs" />
     <Compile Include="Systems\SpasmGas\VoidAwake_CompSpasmGasRelease.cs" />
@@ -466,6 +477,7 @@
     <Compile Include="Systems\VoidServants\VoidAwake_Patch_VoidServantEnsureName.cs" />
     <Compile Include="Systems\VoidServants\VoidAwake_PawnTable_VoidServants.cs" />
     <Compile Include="Systems\VoidServants\VoidAwake_VoidServantUtility.cs" />
+    <Compile Include="Systems\WorldErosion\ClockEvent\HourEvent\VoidAwake_ClockEvent_Hour4.cs" />
     <Compile Include="Systems\WorldErosion\ClockEvent\VoidAwake_ClockEventDef.cs" />
     <Compile Include="Systems\WorldErosion\ClockEvent\VoidAwake_ClockEventUtility.cs" />
     <Compile Include="Systems\WorldErosion\ClockEvent\VoidAwake_ClockEventWorker.cs" />
@@ -474,7 +486,6 @@
     <Compile Include="Systems\WorldErosion\GameConditions\VoidAwake_GameCondition_ErosionLevel2.cs" />
     <Compile Include="Systems\WorldErosion\GameConditions\VoidAwake_GameCondition_ErosionLevel3.cs" />
     <Compile Include="Systems\WorldErosion\GameConditions\VoidAwake_GameCondition_ErosionLevel4.cs" />
-    <Compile Include="Systems\WorldErosion\VoidAwake_MainButtonWorker_JumpButton.cs" />
     <Compile Include="Systems\WorldErosion\VoidAwake_MapComponent_VoidErosion.cs" />
     <Compile Include="Systems\WorldErosion\VoidAwake_WorldComponent_VoidErosion.cs" />
     <Compile Include="Systems\WorldErosion\VoidAwake_WorldDrawLayer_VoidTile.cs" />

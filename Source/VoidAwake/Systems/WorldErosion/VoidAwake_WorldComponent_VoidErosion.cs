@@ -229,10 +229,15 @@ namespace VoidAwake
             if (ratio <= 0.75f) return VoidAwake_VoidErosionLevel.Medium;//紫
             return VoidAwake_VoidErosionLevel.Light;//薄い紫
         }
-        //基点へのジャンプボタン
+        //基点へのジャンプ
         public void JumpToOrigin()
         {
-            if (!originTile.Valid) return;
+            if (!originTile.Valid)
+            {
+                Messages.Message("VoidAwake_JumpOriginMissing".Translate(), MessageTypeDefOf.RejectInput, false);
+                return;
+            }
+
             CameraJumper.TryJump(originTile, CameraJumper.MovementMode.Pan);
         }
 
@@ -363,7 +368,15 @@ namespace VoidAwake
             x = Mathf.Clamp(x, 0f, UI.screenWidth - width);
             y = Mathf.Clamp(y, 0f, UI.screenHeight - height);
             Rect rect = new Rect(x, y, width, height);
-            // --- ドラッグ（既存と同じ） ---
+            // --- 右クリック: 浸食基点へジャンプ ---
+            if (Event.current.type == EventType.MouseDown
+                && Event.current.button == 1
+                && Mouse.IsOver(rect))
+            {
+                JumpToOrigin();
+                Event.current.Use();
+            }
+            // --- 左ドラッグで移動 ---
             if (Event.current.type == EventType.MouseDown
                 && Event.current.button == 0
                 && Mouse.IsOver(rect))
@@ -389,8 +402,6 @@ namespace VoidAwake
                 Event.current.Use();
             }
             // --- 時計描画 ---
-            // 背景パネルが邪魔なら DrawWindowBackground は消してOK
-            // Widgets.DrawWindowBackground(rect);
             Widgets.DrawTextureFitted(rect, erosionClockTex, 1f);
             float angle = ErosionClockAngle;
             Widgets.DrawTextureFitted(
@@ -401,12 +412,10 @@ namespace VoidAwake
                 new Rect(0f, 0f, 1f, 1f),
                 angle);
 
-            //ここから
-            string tip = GetWorldClockTooltip();
-            TooltipHandler.TipRegion(rect, tip);
-            //ここまでがメッセージ
+            TooltipHandler.TipRegion(rect, GetWorldClockTooltip());
+        }
 
-        }        //陸地を数える
+        //陸地を数える
         private void RecalculateLandTileCount()
         {
             WorldGrid grid = Find.WorldGrid;
@@ -420,40 +429,38 @@ namespace VoidAwake
             cachedLandTileCount = count;
         }
 
-        //ワールドクロックのメッセージ
         private string GetWorldClockTooltip()
         {
-            string flavor = GetWorldClockFlavor(ErosionClockHour);
-            return "虚無の時計\n" + flavor + "\n\nドラッグで移動できます。";
+            return "VoidAwake_WorldClockTitle".Translate()
+                + "\n"
+                + GetWorldClockFlavor(ErosionClockHour)
+                + "\n\n"
+                + "VoidAwake_WorldClockTipControls".Translate();
         }
+
         private static string GetWorldClockFlavor(int hour)
         {
             switch (hour)
             {
                 case 0:
-                    return "ヴォイドはまだ眠っています、脱出するか立ち向かう準備をしましょう";
-
+                    return "VoidAwake_WorldClockFlavor_0".Translate();
                 case 1:
                 case 2:
                 case 3:
-                    return "ヴォイドの浸食が始まりました、手遅れになる前に行動しましょう";
-
+                    return "VoidAwake_WorldClockFlavor_1".Translate();
                 case 4:
                 case 5:
                 case 6:
-                    return "浸食は確実に広がっている。獣の声が、夜ごとに少しずつ歪んでいく。";
-
+                    return "VoidAwake_WorldClockFlavor_4".Translate();
                 case 7:
                 case 8:
                 case 9:
-                    return "虚無はもはや噂ではない。集落が消え、道が折れ、空の色が変わる。";
-
+                    return "VoidAwake_WorldClockFlavor_7".Translate();
                 case 10:
                 case 11:
-                    return "世界の大部分が吞まれた。残された土地は、針の影の中で息をひそめている。";
-
-                default: 
-                    return "世界はヴォイドに支配されました";
+                    return "VoidAwake_WorldClockFlavor_10".Translate();
+                default:
+                    return "VoidAwake_WorldClockFlavor_12".Translate();
             }
         }
 

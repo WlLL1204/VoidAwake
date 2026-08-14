@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>捻じれた魔術 仕様書 | VoidAwake</title>
+<style>
+	:root {
+		--bg: #14161a;
+		--panel: #1c1f26;
+		--panel2: #22262f;
+		--line: #333945;
+		--text: #e6e8ec;
+		--muted: #9aa3b2;
+		--accent: #9b6bdb;
+		--accent2: #c9a8f0;
+		--good: #6bd39a;
+		--warn: #ffb84d;
+	}
+
+	* { box-sizing: border-box; }
+
+	html { scroll-behavior: smooth; }
+
+	body {
+		margin: 0;
+		background: var(--bg);
+		color: var(--text);
+		font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+		font-size: 15px;
+		line-height: 1.75;
+	}
+
+	.wrap {
+		max-width: 1040px;
+		margin: 0 auto;
+		padding: 0 24px 96px;
+	}
+
+	header.hero {
+		background: linear-gradient(160deg, #221a2e 0%, #1c1f26 60%);
+		border-bottom: 1px solid var(--line);
+		padding: 48px 24px 40px;
+		margin-bottom: 40px;
+	}
+
+	header.hero .inner { max-width: 1040px; margin: 0 auto; }
+
+	header.hero h1 {
+		margin: 0 0 8px;
+		font-size: 34px;
+		letter-spacing: 0.02em;
+	}
+
+	header.hero h1 small {
+		display: block;
+		font-size: 14px;
+		font-weight: normal;
+		color: var(--accent2);
+		letter-spacing: 0.16em;
+		margin-bottom: 10px;
+	}
+
+	header.hero p.lead {
+		margin: 0;
+		max-width: 68ch;
+		color: var(--muted);
+	}
+
+	.meta {
+		margin-top: 20px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.tag {
+		display: inline-block;
+		background: rgba(155, 107, 219, 0.12);
+		border: 1px solid rgba(155, 107, 219, 0.4);
+		color: var(--accent2);
+		border-radius: 999px;
+		padding: 2px 12px;
+		font-size: 12px;
+		letter-spacing: 0.04em;
+	}
+
+	nav.toc {
+		background: var(--panel);
+		border: 1px solid var(--line);
+		border-radius: 10px;
+		padding: 18px 24px;
+		margin-bottom: 40px;
+	}
+
+	nav.toc h2 {
+		margin: 0 0 10px;
+		font-size: 13px;
+		letter-spacing: 0.18em;
+		color: var(--muted);
+		border: none;
+		padding: 0;
+	}
+
+	nav.toc ol {
+		margin: 0;
+		padding-left: 20px;
+		columns: 2;
+		column-gap: 32px;
+	}
+
+	nav.toc a { color: var(--text); text-decoration: none; }
+	nav.toc a:hover { color: var(--accent2); text-decoration: underline; }
+
+	section { margin-bottom: 48px; }
+
+	h2 {
+		font-size: 22px;
+		margin: 0 0 16px;
+		padding-bottom: 8px;
+		border-bottom: 2px solid var(--accent);
+	}
+
+	h3 {
+		font-size: 16px;
+		margin: 28px 0 10px;
+		color: var(--accent2);
+	}
+
+	p { margin: 0 0 14px; }
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 0 0 18px;
+		font-size: 14px;
+		background: var(--panel);
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	caption {
+		caption-side: top;
+		text-align: left;
+		color: var(--muted);
+		font-size: 13px;
+		padding: 0 0 6px;
+	}
+
+	th, td {
+		border-bottom: 1px solid var(--line);
+		padding: 9px 14px;
+		text-align: left;
+		vertical-align: top;
+	}
+
+	thead th {
+		background: var(--panel2);
+		color: var(--accent2);
+		font-weight: 600;
+		white-space: nowrap;
+	}
+
+	tbody tr:last-child th, tbody tr:last-child td { border-bottom: none; }
+
+	tbody th {
+		font-weight: 600;
+		white-space: nowrap;
+		width: 30%;
+		color: var(--text);
+	}
+
+	td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+	code {
+		font-family: Consolas, "SF Mono", Menlo, monospace;
+		font-size: 0.92em;
+		background: rgba(255, 255, 255, 0.07);
+		border-radius: 4px;
+		padding: 1px 5px;
+	}
+
+	pre {
+		background: var(--panel);
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		padding: 14px 16px;
+		margin: 0 0 18px;
+		overflow-x: auto;
+		font-size: 13px;
+		line-height: 1.6;
+	}
+
+	pre code { background: none; padding: 0; }
+
+	ul, ol { margin: 0 0 14px; padding-left: 22px; }
+	li { margin-bottom: 5px; }
+
+	.note, .warn {
+		border-left: 3px solid var(--good);
+		background: rgba(107, 211, 154, 0.08);
+		padding: 12px 16px;
+		border-radius: 0 8px 8px 0;
+		margin: 0 0 18px;
+		font-size: 14px;
+	}
+
+	.warn {
+		border-left-color: var(--warn);
+		background: rgba(255, 184, 77, 0.08);
+	}
+
+	.flow {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+		margin: 0 0 18px;
+	}
+
+	.flow .step {
+		background: var(--panel2);
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		padding: 8px 14px;
+		font-size: 13px;
+		white-space: nowrap;
+	}
+
+	.flow .step.hot { border-color: var(--accent); color: var(--accent2); }
+
+	.flow .arrow { color: var(--muted); font-size: 15px; }
+
+	.cols {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+	}
+
+	.cols > * { flex: 1 1 320px; min-width: 0; }
+
+	footer {
+		border-top: 1px solid var(--line);
+		color: var(--muted);
+		font-size: 13px;
+		padding-top: 18px;
+	}
+
+	@media print {
+		:root {
+			--bg: #ffffff;
+			--panel: #ffffff;
+			--panel2: #f2f2f2;
+			--line: #bbbbbb;
+			--text: #111111;
+			--muted: #555555;
+			--accent: #5a3a8a;
+			--accent2: #4a2c78;
+		}
+
+		body { font-size: 10.5pt; line-height: 1.55; }
+		header.hero { background: none; padding: 0 0 16px; margin-bottom: 20px; }
+		nav.toc { display: none; }
+		section { break-inside: avoid; margin-bottom: 22px; }
+		h2 { font-size: 15pt; }
+		table { font-size: 9.5pt; break-inside: avoid; }
+		pre { font-size: 9pt; break-inside: avoid; }
+		.tag { border-color: #999; color: #4a2c78; background: none; }
+		a { color: inherit; text-decoration: none; }
+	}
+</style>
+</head>
+<body>
+
+<header class="hero">
+	<div class="inner">
+		<h1><small>VOIDAWAKE / MAGIC SPECIFICATION</small>捻じれた魔術 仕様書</h1>
+		<p class="lead">
+			収容したアノマリーの傍らで瞑想を重ね、その種族との「繋がり」を深めていく成長システム。
+			繋がりが閾値を越えるごとに段階が解放され、アノマリー由来の能力が入植者のものになります。
+			本書は実装（XML の Def と C# のコード）から読み取った値のみを記載しています。
+		</p>
+		<div class="meta">
+			<span class="tag">VoidMagic</span>
+			<span class="tag">VoidAwake_VoidMagicDef</span>
+			<span class="tag">VoidAwake_VoidMeditate</span>
+			<span class="tag">最終更新 2026-08-13</span>
+		</div>
+	</div>
+</header>
+
+<div class="wrap">
+
+<nav class="toc">
+	<h2>目次</h2>
+	<ol>
+		<li><a href="#overview">概要</a></li>
+		<li><a href="#targets">繋がりの対象</a></li>
+		<li><a href="#meditation">瞑想と獲得</a></li>
+		<li><a href="#decay">減衰と維持</a></li>
+		<li><a href="#tiers">段階（tier）</a></li>
+		<li><a href="#sightstealer">サイトスティーラーの魔術</a></li>
+		<li><a href="#ui">UI と操作</a></li>
+		<li><a href="#numbers">数値早見表</a></li>
+		<li><a href="#todo">未実装 / TODO</a></li>
+		<li><a href="#dev">開発者向け情報</a></li>
+	</ol>
+</nav>
+
+<section id="overview">
+	<h2>1. 概要</h2>
+	<p>
+		捻じれた魔術は、<strong>収容プラットフォームに拘束したアノマリーの近くで瞑想する</strong>ことで進む成長システムです。
+		瞑想している入植者と、範囲内にいるアノマリーの<strong>種族</strong>との間に「繋がり」（connection、0〜100）が蓄積され、
+		25 / 50 / 75 / 100 の閾値を越えるたびに段階（tier）が解放されます。
+	</p>
+	<p>
+		段階に紐付いた <code>AbilityDef</code> と <code>HediffDef</code> はその場で入植者に付与されます。
+		逆に、対象を失ったり瞑想を放置したりすると繋がりは減衰し、閾値を割り込むと<strong>解放済みの能力も取り上げられます</strong>。
+		魔法の使用そのものにコストはなく、能力ごとのクールダウンだけで制御されています。
+	</p>
+	<div class="flow">
+		<span class="step">アノマリーを収容</span><span class="arrow">&rarr;</span>
+		<span class="step">傍らで瞑想</span><span class="arrow">&rarr;</span>
+		<span class="step hot">繋がり +5 / 時間</span><span class="arrow">&rarr;</span>
+		<span class="step hot">閾値で段階解放</span><span class="arrow">&rarr;</span>
+		<span class="step">能力 / hediff を獲得</span>
+	</div>
+	<p>
+		繋がりの保存先は入植者側の <code>VoidAwake_CompVoidMagic</code> で、
+		<code>Patches/Patch_VoidMagic.xml</code> が<strong>すべての人型 ThingDef</strong>（他 mod の追加種族を含む）に注入します。
+		入植者ごとの繋がり一覧は、インスペクタの「捻じれた魔術」タブで確認できます。
+	</p>
+	<div class="note">
+		瞑想スポットは必須ではありません。<code>JobDriver_Meditate</code> を使うジョブであれば、
+		バニラの瞑想でも娯楽としての瞑想でも同じように繋がりが伸びます。
+		収容室の中で瞑想させるだけで成立します。
+	</div>
+	<div class="warn">
+		システムは Anomaly DLC が有効なときだけ動作します（<code>VoidAwake_VoidMagicUtility.Active</code>）。
+		また、既定テンプレートの段階には能力が設定されていないため、
+		<strong>現時点で実際に魔術が使えるのはサイトスティーラーとの繋がりだけ</strong>です。
+		それ以外のアノマリーでは、繋がりと段階名の表示までが動きます。
+	</div>
+</section>
+
+<section id="targets">
+	<h2>2. 繋がりの対象</h2>
+	<p>
+		繋がりは<strong>個体ではなく種（ThingDef）に対して</strong>結ばれます。
+		収容していた個体が死んでも、同じ種を別の個体で収容し直せば繋がりは維持されます。
+	</p>
+
+	<h3>対象になる条件</h3>
+	<p>
+		<code>VoidAwake_VoidMagicUtility.IsLinkableEntityDef</code> が判定します。
+		次の 3 つをすべて満たす ThingDef が対象です。
+	</p>
+	<table>
+		<tbody>
+			<tr><th><code>race</code> が非 null</th><td>Pawn である</td></tr>
+			<tr><th><code>race.Humanlike</code> が false</th><td>人型を除外する</td></tr>
+			<tr><th><code>CompProperties_HoldingPlatformTarget</code> を持つ</th><td>収容プラットフォームに拘束できる</td></tr>
+		</tbody>
+	</table>
+	<p>
+		この条件により、<strong>Anomaly DLC の収容可能エンティティは Def を 1 行も書かずに全種が対象</strong>になります。
+		他 mod が追加した収容可能エンティティも自動的に含まれます。
+	</p>
+	<div class="note">
+		人型を除外しているのは、シャンブラーやクリープジョイナーが <code>Human</code> ThingDef のまま収容されるためです。
+		除外しないとタブに「人間との繋がり」という行が出てしまいます。
+	</div>
+
+	<h3>数値の決まり方</h3>
+	<p>
+		対象種ごとの数値と段階は <code>VoidAwake_VoidMagicDef</code> が持ちます。
+		<code>VoidAwake_VoidMagicUtility.DefFor(entityDef)</code> が次の順で解決します。
+	</p>
+	<table>
+		<thead>
+			<tr><th>優先</th><th>Def</th><th>条件</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>1</td><td><code>entityDef</code> を指定した <code>VoidAwake_VoidMagicDef</code></td><td>その種に一致する Def があるとき</td></tr>
+			<tr><td>2</td><td><code>VoidAwake_VoidMagicDefault</code></td><td>専用 Def が無いすべての種（既定テンプレート）</td></tr>
+		</tbody>
+	</table>
+	<p>
+		<code>entityDef</code> ごとの対応表と対象 ThingDef の一覧は、初回参照時に一度だけ構築されてキャッシュされます
+		（<code>EnsureCaches</code>）。一覧はラベル順にソートされます。
+	</p>
+</section>
+
+<section id="meditation">
+	<h2>3. 瞑想と獲得</h2>
+
+	<h3>瞑想とみなされるジョブ</h3>
+	<p>
+		<code>VoidAwake_VoidMagicUtility.IsMeditationJob</code> が真になるジョブ中は、繋がりが伸びます。
+	</p>
+	<ul>
+		<li>専用ジョブ <code>VoidAwake_VoidMeditate</code>（捻じれた瞑想）</li>
+		<li><code>driverClass</code> が <code>JobDriver_Meditate</code> を継承するすべてのジョブ。バニラの <code>Meditate</code>、娯楽としての瞑想、Royalty のサイフォーカス瞑想、それらを継承した他 mod のジョブが該当します</li>
+	</ul>
+	<p>
+		加えて <code>IsMeditatingNow</code> が、マップ上にいること・死亡や気絶をしていないこと・
+		<code>pather.MovingNow</code> が false であることを確認します。<strong>移動中は加算されません</strong>。
+	</p>
+
+	<h3>獲得量</h3>
+	<p>
+		加算は 250 tick ごと（<code>VoidAwake_CompVoidMagic.CompTickRare</code> 内で経過 tick が
+		<code>UpdateIntervalTicks</code> = 250 に達したとき）に、経過分をまとめて処理します。
+	</p>
+	<pre><code>獲得量 = connectionPerHourMeditating / 2500 × 経過tick × (1 / 範囲内の対象数) × gainMultiplier</code></pre>
+	<table>
+		<tbody>
+			<tr><th><code>connectionPerHourMeditating</code></th><td>既定 5.0。瞑想 1 時間（2500 tick）あたりの獲得量</td></tr>
+			<tr><th>範囲内の対象数</th><td>複数体が範囲にいると<strong>頭数で割られる</strong>。合計獲得量は変わらない</td></tr>
+			<tr><th><code>gainMultiplier</code></th><td>足元の瞑想スポットの倍率。スポットに乗っていなければ 1.0</td></tr>
+			<tr><th>上限</th><td><code>maxConnection</code>（既定 100）で頭打ち</td></tr>
+		</tbody>
+	</table>
+	<p>
+		つまり既定値では、<strong>対象 1 体に絞って 20 時間瞑想すると 0 から 100 に到達</strong>します。
+		2 体を同時に範囲へ入れると、それぞれ 2.5 / 時間ずつ伸びます。
+	</p>
+
+	<h3>探索半径</h3>
+	<p>
+		瞑想している入植者の<strong>足元</strong>に <code>VoidAwake_CompMeditationAnchor</code> を持つ建物があれば、その <code>radius</code> と
+		<code>gainMultiplier</code> を使います。無ければ <code>DefaultMeditationRadius</code> = 9.9 セル、倍率 1.0 です。
+		半径内の <code>Building_HoldingPlatform</code> を走査し、拘束されている対象を集めます。
+	</p>
+	<table>
+		<caption>瞑想スポット。ロジックは両方とも同じ comp が持つ</caption>
+		<thead>
+			<tr><th>建物</th><th class="num">半径</th><th class="num">倍率</th><th>備考</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>捻じれた瞑想スポット<br><code>VoidAwake_VoidMeditationSpot</code></td><td class="num">9.9</td><td class="num">1.0</td><td>Misc カテゴリ。建築コスト・作業量ともに 0、体力なし</td></tr>
+			<tr><td>瞑想スポット（Royalty）<br><code>MeditationSpot</code></td><td class="num">9.9</td><td class="num">1.0</td><td><code>Patch_VoidMagic.xml</code> が comp を注入。Royalty 未所持なら xpath が一致せず無視される</td></tr>
+		</tbody>
+	</table>
+
+	<h3>捻じれた瞑想ジョブ</h3>
+	<p>
+		スポットを右クリックすると「捻じれた瞑想を行う」が出ます。ジョブはスポットへ移動し、
+		2500 tick（約 1 時間）待機するだけの単純な作りで、繋がりの加算そのものは行いません。
+	</p>
+	<div class="flow">
+		<span class="step">スポットを予約</span><span class="arrow">&rarr;</span>
+		<span class="step">セルまで移動</span><span class="arrow">&rarr;</span>
+		<span class="step hot">2500 tick 待機</span><span class="arrow">+</span>
+		<span class="step">60 tick ごとに範囲を確認</span>
+	</div>
+	<p>
+		待機中は雑談しません（<code>socialMode = Off</code>）。60 tick ごとに範囲内の収容アノマリーを数え直し、
+		いなくなっていたらメッセージを出してジョブを打ち切ります。
+	</p>
+	<table>
+		<caption>フロートメニューが不可になる条件（<code>CanMeditateHere</code>）</caption>
+		<thead>
+			<tr><th>条件</th><th>表示</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>Anomaly DLC が無効</td><td>Anomaly が必要</td></tr>
+			<tr><td>死亡・気絶・非人型・comp なし</td><td>瞑想できない</td></tr>
+			<tr><td>半径内に収容アノマリーがいない</td><td>範囲内に収容されたアノマリーがない</td></tr>
+			<tr><td>到達不能</td><td>NoPath</td></tr>
+			<tr><td>他の入植者が予約中</td><td>Reserved</td></tr>
+		</tbody>
+	</table>
+</section>
+
+<section id="decay">
+	<h2>4. 減衰と維持</h2>
+	<p>
+		減衰は加算と同じ 250 tick の更新で処理されます。<strong>加算を先に行ってから減衰を見る</strong>ため、
+		瞑想している間に繋がりが減ることはありません。経過 tick から日数へ換算するので、更新間隔に結果は依存しません。
+	</p>
+	<table>
+		<caption>3 つの状態。判定は <code>VoidAwake_CompVoidMagic.DecayPerDayFor</code></caption>
+		<thead>
+			<tr><th>状態</th><th>条件</th><th class="num">減衰 / 日</th><th>タブ表示</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>喪失</td><td>対象種が<strong>どのプレイヤーマップにも収容されていない</strong></td><td class="num"><code>decayPerDayLost</code><br>既定 6.0</td><td>喪失 -6.0/日</td></tr>
+			<tr><td>放置</td><td>収容中だが、最後に繋がりが伸びてから <code>idleGraceDays</code>（3 日）が経過</td><td class="num"><code>decayPerDayIdle</code><br>既定 1.0</td><td>放置 -1.0/日</td></tr>
+			<tr><td>維持</td><td>収容中かつ猶予日数の内側</td><td class="num">0</td><td>収容中・維持</td></tr>
+		</tbody>
+	</table>
+	<p>
+		既定値では、対象を失ってから<strong>約 4.2 日で段階を 1 つ失い</strong>（100 &rarr; 75）、
+		<strong>約 16.7 日で繋がりが 0 になります</strong>。放置減衰だけなら 1 段階落ちるまで 25 日かかります。
+	</p>
+	<div class="note">
+		収容の判定は全プレイヤーマップを横断します（<code>ContainedEntityDefsNow</code>）。
+		別のマップの拠点で収容していても「喪失」にはなりません。
+		走査結果は 600 tick キャッシュされます。
+	</div>
+	<p>
+		繋がりが 0 まで落ちた行はリストから削除され、タブから消えます。
+		ただし、その種が現在収容されていれば「まだ繋がりのない対象」として行自体は表示され続けます。
+	</p>
+</section>
+
+<section id="tiers">
+	<h2>5. 段階（tier）</h2>
+	<p>
+		各 <code>VoidAwake_VoidMagicDef</code> は <code>tiers</code> のリストを持ちます。
+		1 段階は「ラベル・閾値・能力リスト・hediff」の 4 項目で、能力と hediff は省略できます。
+		リストは読み込み時に <code>threshold</code> の昇順へ自動ソートされます。
+	</p>
+	<table>
+		<caption><code>VoidAwake_VoidMagicTier</code> のフィールド</caption>
+		<tbody>
+			<tr><th><code>label</code></th><td>段階名。翻訳対象（<code>[MustTranslate]</code>）。省略時は閾値がそのまま表示される</td></tr>
+			<tr><th><code>threshold</code></th><td>解放に必要な繋がり。既定 25</td></tr>
+			<tr><th><code>abilities</code></th><td>解放時に付与する <code>AbilityDef</code> のリスト</td></tr>
+			<tr><th><code>hediff</code></th><td>解放時に付与する <code>HediffDef</code>（1 つ）</td></tr>
+		</tbody>
+	</table>
+
+	<h3>解放と剥奪</h3>
+	<p>
+		現在の段階は <code>TierIndexFor(connection)</code> が返します。閾値を満たす<strong>最上位の段階の添字</strong>で、
+		どれにも届かなければ -1 です。この値が変化したときだけ <code>ApplyTierContent</code> が走り、
+		全段階を走査して次の処理を行います。
+	</p>
+	<div class="flow">
+		<span class="step">繋がりが変化</span><span class="arrow">&rarr;</span>
+		<span class="step">TierIndexFor で段階を算出</span><span class="arrow">&rarr;</span>
+		<span class="step hot">解放済み: 能力 / hediff を付与</span><span class="arrow">+</span>
+		<span class="step hot">未解放: 能力 / hediff を剥奪</span><span class="arrow">&rarr;</span>
+		<span class="step">メッセージ通知</span>
+	</div>
+	<p>
+		付与は <code>pawn.abilities.GainAbility</code> と <code>pawn.health.AddHediff</code>、
+		剥奪は <code>RemoveAbility</code> と <code>RemoveHediff</code> です。
+		いずれも重複チェックを挟むため、同じ能力を二重に得ることはありません。
+	</p>
+	<p>
+		段階が上下すると、対象がプレイヤー操作の入植者である場合にメッセージが出ます
+		（上昇は <code>PositiveEvent</code>、下降は <code>NegativeEvent</code>）。
+		セーブのロード中は通知されません。
+	</p>
+
+	<h3>既定テンプレートの段階</h3>
+	<p>
+		専用 Def が無いすべてのアノマリーに、<code>VoidAwake_VoidMagicDefault</code> の 4 段階が使われます。
+		現状は能力・hediff とも空で、<strong>段階名の表示だけが機能します</strong>。
+	</p>
+	<table>
+		<thead>
+			<tr><th>段階</th><th class="num">閾値</th><th>中身</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>微かな共鳴</td><td class="num">25</td><td>なし</td></tr>
+			<tr><td>共振</td><td class="num">50</td><td>なし</td></tr>
+			<tr><td>深き共鳴</td><td class="num">75</td><td>なし</td></tr>
+			<tr><td>同化</td><td class="num">100</td><td>なし</td></tr>
+		</tbody>
+	</table>
+	<div class="note">
+		中身の無い段階はタブのツールチップで「能力は未実装」と明示されます（<code>VoidAwake_VoidMagicTier.HasContent</code>）。
+	</div>
+</section>
+
+<section id="sightstealer">
+	<h2>6. サイトスティーラーの魔術</h2>
+	<p>
+		<code>VoidAwake_VoidMagic_Sightstealer</code> が <code>entityDef</code> に <code>Sightstealer</code> を指定して既定テンプレートを上書きします。
+		段階に中身を入れた唯一の Def であり、<strong>C# の追加コードは一切なく Def だけで成立</strong>しています。
+	</p>
+	<table>
+		<caption>4 段階の中身</caption>
+		<thead>
+			<tr><th>段階</th><th class="num">閾値</th><th>種別</th><th>内容</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>夜目</td><td class="num">25</td><td>hediff</td><td><code>VoidAwake_NightEyes</code>。常時発動</td></tr>
+			<tr><td>気配を盗む</td><td class="num">50</td><td>能力</td><td><code>VoidAwake_StealPresence</code>。自身を透明化</td></tr>
+			<tr><td>狩りの叫び</td><td class="num">75</td><td>能力</td><td><code>VoidAwake_HuntingScream</code>。範囲の敵を発狂させる</td></tr>
+			<tr><td>群れの帳</td><td class="num">100</td><td>能力</td><td><code>VoidAwake_VeilOfThePack</code>。周囲の入植者ごと透明化</td></tr>
+		</tbody>
+	</table>
+	<p>
+		喪失減衰だけ既定の 6.0 から <strong>4.0</strong> に緩めてあります。
+		対象を一時的に失っただけで能力まで消えるのを避けるためです。それ以外の数値は既定と同じです。
+	</p>
+
+	<h3>夜目（常時効果）</h3>
+	<table>
+		<caption><code>VoidAwake_NightEyes</code>。<code>isBad</code> false、アイテムでは治療不能、死亡時に消滅</caption>
+		<tbody>
+			<tr><th>移動速度</th><td class="num">+0.3</td></tr>
+			<tr><th>近接回避率</th><td class="num">+4</td></tr>
+			<tr><th>精神感応度</th><td class="num">+0.2</td></tr>
+		</tbody>
+	</table>
+	<div class="note">
+		能力の <code>Ability_Duration</code> の単位は秒（60 tick）です。
+		「気配を盗む」は hediff の付与に <code>psychic</code> true を指定しているため、持続時間に精神感応度が倍率としてかかります。
+		夜目で感応度が +0.2 されるぶん、上位段階に進むほど透明化も長持ちします。
+	</div>
+
+	<h3>能力</h3>
+	<table>
+		<caption>すべて <code>Verb_CastAbility</code>。サイキックエフェクトの表示は切ってある</caption>
+		<thead>
+			<tr><th>能力</th><th class="num">CD</th><th class="num">詠唱</th><th class="num">射程</th><th class="num">効果範囲</th><th class="num">持続</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>気配を盗む</td><td class="num">30000 tick<br>（12 時間）</td><td class="num">1.0 秒</td><td class="num">自身</td><td class="num">&mdash;</td><td class="num">20 秒</td></tr>
+			<tr><td>狩りの叫び</td><td class="num">15000 tick<br>（6 時間）</td><td class="num">0.5 秒</td><td class="num">24.9</td><td class="num">4.9</td><td class="num">&mdash;</td></tr>
+			<tr><td>群れの帳</td><td class="num">60000 tick<br>（1 日）</td><td class="num">1.5 秒</td><td class="num">9.9</td><td class="num">9.9</td><td class="num">30 秒</td></tr>
+		</tbody>
+	</table>
+	<table>
+		<caption>効果の内訳</caption>
+		<tbody>
+			<tr><th>気配を盗む</th><td>自身に <code>PsychicInvisibility</code> を付与（<code>psychic</code> true、既存を置き換え）。敵対行動ではなく、戦闘の準備がなくても唱えられる。徴兵していなくても Gizmo が出る</td></tr>
+			<tr><th>狩りの叫び</th><td>指定地点の半径 4.9 に <code>TerrifyingHallucinations</code> を強制付与（<code>forced</code> true、<code>goodwillImpact</code> -25）。<code>CompAbilityEffect_OnlyTargetHostiles</code> を挟むため味方は巻き込まない。視線が必要で、詠唱時に <code>HoraxianSpellDark_Warmup</code> の演出と <code>Pawn_Sightstealer_Call</code> の鳴き声が出る</td></tr>
+			<tr><th>群れの帳</th><td>自身にオーラ hediff <code>VoidAwake_VeilOfThePack</code> を付与。オーラ側が範囲内の入植者へ透明化を配る（次項）</td></tr>
+		</tbody>
+	</table>
+
+	<h3>群れの帳の 2 段構え</h3>
+	<p>
+		追従処理を自前で持たずに「近くにいる間だけ味方が透明」を実現するため、hediff を 2 枚重ねています。
+	</p>
+	<div class="flow">
+		<span class="step">能力: 群れの帳</span><span class="arrow">&rarr;</span>
+		<span class="step hot">術者にオーラ<br>VoidAwake_VeilOfThePack</span><span class="arrow">&rarr;</span>
+		<span class="step">GiveHediffsInRange 9.9</span><span class="arrow">&rarr;</span>
+		<span class="step hot">味方に VoidAwake_VeiledPack</span><span class="arrow">&rarr;</span>
+		<span class="step">Link maxDistance 10 で解除</span>
+	</div>
+	<table>
+		<tbody>
+			<tr><th><code>VoidAwake_VeilOfThePack</code>（オーラ）</th><td>術者に付く。残り時間を表示、術者自身も透明化（<code>visibleToPlayer</code> true）、半径 9.9 の入植者のみを対象に <code>VoidAwake_VeiledPack</code> を配る</td></tr>
+			<tr><th><code>VoidAwake_VeiledPack</code>（味方バフ）</th><td>透明化のみ。<code>HediffCompProperties_Link</code>（<code>maxDistance</code> 10）が付いており、術者から離れると自動で剥がれる。残り時間は非表示</td></tr>
+		</tbody>
+	</table>
+	<div class="note">
+		使っている comp はすべて本体側（Assembly-CSharp）にあります。
+		Ideology の <code>CombatCommand</code> と同じ作りですが、<strong>Ideology は不要</strong>です。
+	</div>
+	<div class="warn">
+		アイコンは暫定でバニラの <code>UI/Abilities/RevenantInvisibility</code> と <code>UI/Abilities/VoidTerror</code> を流用しています。
+		専用テクスチャは未着手です。
+	</div>
+</section>
+
+<section id="ui">
+	<h2>7. UI と操作</h2>
+
+	<h3>「捻じれた魔術」タブ</h3>
+	<p>
+		<code>VoidAwake_ITab_Pawn_VoidMagic</code>（540 &times; 420）。
+		<code>inspectorTabs</code> はバニラの <code>BasePawn</code> 側で定義されているため、パッチはそこへ 1 行追加しています。
+		動物やメカにも付きますが、表示条件で絞られるため出てきません。
+	</p>
+	<table>
+		<caption>表示条件（すべて満たしたときのみ）</caption>
+		<tbody>
+			<tr><th>Anomaly DLC</th><td>有効であること</td></tr>
+			<tr><th>対象</th><td>プレイヤー操作の入植者であること</td></tr>
+			<tr><th>comp</th><td><code>VoidAwake_CompVoidMagic</code> を持つこと</td></tr>
+		</tbody>
+	</table>
+	<p>
+		行は<strong>「繋がりを持つアノマリー」と「現在収容中のアノマリー」の合併</strong>で、繋がりの降順に並びます。
+		まだ 0 の収容アノマリーも行として出るため、これから伸ばせる対象が一覧で分かります。
+		繋がりが 1 件も無く、収容もしていない場合は、瞑想スポットの設置を促す案内文だけが表示されます。
+	</p>
+	<table>
+		<caption>1 行の構成</caption>
+		<tbody>
+			<tr><th>アイコン</th><td>対象アノマリーの <code>ThingIcon</code>（40 px）</td></tr>
+			<tr><th>ゲージ</th><td>紫の横棒。各段階の閾値位置に縦線マーカーを描き、<strong>到達済みは黄、未到達は灰</strong>。中央に「現在値 / 上限」を小さく表示</td></tr>
+			<tr><th>段階名</th><td>右上。解放済みなら黄色で段階名、未解放なら灰色で「未接続」</td></tr>
+			<tr><th>状態</th><td>段階名の下。維持（緑）／喪失・放置（赤、減衰量付き）／瞑想したことがない（灰）</td></tr>
+			<tr><th>ツールチップ</th><td>全段階の一覧（解放済みは <code>+</code>、未解放は <code>-</code>、中身が無ければ「能力は未実装」）と、獲得量・減衰量の数値</td></tr>
+		</tbody>
+	</table>
+
+	<h3>瞑想スポット</h3>
+	<ul>
+		<li>右クリックのフロートメニューに「捻じれた瞑想を行う」。実行できない場合は理由を添えたグレーの項目として出ます</li>
+		<li>Inspect 欄に半径内の収容アノマリー名を列挙します。いなければ「範囲内に収容されたアノマリーがない。」</li>
+		<li>建物を選択すると探索半径のリングを描画します（<code>VoidAwake_Building_VoidMeditationSpot</code>）。Royalty の瞑想スポットは thingClass が異なるためリングは出ません</li>
+	</ul>
+
+	<h3>メッセージ</h3>
+	<table>
+		<tbody>
+			<tr><th>段階の解放</th><td>「〇〇は△△との捻じれた繋がりを深めた：段階名。」</td></tr>
+			<tr><th>段階の喪失</th><td>「〇〇は△△との捻じれた繋がりを失った：段階名。」</td></tr>
+			<tr><th>瞑想の中断</th><td>「範囲内に収容されたアノマリーがなくなり、〇〇は瞑想をやめた。」</td></tr>
+		</tbody>
+	</table>
+</section>
+
+<section id="numbers">
+	<h2>8. 数値早見表</h2>
+	<table>
+		<caption>既定テンプレート <code>VoidAwake_VoidMagicDefault</code> の値と、C# 側の定数</caption>
+		<thead>
+			<tr><th>項目</th><th class="num">値</th><th>ソース</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>繋がりの上限</td><td class="num">100</td><td><code>maxConnection</code></td></tr>
+			<tr><td>瞑想での獲得</td><td class="num">5.0 / 時間</td><td><code>connectionPerHourMeditating</code>。範囲内の対象数で分割</td></tr>
+			<tr><td>喪失時の減衰</td><td class="num">6.0 / 日</td><td><code>decayPerDayLost</code></td></tr>
+			<tr><td>放置の猶予</td><td class="num">3 日</td><td><code>idleGraceDays</code></td></tr>
+			<tr><td>放置時の減衰</td><td class="num">1.0 / 日</td><td><code>decayPerDayIdle</code></td></tr>
+			<tr><td>段階の閾値</td><td class="num">25 / 50 / 75 / 100</td><td>微かな共鳴 / 共振 / 深き共鳴 / 同化</td></tr>
+			<tr><td>加算・減衰の判定間隔</td><td class="num">250 tick</td><td><code>VoidAwake_CompVoidMagic.UpdateIntervalTicks</code></td></tr>
+			<tr><td>捻じれた瞑想 1 回の長さ</td><td class="num">2500 tick</td><td><code>VoidAwake_JobDriver_VoidMeditate.MeditateTicks</code>（約 1 時間）</td></tr>
+			<tr><td>瞑想中の範囲再確認</td><td class="num">60 tick</td><td><code>VoidAwake_JobDriver_VoidMeditate.CheckIntervalTicks</code></td></tr>
+			<tr><td>スポットの探索半径</td><td class="num">9.9 セル</td><td><code>VoidAwake_CompProperties_MeditationAnchor.radius</code></td></tr>
+			<tr><td>スポット無しの探索半径</td><td class="num">9.9 セル</td><td><code>VoidAwake_VoidMagicUtility.DefaultMeditationRadius</code></td></tr>
+			<tr><td>スポットの獲得倍率</td><td class="num">1.0</td><td><code>VoidAwake_CompProperties_MeditationAnchor.gainMultiplier</code></td></tr>
+			<tr><td>収容状況のキャッシュ</td><td class="num">600 tick</td><td><code>VoidAwake_VoidMagicUtility.ContainedScanIntervalTicks</code></td></tr>
+			<tr><td>1 時間 / 1 日</td><td class="num">2500 / 60000 tick</td><td><code>TicksPerHour</code> / <code>TicksPerDay</code></td></tr>
+		</tbody>
+	</table>
+	<table>
+		<caption>既定値から導かれる所要時間</caption>
+		<thead>
+			<tr><th>内容</th><th class="num">所要</th><th>前提</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>0 から 100 まで伸ばす</td><td class="num">瞑想 20 時間</td><td>範囲内の対象が 1 体、倍率 1.0</td></tr>
+			<tr><td>段階を 1 つ上げる（25 分）</td><td class="num">瞑想 5 時間</td><td>同上</td></tr>
+			<tr><td>喪失で 1 段階落ちる</td><td class="num">約 4.2 日</td><td>100 から 75 まで、6.0 / 日</td></tr>
+			<tr><td>喪失で 0 になる</td><td class="num">約 16.7 日</td><td>100 から 0 まで、6.0 / 日</td></tr>
+			<tr><td>放置で 1 段階落ちる</td><td class="num">3 + 25 日</td><td>猶予 3 日の後、1.0 / 日</td></tr>
+		</tbody>
+	</table>
+	<table>
+		<caption>サイトスティーラー専用 Def の差分</caption>
+		<thead>
+			<tr><th>項目</th><th class="num">既定</th><th class="num">サイトスティーラー</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>喪失時の減衰</td><td class="num">6.0 / 日</td><td class="num">4.0 / 日</td></tr>
+			<tr><td>段階の中身</td><td class="num">なし</td><td class="num">hediff 1 + 能力 3</td></tr>
+		</tbody>
+	</table>
+</section>
+
+<section id="todo">
+	<h2>9. 未実装 / TODO</h2>
+	<table>
+		<thead>
+			<tr><th>項目</th><th>状況</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>サイトスティーラー以外の魔術</td><td>既定テンプレートの 4 段階は中身が空。<code>abilities</code> と <code>hediff</code> を埋めれば <code>ApplyTierContent</code> の付与・剥奪がそのまま動くため、C# の追加は不要</td></tr>
+			<tr><td>繋がりに応じた連続的なスケーリング</td><td>現在の Def 構造は段階単位の付与しか表現できない。繋がりの数値そのものを効果量に反映するには C# 側の拡張が必要</td></tr>
+			<tr><td>繋がりのデメリット</td><td>Void による侵食や精神への影響は未実装。現状、繋がりを深めることに不利益はない</td></tr>
+			<tr><td>研究による前提条件</td><td>ResearchProjectDef との連携はなし。Anomaly DLC さえあれば最初から瞑想できる</td></tr>
+			<tr><td>放射状（星座風）のグラフ表示</td><td>タブは横棒ゲージの一覧のみ</td></tr>
+			<tr><td>専用テクスチャ</td><td>能力アイコンはバニラ流用。瞑想スポットも <code>Things/Building/Misc/PartySpot</code> を暫定利用</td></tr>
+			<tr><td>英語の DefInjected</td><td>Keyed は日英ともに用意済み。DefInjected は日本語のみで、既定テンプレートとジョブ・建物の Def には日本語が直接書かれている</td></tr>
+		</tbody>
+	</table>
+</section>
+
+<section id="dev">
+	<h2>10. 開発者向け情報</h2>
+
+	<h3>Def 一覧</h3>
+	<table>
+		<thead>
+			<tr><th>種別</th><th>defName</th><th>ファイル</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>VoidAwake_VoidMagicDef</td><td>VoidAwake_VoidMagicDefault</td><td>Defs/VoidAwake_VoidMagicDefs/VoidMagics_VoidAwake.xml</td></tr>
+			<tr><td>VoidAwake_VoidMagicDef</td><td>VoidAwake_VoidMagic_Sightstealer</td><td>Defs/VoidAwake_VoidMagicDefs/VoidMagics_Sightstealer.xml</td></tr>
+			<tr><td>JobDef</td><td>VoidAwake_VoidMeditate</td><td>Defs/JobDefs/Jobs_VoidMagic.xml</td></tr>
+			<tr><td>ThingDef</td><td>VoidAwake_VoidMeditationSpot</td><td>Defs/ThingDefs_Buildings/Buildings_VoidMeditationSpot.xml</td></tr>
+			<tr><td>AbilityDef</td><td>VoidAwake_StealPresence / VoidAwake_HuntingScream / VoidAwake_VeilOfThePack</td><td>Defs/AbilityDefs/Abilities_Sightstealer.xml</td></tr>
+			<tr><td>HediffDef</td><td>VoidAwake_NightEyes / VoidAwake_VeilOfThePack / VoidAwake_VeiledPack</td><td>Defs/HediffDefs/Hediffs_Sightstealer.xml</td></tr>
+			<tr><td>Patch</td><td>comp 注入 / タブ追加 / Royalty 連携</td><td>Patches/Patch_VoidMagic.xml</td></tr>
+		</tbody>
+	</table>
+
+	<h3>C# クラス</h3>
+	<p>すべて <code>Source/VoidAwake/Systems/VoidMagic/</code> に集約されています（DefOf のみ <code>Core/DefOf/</code>）。</p>
+	<table>
+		<tbody>
+			<tr><th><code>VoidAwake_VoidMagicDef</code></th><td>対象種・上限・獲得量・減衰・段階リスト。<code>TierIndexFor</code> / <code>TierAt</code> と <code>ConfigErrors</code></td></tr>
+			<tr><th><code>VoidAwake_VoidMagicTier</code></th><td>段階 1 つ分。Def ではなく XML 内のネスト要素</td></tr>
+			<tr><th><code>VoidAwake_VoidMagicUtility</code></th><td>Def 解決・対象判定・瞑想判定・収容状況の走査とキャッシュ</td></tr>
+			<tr><th><code>VoidAwake_CompVoidMagic</code></th><td>入植者側の本体。繋がりの保存（<code>VoidAwake_VoidLink</code>）、<code>CompTickRare</code> での加算・減衰、段階の付与と剥奪</td></tr>
+			<tr><th><code>VoidAwake_CompMeditationAnchor</code></th><td>スポット側。半径走査・フロートメニュー・Inspect 文字列</td></tr>
+			<tr><th><code>VoidAwake_JobDriver_VoidMeditate</code></th><td>スポットへ移動して待機するだけのジョブ</td></tr>
+			<tr><th><code>VoidAwake_Building_VoidMeditationSpot</code></th><td>選択時に半径リングを描画する Building</td></tr>
+			<tr><th><code>VoidAwake_ITab_Pawn_VoidMagic</code></th><td>「捻じれた魔術」タブ</td></tr>
+			<tr><th><code>VoidAwake_DebugActions_VoidMagic</code></th><td>Dev Mode 用のデバッグアクション</td></tr>
+			<tr><th><code>VoidAwake_VoidMagicDefOf</code></th><td><code>VoidAwake_VoidMeditate</code> / <code>VoidAwake_VoidMeditationSpot</code> / <code>VoidAwake_VoidMagicDefault</code></td></tr>
+		</tbody>
+	</table>
+	<p>
+		Harmony パッチは使用していません。ThingComp / ITab / JobDriver と、XML の <code>PatchOperationAdd</code> だけで完結しています。
+	</p>
+
+	<h3>アノマリーごとの魔術を追加する</h3>
+	<p>
+		<code>entityDef</code> を指定した <code>VoidAwake_VoidMagicDef</code> を 1 つ書けば、既定テンプレートを上書きできます。
+		段階に <code>abilities</code> や <code>hediff</code> を書けば、そのまま付与・剥奪の対象になります。
+	</p>
+	<pre><code>&lt;VoidAwake.VoidAwake_VoidMagicDef&gt;
+	&lt;defName&gt;VoidAwake_VoidMagic_Revenant&lt;/defName&gt;
+	&lt;entityDef&gt;Revenant&lt;/entityDef&gt;
+	&lt;connectionPerHourMeditating&gt;3&lt;/connectionPerHourMeditating&gt;
+	&lt;tiers&gt;
+		&lt;li&gt;
+			&lt;label&gt;faint resonance&lt;/label&gt;
+			&lt;threshold&gt;40&lt;/threshold&gt;
+			&lt;!-- ここに hediff / abilities を書くと解放時に付与される --&gt;
+		&lt;/li&gt;
+	&lt;/tiers&gt;
+&lt;/VoidAwake.VoidAwake_VoidMagicDef&gt;</code></pre>
+	<div class="warn">
+		<code>ConfigErrors</code> により、<code>maxConnection</code> が 0 以下、または <code>tiers</code> が空の Def は起動時にエラーを出します。
+	</div>
+
+	<h3>デバッグアクション</h3>
+	<p>Dev Mode のデバッグアクション（カテゴリ「VoidAwake」、マップ上でのみ有効）。対象は選択中の入植者です。</p>
+	<table>
+		<tbody>
+			<tr><th><code>VoidMagic: add connection +25</code></th><td>選んだアノマリーとの繋がりを 25 加算する</td></tr>
+			<tr><th><code>VoidMagic: fill connection</code></th><td>選んだアノマリーとの繋がりを上限まで埋める</td></tr>
+			<tr><th><code>VoidMagic: clear connections</code></th><td>繋がりをすべて削除する</td></tr>
+			<tr><th><code>VoidMagic: dump links</code></th><td>全入植者の繋がり・段階・減衰量をログへ出力する</td></tr>
+		</tbody>
+	</table>
+	<p>アノマリーの選択リストは、現在収容中のものが <code>*</code> 付きで先頭に並びます。</p>
+
+	<h3>ソース</h3>
+	<p>
+		実装メモは <a href="VoidMagic.md" style="color:var(--accent2);">VoidMagic.md</a> を参照してください。
+		ファイル構成と設計意図はそちらにまとまっています。
+	</p>
+</section>
+
+<footer>
+	VoidAwake &mdash; 捻じれた魔術 仕様書 / 記載値は 2026-08-13 時点の実装に基づきます。
+	ブラウザの印刷（Ctrl+P）から PDF として保存できます。
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>コラプション 仕様書 | VoidAwake</title>
+<style>
+	:root {
+		--bg: #14161a;
+		--panel: #1c1f26;
+		--panel2: #22262f;
+		--line: #333945;
+		--text: #e6e8ec;
+		--muted: #9aa3b2;
+		--accent: #7bbf4a;
+		--accent2: #bfe07a;
+		--good: #6bd39a;
+		--warn: #ffb84d;
+	}
+
+	* { box-sizing: border-box; }
+
+	html { scroll-behavior: smooth; }
+
+	body {
+		margin: 0;
+		background: var(--bg);
+		color: var(--text);
+		font-family: "Segoe UI", "Yu Gothic UI", "Hiragino Kaku Gothic ProN", "Noto Sans JP", Meiryo, sans-serif;
+		font-size: 15px;
+		line-height: 1.75;
+	}
+
+	.wrap {
+		max-width: 1040px;
+		margin: 0 auto;
+		padding: 0 24px 96px;
+	}
+
+	header.hero {
+		background: linear-gradient(160deg, #1b2a17 0%, #1c1f26 60%);
+		border-bottom: 1px solid var(--line);
+		padding: 48px 24px 40px;
+		margin-bottom: 40px;
+	}
+
+	header.hero .inner { max-width: 1040px; margin: 0 auto; }
+
+	header.hero h1 {
+		margin: 0 0 8px;
+		font-size: 34px;
+		letter-spacing: 0.02em;
+	}
+
+	header.hero h1 small {
+		display: block;
+		font-size: 14px;
+		font-weight: normal;
+		color: var(--accent2);
+		letter-spacing: 0.16em;
+		margin-bottom: 10px;
+	}
+
+	header.hero p.lead {
+		margin: 0;
+		max-width: 68ch;
+		color: var(--muted);
+	}
+
+	.meta {
+		margin-top: 20px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.tag {
+		display: inline-block;
+		background: rgba(123, 191, 74, 0.12);
+		border: 1px solid rgba(123, 191, 74, 0.4);
+		color: var(--accent2);
+		border-radius: 999px;
+		padding: 2px 12px;
+		font-size: 12px;
+		letter-spacing: 0.04em;
+	}
+
+	nav.toc {
+		background: var(--panel);
+		border: 1px solid var(--line);
+		border-radius: 10px;
+		padding: 18px 24px;
+		margin-bottom: 40px;
+	}
+
+	nav.toc h2 {
+		margin: 0 0 10px;
+		font-size: 13px;
+		letter-spacing: 0.18em;
+		color: var(--muted);
+		border: none;
+		padding: 0;
+	}
+
+	nav.toc ol {
+		margin: 0;
+		padding-left: 20px;
+		columns: 2;
+		column-gap: 32px;
+	}
+
+	nav.toc a { color: var(--text); text-decoration: none; }
+	nav.toc a:hover { color: var(--accent2); text-decoration: underline; }
+
+	section { margin-bottom: 48px; }
+
+	h2 {
+		font-size: 22px;
+		margin: 0 0 16px;
+		padding-bottom: 8px;
+		border-bottom: 2px solid var(--accent);
+	}
+
+	h3 {
+		font-size: 16px;
+		margin: 28px 0 10px;
+		color: var(--accent2);
+	}
+
+	p { margin: 0 0 14px; }
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 0 0 18px;
+		font-size: 14px;
+		background: var(--panel);
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	caption {
+		caption-side: top;
+		text-align: left;
+		color: var(--muted);
+		font-size: 13px;
+		padding: 0 0 6px;
+	}
+
+	th, td {
+		border-bottom: 1px solid var(--line);
+		padding: 9px 14px;
+		text-align: left;
+		vertical-align: top;
+	}
+
+	thead th {
+		background: var(--panel2);
+		color: var(--accent2);
+		font-weight: 600;
+		white-space: nowrap;
+	}
+
+	tbody tr:last-child th, tbody tr:last-child td { border-bottom: none; }
+
+	tbody th {
+		font-weight: 600;
+		white-space: nowrap;
+		width: 30%;
+		color: var(--text);
+	}
+
+	td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+	code {
+		font-family: Consolas, "SF Mono", Menlo, monospace;
+		font-size: 0.92em;
+		background: rgba(255, 255, 255, 0.07);
+		border-radius: 4px;
+		padding: 1px 5px;
+	}
+
+	ul, ol { margin: 0 0 14px; padding-left: 22px; }
+	li { margin-bottom: 5px; }
+
+	.note, .warn {
+		border-left: 3px solid var(--good);
+		background: rgba(107, 211, 154, 0.08);
+		padding: 12px 16px;
+		border-radius: 0 8px 8px 0;
+		margin: 0 0 18px;
+		font-size: 14px;
+	}
+
+	.warn {
+		border-left-color: var(--warn);
+		background: rgba(255, 184, 77, 0.08);
+	}
+
+	.flow {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+		margin: 0 0 18px;
+	}
+
+	.flow .step {
+		background: var(--panel2);
+		border: 1px solid var(--line);
+		border-radius: 8px;
+		padding: 8px 14px;
+		font-size: 13px;
+		white-space: nowrap;
+	}
+
+	.flow .step.hot { border-color: var(--accent); color: var(--accent2); }
+
+	.flow .arrow { color: var(--muted); font-size: 15px; }
+
+	.cols {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 20px;
+	}
+
+	.cols > * { flex: 1 1 320px; min-width: 0; }
+
+	footer {
+		border-top: 1px solid var(--line);
+		color: var(--muted);
+		font-size: 13px;
+		padding-top: 18px;
+	}
+
+	@media print {
+		:root {
+			--bg: #ffffff;
+			--panel: #ffffff;
+			--panel2: #f2f2f2;
+			--line: #bbbbbb;
+			--text: #111111;
+			--muted: #555555;
+			--accent: #3f7a22;
+			--accent2: #4a6b00;
+		}
+
+		body { font-size: 10.5pt; line-height: 1.55; }
+		header.hero { background: none; padding: 0 0 16px; margin-bottom: 20px; }
+		nav.toc { display: none; }
+		section { break-inside: avoid; margin-bottom: 22px; }
+		h2 { font-size: 15pt; }
+		table { font-size: 9.5pt; break-inside: avoid; }
+		.tag { border-color: #999; color: #4a6b00; background: none; }
+		a { color: inherit; text-decoration: none; }
+	}
+</style>
+</head>
+<body>
+
+<header class="hero">
+	<div class="inner">
+		<h1><small>VOIDAWAKE / ENTITY SPECIFICATION</small>コラプション 仕様書</h1>
+		<p class="lead">
+			腐敗変異したフレッシュビーストの群れ。歩いた先すべてに腐敗の胞子を撒き、
+			肺腐敗病と致死性の胞子寄生でコロニーを内側から削り取ります。
+			本書は実装（XML の Def と C# のコード）から読み取った値のみを記載しています。
+		</p>
+		<div class="meta">
+			<span class="tag">Corruption</span>
+			<span class="tag">VoidAwake_BaseCorruption</span>
+			<span class="tag">VoidAwake_SporeParasite</span>
+			<span class="tag">最終更新 2026-08-13</span>
+		</div>
+	</div>
+</header>
+
+<div class="wrap">
+
+<nav class="toc">
+	<h2>目次</h2>
+	<ol>
+		<li><a href="#overview">概要</a></li>
+		<li><a href="#entities">エンティティ一覧</a></li>
+		<li><a href="#divide">分裂チェーン</a></li>
+		<li><a href="#spore">腐敗の胞子</a></li>
+		<li><a href="#parasite">胞子寄生</a></li>
+		<li><a href="#resist">耐性と対策</a></li>
+		<li><a href="#numbers">数値早見表</a></li>
+		<li><a href="#todo">未実装 / TODO</a></li>
+		<li><a href="#dev">開発者向け情報</a></li>
+	</ol>
+</nav>
+
+<section id="overview">
+	<h2>1. 概要</h2>
+	<p>
+		コラプションは、バニラ Anomaly のフレッシュビースト4種とドレッドメルドを腐敗変異させたエンティティ群です。
+		個体としての性能・攻撃・収容設定はバニラのコピーですが、
+		<strong>分裂先が腐敗種同士で閉じている</strong>点と、
+		<strong>全個体が常時「腐敗の胞子」を撒く</strong>点が異なります。
+	</p>
+	<p>
+		胞子はバニラの腐敗臭ガス（<code>GasType.RotStink</code>）として撒かれるため、
+		肺腐敗病はバニラの仕組みでそのまま発症します。
+		それに加えて、本体の周囲にいた者へ独自の致死 Hediff
+		<code>VoidAwake_SporeParasite</code>（胞子寄生）が進行します。
+	</p>
+	<div class="flow">
+		<span class="step">コラプションが接近</span><span class="arrow">&rarr;</span>
+		<span class="step">足元に腐敗臭ガス</span><span class="arrow">&rarr;</span>
+		<span class="step">肺腐敗病</span><span class="arrow">+</span>
+		<span class="step hot">胞子寄生が3時間で 100%</span><span class="arrow">&rarr;</span>
+		<span class="step hot">即死</span>
+	</div>
+	<div class="note">
+		胞子寄生は治療できません。唯一の対処は<strong>胞子の範囲から離れること</strong>と、
+		<strong>ガスマスクを着けること</strong>の2つだけです。
+	</div>
+	<div class="warn">
+		襲来イベント（IncidentDef）はまだ実装されていません。
+		現状は Dev Mode の pawn スポーンからのみ出現させられます。
+	</div>
+</section>
+
+<section id="entities">
+	<h2>2. エンティティ一覧</h2>
+	<p>
+		全 6 体が抽象 ThingDef <code>VoidAwake_BaseCorruption</code>（親はバニラ <code>BaseFleshbeast</code>）を継承し、
+		そこから胞子 comp と <code>ToxicEnvironmentResistance</code> 1 を受け取ります。
+	</p>
+	<table>
+		<caption>基本性能。胞子量と寄生半径は <code>bodySize</code> から導出される値</caption>
+		<thead>
+			<tr>
+				<th>個体</th>
+				<th class="num">戦闘力</th>
+				<th class="num">移動</th>
+				<th class="num">体格</th>
+				<th class="num">体力倍率</th>
+				<th class="num">必要収容強度</th>
+				<th class="num">胞子量/秒</th>
+				<th class="num">寄生半径</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr><td>腐敗したフィンガースパイク</td><td class="num">25</td><td class="num">5.1</td><td class="num">0.6</td><td class="num">0.5</td><td class="num">20</td><td class="num">60</td><td class="num">2.7</td></tr>
+			<tr><td>腐敗したタフスパイク</td><td class="num">70</td><td class="num">4.3</td><td class="num">1</td><td class="num">1</td><td class="num">50</td><td class="num">100</td><td class="num">3.5</td></tr>
+			<tr><td>腐敗したトライスパイク</td><td class="num">90</td><td class="num">4.3</td><td class="num">1</td><td class="num">0.3</td><td class="num">40</td><td class="num">100</td><td class="num">3.5</td></tr>
+			<tr><td>腐敗した脳</td><td class="num">150</td><td class="num">2.6</td><td class="num">1.4</td><td class="num">2</td><td class="num">90</td><td class="num">140</td><td class="num">4.1</td></tr>
+			<tr><td>腐敗したバルブフリーク</td><td class="num">360</td><td class="num">3.8</td><td class="num">3.5</td><td class="num">0.3</td><td class="num">75</td><td class="num">350</td><td class="num">6.5</td></tr>
+			<tr><td>腐敗したドレッドメルド</td><td class="num">650</td><td class="num">1.5</td><td class="num">5</td><td class="num">10</td><td class="num">&mdash;</td><td class="num">500</td><td class="num">7.8</td></tr>
+		</tbody>
+	</table>
+
+	<table>
+		<caption>攻撃手段と特記事項</caption>
+		<thead>
+			<tr><th>個体</th><th>近接</th><th>アビリティ</th><th>特記</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>腐敗したフィンガースパイク</td>
+				<td>棘 Stab 7（係数 0.5）／頭 Blunt 3</td>
+				<td><code>SpikeLaunch_Fingerspike</code></td>
+				<td>休眠する。起床半径 4.9、遅延 100&ndash;200 tick。<strong>人間にのみ反応</strong>（建物・動物・メカには反応しない）</td>
+			</tr>
+			<tr>
+				<td>腐敗したタフスパイク</td>
+				<td>左右の棘 Stab 7 &times;2／頭 Blunt 3</td>
+				<td><code>SpikeLaunch_Toughspike</code></td>
+				<td>装甲 Sharp 0.2 / Blunt 0.16。唯一 <code>canBecomeShambler</code> true</td>
+			</tr>
+			<tr>
+				<td>腐敗したトライスパイク</td>
+				<td>左右の棘 Stab 7 &times;2／上の棘 Stab 7（係数 0.5）／頭 Blunt 3</td>
+				<td><code>SpikeLaunch_Toughspike</code></td>
+				<td>ダウン時死亡率 0.9</td>
+			</tr>
+			<tr>
+				<td>腐敗した脳</td>
+				<td>頭 Blunt 3 のみ</td>
+				<td>なし</td>
+				<td><strong>未実装</strong>。ボディはフィンガースパイク流用、テクスチャは仮素材</td>
+			</tr>
+			<tr>
+				<td>腐敗したバルブフリーク</td>
+				<td>触手 Blunt 7 &times;5／頭 Blunt 3</td>
+				<td>なし</td>
+				<td>ダウン時死亡率 0.9</td>
+			</tr>
+			<tr>
+				<td>腐敗したドレッドメルド</td>
+				<td>左右の棘 Stab <strong>14</strong> &times;2／頭 Blunt 3</td>
+				<td>なし</td>
+				<td>ボス扱い（<code>isBoss</code> / <code>forceDeathOnDowned</code> / <code>Regeneration</code> 常時）。出現時 <code>ThreatBig</code> レター。死体から Shard 3 + Bioferrite 30</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table>
+		<caption>研究・収容</caption>
+		<thead>
+			<tr><th>個体</th><th class="num">知識カテゴリ</th><th class="num">研究知識量</th><th class="num">バイオフェライト密度</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>腐敗したフィンガースパイク</td><td>Basic</td><td class="num">1</td><td class="num">2</td></tr>
+			<tr><td>腐敗したタフスパイク</td><td>Basic</td><td class="num">2</td><td class="num">2</td></tr>
+			<tr><td>腐敗したトライスパイク</td><td>Basic</td><td class="num">2</td><td class="num">2</td></tr>
+			<tr><td>腐敗した脳</td><td>Advanced</td><td class="num">3</td><td class="num">3</td></tr>
+			<tr><td>腐敗したバルブフリーク</td><td>Advanced</td><td class="num">2.5</td><td class="num">2</td></tr>
+			<tr><td>腐敗したドレッドメルド</td><td colspan="3">研究・収容の comp を持たない</td></tr>
+		</tbody>
+	</table>
+	<p style="color:var(--muted);font-size:13px;">研究間隔はいずれも 120000 tick、モノリスレベル 1 以上・保持台が必要。</p>
+
+	<div class="note">
+		コーデックスでは4種の基本個体が「コラプション」グループ（Basic）にまとめられ、
+		腐敗したドレッドメルドと腐敗した脳が Advanced の個別エントリになります。
+		後者2つの発見条件は <code>BecameVisible</code>（視認した時点）です。
+	</div>
+</section>
+
+<section id="divide">
+	<h2>3. 分裂チェーン</h2>
+	<p>
+		分裂先はすべて腐敗種に差し替えてあり、バニラのフレッシュビーストが混ざることはありません。
+	</p>
+	<table>
+		<thead>
+			<tr><th>死亡した個体</th><th>死亡時の挙動</th><th>血痕</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>腐敗したドレッドメルド</td>
+				<td><code>DeathActionProperties_Divide</code>。腐敗したタフスパイク・トライスパイク・バルブフリークを<strong>各1体強制</strong>（<code>dividePawnKindAdditionalForced</code>）</td>
+				<td class="num">3&ndash;4</td>
+			</tr>
+			<tr>
+				<td>腐敗したバルブフリーク</td>
+				<td><code>DeathActionProperties_Divide</code>。<strong>4体</strong>を腐敗したタフスパイク／トライスパイクから抽選</td>
+				<td class="num">3&ndash;4</td>
+			</tr>
+			<tr>
+				<td>腐敗したトライスパイク</td>
+				<td><code>DeathActionProperties_Divide</code>。腐敗したフィンガースパイクを<strong>3体</strong></td>
+				<td class="num">1&ndash;2</td>
+			</tr>
+			<tr>
+				<td>腐敗したフィンガースパイク</td>
+				<td><code>DeathActionProperties_Vanish</code>。消滅して <code>Filth_TwistedFlesh</code> を 1&ndash;3 個残す（肉片爆散 Small）</td>
+				<td class="num">&mdash;</td>
+			</tr>
+			<tr>
+				<td>腐敗したタフスパイク</td>
+				<td><code>deathAction</code> なし。通常の死体を残す</td>
+				<td class="num">&mdash;</td>
+			</tr>
+			<tr>
+				<td>腐敗した脳</td>
+				<td><code>deathAction</code> なし（未実装）</td>
+				<td class="num">&mdash;</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="flow">
+		<span class="step">ドレッドメルド</span><span class="arrow">&rarr;</span>
+		<span class="step">バルブフリーク &times;1 + タフ &times;1 + トライ &times;1</span><span class="arrow">&rarr;</span>
+		<span class="step">タフ／トライ &times;4</span><span class="arrow">&rarr;</span>
+		<span class="step">フィンガースパイク &times;3</span><span class="arrow">&rarr;</span>
+		<span class="step">消滅</span>
+	</div>
+	<div class="warn">
+		分裂した個体もすべて胞子を撒きます。ドレッドメルド1体を倒すと最終的に十数体の胞子源が生まれるため、
+		撃破直後の戦場は<strong>数時間にわたって立ち入り禁止区域</strong>になります。
+	</div>
+</section>
+
+<section id="spore">
+	<h2>4. 腐敗の胞子</h2>
+	<p>
+		抽象 def が持つ <code>VoidAwake.VoidAwake_CompProperties_CorruptionSpore</code> が実体です。
+		6 体すべてが同じ設定を共有しており、調整は抽象 def の 1 箇所で全体に効きます。
+	</p>
+	<table>
+		<caption>ThingComp <code>VoidAwake_CompCorruptionSpore</code></caption>
+		<tbody>
+			<tr><th>排出間隔</th><td><code>intervalTicks</code> = 60（1秒ごと）</td></tr>
+			<tr><th>排出量</th><td><code>amountPerEmission</code> 100 &times; <code>bodySize</code>。実測 60（フィンガースパイク）&ndash; 500（ドレッドメルド）</td></tr>
+			<tr><th>ガス種別</th><td>バニラの <code>GasType.RotStink</code>（腐敗臭ガス）。独自ガスは定義していない</td></tr>
+			<tr><th>排出位置</th><td>本体の足元セル 1 マス。あとはバニラの <code>GasGrid</code> が拡散させる</td></tr>
+			<tr><th>停止条件</th><td>未スポーン、Map が null、または pawn が死亡</td></tr>
+		</tbody>
+	</table>
+
+	<h3>肺腐敗病</h3>
+	<p>
+		バニラの腐敗臭ガスをそのまま使うのが設計の要点です。
+		バニラには <code>RotStink</code> の濃度から <code>LungRotExposure</code> を進め、
+		そこから <code>LungRot</code> へ繋ぐ連鎖が既にあるため、
+		<strong>肺腐敗病について Mod 側では hediff に一切触れていません</strong>。
+		ガスマスクや防毒装備の効果、通知、健康タブの表示もすべてバニラのまま機能します。
+	</p>
+	<div class="note">
+		バニラの <code>CompProperties_ReleaseGas</code> は一回きりのバースト放出なので、
+		移動しながら撒き続ける用途には使えません。そのために独自 ThingComp を用意しています。
+	</div>
+
+	<h3>演出</h3>
+	<table>
+		<caption>EffecterDef <code>VoidAwake_CorruptionSporeEmitting</code></caption>
+		<tbody>
+			<tr><th>サブエフェクター</th><td><code>SubEffecter_SprayerChance</code></td></tr>
+			<tr><th>フレック</th><td><code>Fleck_ToxGasSmall</code></td></tr>
+			<tr><th>色</th><td>(0.45, 0.70, 0.30) &mdash; 緑</td></tr>
+			<tr><th>発生確率</th><td><code>chancePerTick</code> = 0.08</td></tr>
+			<tr><th>発生半径 / サイズ</th><td><code>positionRadius</code> 0.4 / <code>scale</code> 0.4&ndash;0.9</td></tr>
+			<tr><th>音</th><td><strong>なし</strong>。群れで湧いた際に音が重なって耐えられなくなるため、意図的に省略</td></tr>
+		</tbody>
+	</table>
+	<p>
+		Effecter は毎 tick <code>EffectTick</code> され、デスポーン・破棄・死亡のいずれでも <code>Cleanup()</code> されます。
+	</p>
+</section>
+
+<section id="parasite">
+	<h2>5. 胞子寄生</h2>
+	<p>
+		肺腐敗病だけでは「近づくと危険」という圧が足りないため、
+		逃げる以外に解がない致死タイマーとして追加した独自 Hediff です。
+	</p>
+
+	<h3>判定範囲</h3>
+	<table>
+		<tbody>
+			<tr><th>判定方式</th><td>本体を中心とした<strong>半径判定</strong>（ガス濃度は参照しない）</td></tr>
+			<tr><th>実効半径</th><td><code>parasiteRadius</code> 3.5 &times; sqrt(<code>bodySize</code>)</td></tr>
+			<tr><th>判定間隔</th><td>60 tick（ガス排出と同じタイミング）</td></tr>
+			<tr><th>対象</th><td>スポーン済み・生存・<code>RaceProps.IsFlesh</code> の pawn。メカノイドは対象外</td></tr>
+		</tbody>
+	</table>
+	<div class="warn">
+		<strong>ガス濃度で判定していない理由。</strong>
+		見た目に一致させるなら <code>RotStink</code> の濃度を見るのが自然ですが、
+		それだと<strong>放置した腐乱死体の腐敗臭でも寄生が進行し</strong>、
+		コラプションと無関係に入植者が死にます。バニラの挙動を壊すため採用していません。
+		代償として、風で流れたガスの端にいても寄生は進行しません。
+	</div>
+	<p style="color:var(--muted);font-size:13px;">
+		半径に平方根を使うのは、排出量が <code>bodySize</code> 比例＝面積比例なら、半径はその平方根になるという考え方によります。
+	</p>
+
+	<h3>進行と減衰</h3>
+	<table>
+		<caption>HediffDef <code>VoidAwake_SporeParasite</code>（胞子寄生）</caption>
+		<tbody>
+			<tr><th>胞子の中</th><td>60 tick ごとに severity <strong>+0.008</strong>。7500 tick（ゲーム内3時間）で 1.0 に到達</td></tr>
+			<tr><th>1.0 到達時</th><td><code>lethalSeverity</code> 1 によりバニラの仕組みで<strong>即死</strong></td></tr>
+			<tr><th>離脱直後</th><td><code>leaveGraceTicks</code> 120 tick は据え置き（一瞬離れただけでは減らない）</td></tr>
+			<tr><th>猶予経過後</th><td>1 時間あたり <strong>0.1</strong> 減衰。満タンからは 10 時間で消滅</td></tr>
+			<tr><th>除去</th><td>severity が <code>removeBelowSeverity</code> 0.0001 以下になったら hediff ごと削除</td></tr>
+			<tr><th>治療</th><td><strong>不可</strong>（<code>tendable</code> false）。医療では止められない</td></tr>
+			<tr><th>シナリオ追加</th><td>不可（<code>scenarioCanAdd</code> false）</td></tr>
+		</tbody>
+	</table>
+	<p>
+		進行は撒く側の ThingComp、減衰は付いた側の HediffComp と役割を分けています。
+		HediffComp は「最後に曝露した tick」だけを保持し、<code>NotifyExposed()</code> が来ない間は黙って減り続けます。
+		この形なら複数のコラプションに同時に囲まれても二重進行にはならず、
+		どれか1体でも範囲内にいれば減衰が止まります。
+	</p>
+
+	<h3>段階</h3>
+	<table>
+		<thead>
+			<tr><th>段階</th><th class="num">開始 severity</th><th class="num">到達時間</th><th class="num">痛み</th><th class="num">呼吸</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>潜伏</td><td class="num">0</td><td class="num">&mdash;</td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr>
+			<tr><td>定着</td><td class="num">0.25</td><td class="num">45 分</td><td class="num">+0.05</td><td class="num">-0.10</td></tr>
+			<tr><td>増殖</td><td class="num">0.5</td><td class="num">1.5 時間</td><td class="num">+0.15</td><td class="num">-0.25</td></tr>
+			<tr><td>侵食</td><td class="num">0.75</td><td class="num">2.25 時間</td><td class="num">+0.30</td><td class="num">-0.40</td></tr>
+			<tr><td>死亡</td><td class="num">1.0</td><td class="num">3 時間</td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr>
+		</tbody>
+	</table>
+	<div class="note">
+		<strong>移動能力には一切影響しません。</strong>
+		唯一の対抗手段が「逃げる」である以上、移動を落とすと詰みになるためです。
+		到達時間は無防備（毒環境耐性 0）の場合の値です。
+	</div>
+</section>
+
+<section id="resist">
+	<h2>6. 耐性と対策</h2>
+	<p>
+		進行量に掛ける倍率は <code>ExposureFactor(pawn)</code> が返します。判定順は以下の通りです。
+	</p>
+	<ol>
+		<li>着用中の装備、または有効な遺伝子に <code>immuneToToxGasExposure</code> があれば倍率 <strong>0</strong>（＝完全無効）</li>
+		<li>それ以外は <code>1 - ToxicEnvironmentResistance</code>（0&ndash;1 にクランプ）</li>
+	</ol>
+	<table>
+		<caption>主な装備での致死到達時間</caption>
+		<thead>
+			<tr><th>装備</th><th class="num">毒環境耐性</th><th>免疫フラグ</th><th class="num">進行倍率</th><th class="num">致死まで</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>なし</td><td class="num">0</td><td>&mdash;</td><td class="num">1.00</td><td class="num">3 時間</td></tr>
+			<tr><td>ウォーベール <code>Apparel_WarVeil</code></td><td class="num">0.35</td><td>&mdash;</td><td class="num">0.65</td><td class="num">約 4.6 時間</td></tr>
+			<tr><td>布マスク <code>Apparel_ClothMask</code></td><td class="num">0.5</td><td>&mdash;</td><td class="num">0.50</td><td class="num">6 時間</td></tr>
+			<tr><td>ガスマスク <code>Apparel_GasMask</code></td><td class="num">0.8</td><td><strong>あり</strong></td><td class="num">0.00</td><td class="num">進行しない</td></tr>
+			<tr><td>コラプション本体</td><td class="num">1</td><td>&mdash;</td><td class="num">0.00</td><td class="num">進行しない</td></tr>
+		</tbody>
+	</table>
+	<div class="note">
+		ガスマスクは <code>immuneToToxGasExposure</code> を持つため、毒環境耐性 0.8 の計算を経ずに<strong>完全無効</strong>になります。
+		Biotech の毒ガス免疫遺伝子も同様です。
+	</div>
+	<p>
+		コラプション本体は抽象 def で <code>ToxicEnvironmentResistance</code> 1 を持つため倍率が 0 になり、
+		自分や仲間の胞子で寄生されることはありません。<code>gain &lt;= 0</code> の時点で早期 continue するため、
+		severity 0 の hediff が付いて即消えるような無駄も発生しません。
+		同じ耐性値によって、バニラ側の肺腐敗病も同時に無効化されています。
+	</p>
+	<div class="warn">
+		<strong>実装上の注意。</strong>
+		severity が 1 に達した pawn はその場で死に、<code>map.mapPawns.AllPawnsSpawned</code> から即座に外れます。
+		列挙中にリストが変化するため、走査のたびに一時リストへスナップショットを取ってから回しています。
+		痙縮ガス（<code>VoidAwake_CompSpasmGasRelease</code>）は死亡させないので直接列挙していますが、
+		こちらは同じ書き方ができません。
+	</div>
+</section>
+
+<section id="numbers">
+	<h2>7. 数値早見表</h2>
+	<table>
+		<thead>
+			<tr><th>項目</th><th>値</th><th>備考</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>胞子の排出間隔</td><td class="num">60 tick</td><td>1 秒ごと</td></tr>
+			<tr><td>胞子の排出量</td><td class="num">100 &times; bodySize</td><td>60 &ndash; 500</td></tr>
+			<tr><td>ガス種別</td><td>RotStink</td><td>バニラの腐敗臭ガス</td></tr>
+			<tr><td>寄生の判定半径</td><td class="num">3.5 &times; sqrt(bodySize)</td><td>2.7 &ndash; 7.8</td></tr>
+			<tr><td>寄生の判定間隔</td><td class="num">60 tick</td><td>ガス排出と同時</td></tr>
+			<tr><td>寄生の進行</td><td class="num">+0.008 / 60 tick</td><td>7500 tick = 3 時間で 1.0</td></tr>
+			<tr><td>即死</td><td class="num">severity 1.0</td><td><code>lethalSeverity</code></td></tr>
+			<tr><td>離脱猶予</td><td class="num">120 tick</td><td>約 2 秒</td></tr>
+			<tr><td>寄生の減衰</td><td class="num">0.1 / 時間</td><td>満タンから 10 時間で消滅</td></tr>
+			<tr><td>除去しきい値</td><td class="num">0.0001</td><td>これ以下で hediff 削除</td></tr>
+			<tr><td>段階しきい値</td><td class="num">0.25 / 0.5 / 0.75</td><td>痛み 0.05 / 0.15 / 0.30</td></tr>
+			<tr><td>呼吸低下</td><td class="num">-0.10 / -0.25 / -0.40</td><td>移動には影響しない</td></tr>
+			<tr><td>ガスマスク</td><td class="num">完全無効</td><td><code>immuneToToxGasExposure</code></td></tr>
+			<tr><td>布マスク</td><td class="num">進行 0.5 倍</td><td>致死まで 6 時間</td></tr>
+			<tr><td>本体の自己免疫</td><td class="num">耐性 1</td><td>肺腐敗病も同時に無効</td></tr>
+			<tr><td>演出の発生確率</td><td class="num">0.08 / tick</td><td>音なし</td></tr>
+			<tr><td>戦闘力</td><td class="num">25 &ndash; 650</td><td>ドレッドメルドがボス</td></tr>
+			<tr><td>分裂（ドレッドメルド）</td><td class="num">3 体強制</td><td>タフ + トライ + バルブ 各1</td></tr>
+			<tr><td>分裂（バルブフリーク）</td><td class="num">4 体</td><td>タフ / トライから抽選</td></tr>
+			<tr><td>分裂（トライスパイク）</td><td class="num">3 体</td><td>フィンガースパイク</td></tr>
+		</tbody>
+	</table>
+	<p style="color:var(--muted);font-size:13px;">1 日 = 60000 tick、1 時間 = 2500 tick。</p>
+</section>
+
+<section id="todo">
+	<h2>8. 未実装 / TODO</h2>
+	<table>
+		<thead>
+			<tr><th>項目</th><th>現状</th></tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>緑化テクスチャ</th>
+				<td><code>PawnKinds_Corruption.xml</code> の <code>texPath</code> と <code>Races_Corruption.xml</code> の <code>uiIconPath</code> がバニラのフレッシュビースト絵を直接参照しており、<strong>見た目が原種と区別できない</strong></td>
+			</tr>
+			<tr>
+				<th>腐敗した脳</th>
+				<td>実質空。ボディはフィンガースパイク流用、<code>renderTree</code> と <code>uiIconPath</code> なし、テクスチャは仮素材 <code>UI/Entities/Test</code>、<code>deathAction</code> なし、固有能力なし。「群れを束ねる存在」という設定に対応する挙動が何もない</td>
+			</tr>
+			<tr>
+				<th>襲来イベント</th>
+				<td>IncidentDef が未定義。Dev Mode のスポーンでしか出せない。出現条件・頭数・レターの設計が必要</td>
+			</tr>
+			<tr>
+				<th>コーデックスのアイコン</th>
+				<td><code>EntityCodexEntries_Corruption.xml</code> がバニラの <code>UI/CodexEntries/Fleshbeasts</code> と仮素材 <code>UI/Entities/Test</code> を流用</td>
+			</tr>
+			<tr>
+				<th>タフスパイクの死亡挙動</th>
+				<td><code>deathAction</code> なし（バニラ準拠）。腐敗種として分裂させるかは要判断</td>
+			</tr>
+			<tr>
+				<th>ドレッドメルドの収容</th>
+				<td><code>Studiable</code> / <code>AttachPoints</code> / <code>MinimumContainmentStrength</code> がなく、保持台に載せられない。収容不可のままでよいか要判断</td>
+			</tr>
+			<tr>
+				<th>Languages / DefInjected</th>
+				<td>未整備。日本語ラベルと説明文を Def へ直書きしているため、英語環境でも日本語が表示される</td>
+			</tr>
+			<tr>
+				<th>寄生の判定範囲</th>
+				<td>半径判定のため、風下へ流れたガスの見た目と判定範囲がずれる。軌跡を MapComponent で記録する案は保留中</td>
+			</tr>
+			<tr>
+				<th>収容脱走設定</th>
+				<td>コラプション向けの <code>VoidAwake_ContainmentEscapeDef</code> が未定義</td>
+			</tr>
+		</tbody>
+	</table>
+</section>
+
+<section id="dev">
+	<h2>9. 開発者向け情報</h2>
+	<h3>Def 一覧</h3>
+	<table>
+		<thead>
+			<tr><th>種別</th><th>defName</th><th>ファイル</th></tr>
+		</thead>
+		<tbody>
+			<tr><td>ThingDef（抽象）</td><td>VoidAwake_BaseCorruption</td><td>Defs/ThingDefs_Races/Races_Corruption.xml</td></tr>
+			<tr><td>ThingDef</td><td>VoidAwake_CorruptedBulbfreak / Toughspike / Trispike / Fingerspike / Dreadmeld / Brain</td><td>Defs/ThingDefs_Races/Races_Corruption.xml</td></tr>
+			<tr><td>PawnKindDef</td><td>同上（6種）</td><td>Defs/PawnKindDefs/PawnKinds_Corruption.xml</td></tr>
+			<tr><td>HediffDef</td><td>VoidAwake_SporeParasite</td><td>Defs/HediffDefs/Hediffs_CorruptionSpore.xml</td></tr>
+			<tr><td>EffecterDef</td><td>VoidAwake_CorruptionSporeEmitting</td><td>Defs/EffecterDefs/Effecters_CorruptionSpore.xml</td></tr>
+			<tr><td>EntityCodexEntryDef</td><td>VoidAwake_Corruption / VoidAwake_CorruptedDreadmeld / VoidAwake_CorruptedBrain</td><td>Defs/EntityCodexEntryDefs/EntityCodexEntries_Corruption.xml</td></tr>
+		</tbody>
+	</table>
+
+	<h3>C# クラス</h3>
+	<table>
+		<tbody>
+			<tr><th><code>VoidAwake_CompProperties_CorruptionSpore</code></th><td>抽象 def が持つ設定。排出量・間隔・演出・寄生 hediff・半径・致死時間</td></tr>
+			<tr><th><code>VoidAwake_CompCorruptionSpore</code></th><td>ガス排出と寄生の進行。<code>CompTick</code> で演出、<code>IsHashIntervalTick</code> でガスと寄生</td></tr>
+			<tr><th><code>VoidAwake_HediffCompProperties_SporeParasite</code></th><td>減衰量・離脱猶予・除去しきい値</td></tr>
+			<tr><th><code>VoidAwake_HediffComp_SporeParasite</code></th><td>離脱後の減衰と自動除去。<code>NotifyExposed()</code> で曝露 tick を更新</td></tr>
+		</tbody>
+	</table>
+	<p>
+		Harmony パッチは使用していません。すべて ThingComp / HediffComp で完結しています。
+	</p>
+
+	<h3>ソース</h3>
+	<p>
+		C# は <code>Source/VoidAwake/Entities/Corruption/</code> に集約されています。
+		実装メモは <a href="Corruption.md" style="color:var(--accent2);">Corruption.md</a> を参照してください。
+	</p>
+</section>
+
+<footer>
+	VoidAwake &mdash; コラプション 仕様書 / 記載値は 2026-08-13 時点の実装に基づきます。
+	ブラウザの印刷（Ctrl+P）から PDF として保存できます。
+</footer>
+
+</div>
+</body>
+</html>

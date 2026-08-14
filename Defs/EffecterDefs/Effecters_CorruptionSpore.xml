@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- 腐敗の胞子の常時演出。多数のコラプションが同時に出しても煩くならないよう、
+	     SubEffecter_Sustainer の環境音は入れずフレックのみにしている。 -->
+	<EffecterDef>
+		<defName>VoidAwake_CorruptionSporeEmitting</defName>
+		<children>
+			<li>
+				<subEffecterClass>SubEffecter_SprayerChance</subEffecterClass>
+				<positionRadius>0.4</positionRadius>
+				<fleckDef>Fleck_ToxGasSmall</fleckDef>
+				<color>(0.45, 0.70, 0.30)</color>
+				<chancePerTick>0.08</chancePerTick>
+				<scale>0.4~0.9</scale>
+				<spawnLocType>OnSource</spawnLocType>
+			</li>
+		</children>
+	</EffecterDef>
+
+</Defs>

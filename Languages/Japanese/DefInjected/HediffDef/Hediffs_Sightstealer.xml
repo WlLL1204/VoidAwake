@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <VoidAwake_NightEyes.label>夜目</VoidAwake_NightEyes.label>
+  <VoidAwake_NightEyes.description>サイトスティーラーによって知覚を作り変えられている。足音は不自然なほど静かになり、攻撃をかわしやすく、心霊への感応も強まっている。</VoidAwake_NightEyes.description>
+
+  <VoidAwake_VeilOfThePack.label>群れの帳</VoidAwake_VeilOfThePack.label>
+  <VoidAwake_VeilOfThePack.description>サイトスティーラーの心霊の帳を周囲へ広げている。近くにいる者たちの姿を、周りの心が認識できなくなる。</VoidAwake_VeilOfThePack.description>
+
+  <VoidAwake_VeiledPack.label>帳の中</VoidAwake_VeiledPack.label>
+  <VoidAwake_VeiledPack.description>近くの仲間が広げたサイトスティーラーの心霊の帳に隠れている。</VoidAwake_VeiledPack.description>
+
+</LanguageData>

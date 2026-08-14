@@ -3,7 +3,7 @@
 	<EntityCodexEntryDef>
 		<defName>VoidAwake_Corruption</defName>
 		<label>コラプション</label>
-		<description>腐敗が及んだ肉塊から生まれた怪物たち。元のフレッシュビーストと同じく複数の神経系を宿し、より小さな個体へと分かれていく。</description>
+		<description>腐敗が及んだ肉塊から生まれた怪物たち。元のフレッシュビーストと同じく複数の神経系を宿し、より小さな個体へと分かれていく。\n\nいずれも腐敗の胞子を絶え間なく撒き散らしており、その空気を吸い続けた者は肺腐敗病を発症する。さらに厄介なのは胞子そのものが宿主に根を張ることで、胞子の中に三時間留まった者は体を作り変えられて絶命する。離れれば胞子は少しずつ後退していくが、完全に抜けるには十時間を要する。\n\nガスマスクを着けていれば寄生を完全に防げる。布マスクのような毒環境耐性を持つ装備でも、耐性の分だけ進行を遅らせられる。</description>
 		<category>Basic</category>
 		<uiIconPath>UI/CodexEntries/Fleshbeasts</uiIconPath>
 		<linkedThings>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <HediffDef>
+    <defName>VoidAwake_SporeParasite</defName>
+    <label>胞子寄生</label>
+    <description>腐敗の胞子が肺と体組織に根を張り、内側から宿主を作り変えている。胞子の中に留まる限り進行し続け、完全に侵食されると宿主はその場で絶命する。胞子から離れれば少しずつ後退していくが、治療で取り除くことはできない。\n\nガスマスクなど毒ガス曝露を防ぐ装備を着けていれば寄生されない。布マスクのように毒環境耐性を持つ装備は、耐性の分だけ進行を遅らせる。</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <maxSeverity>1</maxSeverity>
+    <lethalSeverity>1</lethalSeverity>
+    <initialSeverity>0.0001</initialSeverity>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <stages>
+      <li>
+        <label>潜伏</label>
+      </li>
+      <li>
+        <label>定着</label>
+        <minSeverity>0.25</minSeverity>
+        <painOffset>0.05</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.10</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>増殖</label>
+        <minSeverity>0.5</minSeverity>
+        <painOffset>0.15</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.25</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <label>侵食</label>
+        <minSeverity>0.75</minSeverity>
+        <painOffset>0.30</painOffset>
+        <capMods>
+          <li>
+            <capacity>Breathing</capacity>
+            <offset>-0.40</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <comps>
+      <!-- 胞子の外では1時間で0.1後退（満タンから消失まで10時間）。
+           進行側は VoidAwake_CompCorruptionSpore が担当する。 -->
+      <li Class="VoidAwake.VoidAwake_HediffCompProperties_SporeParasite">
+        <severityLossPerHour>0.1</severityLossPerHour>
+        <leaveGraceTicks>120</leaveGraceTicks>
+        <removeBelowSeverity>0.0001</removeBelowSeverity>
+      </li>
+    </comps>
+  </HediffDef>
+
+</Defs>

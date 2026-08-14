@@ -33,12 +33,12 @@
 
 	<VoidAwake.VoidAwake_ClockEventDef>
 		<defName>VoidAwake_ClockEvent_Fixed_Hour4</defName>
-		<label>固定イベント（時4）</label>
-		<description>未実装の固定イベント枠（時4）。</description>
+		<label>幽霊船の襲来</label>
+		<description>ヴォイドの時計が時4を指した。コロニー外周が海へと変わり、幽霊船が近づいてくる。</description>
 		<fixedHour>4</fixedHour>
 		<level>2</level>
 		<weight>0</weight>
-		<workerClass>VoidAwake.VoidAwake_ClockEventWorker_FixedHour4</workerClass>
+		<workerClass>VoidAwake.VoidAwake_ClockEvent_Hour4</workerClass>
 	</VoidAwake.VoidAwake_ClockEventDef>
 
 	<VoidAwake.VoidAwake_ClockEventDef>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<DutyDef>
+		<defName>VoidAwake_GhostHoldLanding</defName>
+		<alwaysShowWeapon>true</alwaysShowWeapon>
+		<thinkNode Class="ThinkNode_Priority">
+			<subNodes>
+				<li Class="JobGiver_AIDefendPoint">
+					<targetAcquireRadius>18</targetAcquireRadius>
+					<targetKeepRadius>22</targetKeepRadius>
+				</li>
+				<li Class="JobGiver_WanderNearDutyLocation">
+					<wanderRadius>0.1</wanderRadius>
+					<locomotionUrgencyOutsideRadius>Sprint</locomotionUrgencyOutsideRadius>
+				</li>
+			</subNodes>
+		</thinkNode>
+	</DutyDef>
+
+</Defs>

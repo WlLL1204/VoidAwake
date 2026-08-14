@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<MutantDef ParentName="BaseMutantEntity">
+		<defName>VoidAwake_GhostMutant</defName>
+		<label>亡霊</label>
+		<description>白骨と化した亡霊。痛みを感じず、生きた者を襲う。</description>
+		<hediff>VoidAwake_Ghost</hediff>
+		<thinkTree>Humanlike</thinkTree>
+		<thinkTreeConstant>HumanlikeConstant</thinkTreeConstant>
+		<disableApparel>true</disableApparel>
+		<entitledToMedicalCare>false</entitledToMedicalCare>
+		<canTravelInCaravan>false</canTravelInCaravan>
+		<canGainXP>false</canGainXP>
+		<canBeDrafted>false</canBeDrafted>
+		<respectsAllowedArea>false</respectsAllowedArea>
+		<tameable>false</tameable>
+		<defaultFaction>Entities</defaultFaction>
+		<deathOnDownedChance>0.35</deathOnDownedChance>
+		<allowedDevelopmentalStages>Adult</allowedDevelopmentalStages>
+		<skinColorOverride>(0.92, 0.90, 0.82)</skinColorOverride>
+		<hairColorOverride>(0.85, 0.82, 0.75)</hairColorOverride>
+		<bodyTypeGraphicPaths>
+			<Male>Things/Pawn/Humanlike/Bodies/Dessicated/Dessicated_Male</Male>
+			<Female>Things/Pawn/Humanlike/Bodies/Dessicated/Dessicated_Thin</Female>
+			<Hulk>Things/Pawn/Humanlike/Bodies/Dessicated/Dessicated_Male</Hulk>
+			<Fat>Things/Pawn/Humanlike/Bodies/Dessicated/Dessicated_Male</Fat>
+			<Thin>Things/Pawn/Humanlike/Bodies/Dessicated/Dessicated_Thin</Thin>
+			<Child MayRequire="Ludeon.RimWorld.Biotech">Things/Pawn/Humanlike/Bodies/Dessicated/Dessicated_Child</Child>
+			<Baby MayRequire="Ludeon.RimWorld.Biotech">Things/Pawn/Humanlike/Bodies/Dessicated/Dessicated_Child</Baby>
+		</bodyTypeGraphicPaths>
+		<forcedHeadTypes>
+			<li>Skull</li>
+		</forcedHeadTypes>
+		<hairTagFilter>
+			<whitelist>true</whitelist>
+			<tags>
+				<li>Bald</li>
+			</tags>
+		</hairTagFilter>
+		<beardTagFilter>
+			<whitelist>true</whitelist>
+			<tags>
+				<li>NoBeard</li>
+			</tags>
+		</beardTagFilter>
+	</MutantDef>
+
+</Defs>

@@ -87,7 +87,9 @@ flowchart TB
 ### UI
 
 - `WorldComponentOnGUI` で時計＋針を描画（設定 `showErosionRateUI`）
-- ドラッグで位置保存、ホバーでフレーバー文言（時帯ごと）
+- 左ドラッグで位置保存、ホバーでフレーバー文言（時帯ごと）
+- **右クリック**で浸食基点タイルへワールドカメラをジャンプ（基点が無いときはメッセージ）
+- 文言は [`Languages/*/Keyed/VoidAwake_WorldClock.xml`](../Languages/Japanese/Keyed/VoidAwake_WorldClock.xml)
 
 ---
 

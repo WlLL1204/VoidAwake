@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<ThingDef ParentName="BuildingBase">
+		<defName>VoidAwake_GhostShip</defName>
+		<label>幽霊船</label>
+		<description>ヴォイドの海を周回する幽霊船。亡霊を放ち、大砲で砲撃する。</description>
+		<thingClass>VoidAwake.VoidAwake_Building_GhostShip</thingClass>
+		<category>Building</category>
+		<graphicData>
+			<texPath>Entities/Pirate/Ship/PirateShip</texPath>
+			<graphicClass>Graphic_Multi</graphicClass>
+			<drawSize>(8,8)</drawSize>
+		</graphicData>
+		<uiIconPath>Entities/Pirate/Ship/PirateShip_south</uiIconPath>
+		<size>(3,3)</size>
+		<rotatable>true</rotatable>
+		<altitudeLayer>BuildingOnTop</altitudeLayer>
+		<drawerType>RealtimeOnly</drawerType>
+		<passability>PassThroughOnly</passability>
+		<pathCost>50</pathCost>
+		<fillPercent>0.4</fillPercent>
+		<useHitPoints>false</useHitPoints>
+		<destroyable>false</destroyable>
+		<selectable>true</selectable>
+		<tickerType>Normal</tickerType>
+		<building>
+			<isEdifice>false</isEdifice>
+			<claimable>false</claimable>
+		</building>
+		<statBases>
+			<MaxHitPoints>1000</MaxHitPoints>
+			<Flammability>0</Flammability>
+		</statBases>
+	</ThingDef>
+
+</Defs>

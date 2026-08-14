@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<IncidentDef ParentName="AnomalyIncidentBase">
+		<defName>VoidAwake_GhostShipArrival</defName>
+		<label>幽霊船の襲来</label>
+		<letterLabel>幽霊船の襲来</letterLabel>
+		<letterText>突如としてコロニーの外周が海へと変化しました。霧の向こうから、幽霊船が近づいてくるようです。</letterText>
+		<letterDef>ThreatBig</letterDef>
+		<targetTags>
+			<li>Map_PlayerHome</li>
+		</targetTags>
+		<workerClass>VoidAwake.VoidAwake_IncidentWorker_GhostShipArrival</workerClass>
+		<baseChance>0</baseChance>
+		<pointsScaleable>true</pointsScaleable>
+		<category>ThreatBig</category>
+	</IncidentDef>
+
+</Defs>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- 段階「気配を盗む」。Ability_Duration は秒（60 tick）で、術者の精神感応度で伸びる。 -->
+	<AbilityDef>
+		<defName>VoidAwake_StealPresence</defName>
+		<label>steal presence</label>
+		<description>Borrow a sightstealer's psychic veil and turn invisible for a short time. The eyes of those nearby still receive the image, but their minds refuse to hold it.</description>
+		<iconPath>UI/Abilities/RevenantInvisibility</iconPath>
+		<cooldownTicksRange>30000</cooldownTicksRange> <!-- 12 hours -->
+		<showPsycastEffects>false</showPsycastEffects>
+		<sendMessageOnCooldownComplete>true</sendMessageOnCooldownComplete>
+		<writeCombatLog>true</writeCombatLog>
+		<hostile>false</hostile>
+		<targetRequired>false</targetRequired>
+		<casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+		<displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+		<disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+		<statBases>
+			<Ability_Duration>20</Ability_Duration>
+		</statBases>
+		<verbProperties>
+			<verbClass>Verb_CastAbility</verbClass>
+			<drawAimPie>false</drawAimPie>
+			<requireLineOfSight>false</requireLineOfSight>
+			<nonInterruptingSelfCast>true</nonInterruptingSelfCast>
+			<warmupTime>1</warmupTime>
+			<targetable>false</targetable>
+			<targetParams>
+				<canTargetSelf>true</canTargetSelf>
+			</targetParams>
+		</verbProperties>
+		<comps>
+			<li Class="CompProperties_AbilityGiveHediff">
+				<compClass>CompAbilityEffect_GiveHediff</compClass>
+				<hediffDef>PsychicInvisibility</hediffDef>
+				<onlyApplyToSelf>true</onlyApplyToSelf>
+				<replaceExisting>true</replaceExisting>
+				<psychic>true</psychic>
+			</li>
+			<li Class="CompProperties_AbilityFleckOnTarget">
+				<fleckDef>PsycastPsychicEffect</fleckDef>
+			</li>
+		</comps>
+	</AbilityDef>
+
+	<!-- 段階「狩りの叫び」。Ability_EffectRadius で範囲化し、味方を巻き込まないよう敵に限定する。 -->
+	<AbilityDef>
+		<defName>VoidAwake_HuntingScream</defName>
+		<label>hunting cry</label>
+		<description>Loose the hunting scream of a sightstealer at a point. Hostile minds within earshot fill with terrifying hallucinations and break.</description>
+		<iconPath>UI/Abilities/VoidTerror</iconPath>
+		<cooldownTicksRange>15000</cooldownTicksRange> <!-- 6 hours -->
+		<showPsycastEffects>false</showPsycastEffects>
+		<sendMessageOnCooldownComplete>true</sendMessageOnCooldownComplete>
+		<writeCombatLog>true</writeCombatLog>
+		<warmupEffecter>HoraxianSpellDark_Warmup</warmupEffecter>
+		<casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+		<statBases>
+			<Ability_EffectRadius>4.9</Ability_EffectRadius>
+		</statBases>
+		<verbProperties>
+			<verbClass>Verb_CastAbility</verbClass>
+			<warmupTime>0.5</warmupTime>
+			<range>24.9</range>
+			<drawAimPie>true</drawAimPie>
+			<requireLineOfSight>true</requireLineOfSight>
+			<soundCast>Pawn_Sightstealer_Call</soundCast>
+			<ai_IsWeapon>false</ai_IsWeapon>
+			<targetParams>
+				<canTargetLocations>true</canTargetLocations>
+				<canTargetPawns>true</canTargetPawns>
+				<canTargetHumans>true</canTargetHumans>
+				<canTargetAnimals>false</canTargetAnimals>
+				<canTargetMechs>false</canTargetMechs>
+				<canTargetBuildings>false</canTargetBuildings>
+				<canTargetSelf>false</canTargetSelf>
+				<neverTargetIncapacitated>true</neverTargetIncapacitated>
+			</targetParams>
+		</verbProperties>
+		<comps>
+			<li Class="CompProperties_AbilityGiveMentalState">
+				<compClass>CompAbilityEffect_GiveMentalState</compClass>
+				<stateDef>TerrifyingHallucinations</stateDef>
+				<goodwillImpact>-25</goodwillImpact>
+				<forced>true</forced>
+			</li>
+			<li Class="CompProperties_AbilityEffect">
+				<compClass>CompAbilityEffect_OnlyTargetHostiles</compClass>
+			</li>
+			<li Class="CompProperties_AbilityEffecterOnTarget">
+				<effecterDef>VoidTerror_Target</effecterDef>
+			</li>
+		</comps>
+	</AbilityDef>
+
+	<!-- 段階「群れの帳」。術者にオーラ hediff を付け、そちらが範囲内の入植者へ透明化を配る。 -->
+	<AbilityDef>
+		<defName>VoidAwake_VeilOfThePack</defName>
+		<label>veil of the pack</label>
+		<description>Stretch a sightstealer's psychic veil over yourself and every colonist nearby, hiding the whole group while they stay close together.</description>
+		<iconPath>UI/Abilities/RevenantInvisibility</iconPath>
+		<cooldownTicksRange>60000</cooldownTicksRange> <!-- 1 day -->
+		<showPsycastEffects>false</showPsycastEffects>
+		<sendMessageOnCooldownComplete>true</sendMessageOnCooldownComplete>
+		<writeCombatLog>true</writeCombatLog>
+		<hostile>false</hostile>
+		<targetRequired>false</targetRequired>
+		<canUseAoeToGetTargets>false</canUseAoeToGetTargets>
+		<casterMustBeCapableOfViolence>false</casterMustBeCapableOfViolence>
+		<displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+		<disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+		<statBases>
+			<Ability_Duration>30</Ability_Duration>
+			<Ability_EffectRadius>9.9</Ability_EffectRadius>
+		</statBases>
+		<verbProperties>
+			<verbClass>Verb_CastAbility</verbClass>
+			<warmupTime>1.5</warmupTime>
+			<range>9.9</range>
+			<drawAimPie>false</drawAimPie>
+			<requireLineOfSight>false</requireLineOfSight>
+			<targetable>false</targetable>
+			<targetParams>
+				<canTargetSelf>true</canTargetSelf>
+				<canTargetPawns>false</canTargetPawns>
+				<canTargetAnimals>false</canTargetAnimals>
+				<canTargetHumans>false</canTargetHumans>
+				<canTargetMechs>false</canTargetMechs>
+				<canTargetBuildings>false</canTargetBuildings>
+			</targetParams>
+		</verbProperties>
+		<comps>
+			<li Class="CompProperties_AbilityGiveHediff">
+				<compClass>CompAbilityEffect_GiveHediff</compClass>
+				<hediffDef>VoidAwake_VeilOfThePack</hediffDef>
+				<onlyApplyToSelf>true</onlyApplyToSelf>
+				<replaceExisting>true</replaceExisting>
+			</li>
+			<li Class="CompProperties_AbilityFleckOnTarget">
+				<fleckDef>PsycastPsychicEffect</fleckDef>
+			</li>
+		</comps>
+	</AbilityDef>
+
+</Defs>

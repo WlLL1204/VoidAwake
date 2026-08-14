@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- 段階「夜目」。繋がりが閾値を下回ると VoidAwake_CompVoidMagic が取り除く。 -->
+	<HediffDef>
+		<hediffClass>HediffWithComps</hediffClass>
+		<defName>VoidAwake_NightEyes</defName>
+		<label>night eyes</label>
+		<description>This person's perception has been reshaped by a sightstealer. They move with unnatural quiet, slip aside from blows more easily, and their mind lies more open to psychic influence.</description>
+		<defaultLabelColor>(0.55, 0.4, 0.85)</defaultLabelColor>
+		<isBad>false</isBad>
+		<everCurableByItem>false</everCurableByItem>
+		<stages>
+			<li>
+				<statOffsets>
+					<MoveSpeed>0.3</MoveSpeed>
+					<MeleeDodgeChance>4</MeleeDodgeChance>
+					<PsychicSensitivity>0.2</PsychicSensitivity>
+				</statOffsets>
+			</li>
+		</stages>
+		<comps>
+			<li Class="HediffCompProperties_DisappearsOnDeath" />
+		</comps>
+	</HediffDef>
+
+	<!-- 「群れの帳」のオーラ本体。術者に付き、範囲内の入植者へ VoidAwake_VeiledPack を配る。 -->
+	<HediffDef>
+		<hediffClass>HediffWithComps</hediffClass>
+		<defName>VoidAwake_VeilOfThePack</defName>
+		<label>veil of the pack</label>
+		<description>This person is stretching a sightstealer's psychic veil over everyone around them. Nearby minds refuse to register the sight of the group.</description>
+		<defaultLabelColor>(0.55, 0.4, 0.85)</defaultLabelColor>
+		<isBad>false</isBad>
+		<comps>
+			<li Class="HediffCompProperties_Disappears">
+				<showRemainingTime>true</showRemainingTime>
+			</li>
+			<li Class="HediffCompProperties_DisappearsOnDeath" />
+			<li Class="HediffCompProperties_Invisibility">
+				<visibleToPlayer>true</visibleToPlayer>
+			</li>
+			<li Class="HediffCompProperties_GiveHediffsInRange">
+				<range>9.9</range>
+				<hediff>VoidAwake_VeiledPack</hediff>
+				<targetingParameters>
+					<canTargetBuildings>false</canTargetBuildings>
+					<canTargetAnimals>false</canTargetAnimals>
+					<canTargetMechs>false</canTargetMechs>
+					<onlyTargetColonists>true</onlyTargetColonists>
+				</targetingParameters>
+			</li>
+		</comps>
+	</HediffDef>
+
+	<!-- 「群れの帳」で味方に配られる透明化。範囲外に出ると Link が剥がす。 -->
+	<HediffDef>
+		<hediffClass>HediffWithComps</hediffClass>
+		<defName>VoidAwake_VeiledPack</defName>
+		<label>veiled</label>
+		<description>Hidden beneath a sightstealer's psychic veil spread by a nearby ally.</description>
+		<defaultLabelColor>(0.55, 0.4, 0.85)</defaultLabelColor>
+		<debugLabelExtra>other</debugLabelExtra>
+		<isBad>false</isBad>
+		<comps>
+			<li Class="HediffCompProperties_Disappears">
+				<showRemainingTime>false</showRemainingTime>
+			</li>
+			<li Class="HediffCompProperties_DisappearsOnDeath" />
+			<li Class="HediffCompProperties_Invisibility">
+				<visibleToPlayer>true</visibleToPlayer>
+			</li>
+			<li Class="HediffCompProperties_Link">
+				<requireLinkOnOtherPawn>false</requireLinkOnOtherPawn>
+				<maxDistance>10</maxDistance>
+			</li>
+		</comps>
+	</HediffDef>
+
+</Defs>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- 保持台からの脱走が確定した瞬間、そのマップの入植者全員に付与される記憶。
+	     付与は VoidAwake_ContainmentEscapeUtility.Notify_Escaped から行う。 -->
+
+	<ThoughtDef>
+		<defName>VoidAwake_EntityEscaped</defName>
+		<thoughtClass>Thought_Memory</thoughtClass>
+		<durationDays>15</durationDays>
+		<stackLimit>1</stackLimit>
+		<stages>
+			<li>
+				<label>存在が脱走した</label>
+				<description>収容していた存在が逃げ出した。あれがまだそこらを歩き回っていると思うと、落ち着いてなどいられない。</description>
+				<baseMoodEffect>-7</baseMoodEffect>
+			</li>
+		</stages>
+	</ThoughtDef>
+
+</Defs>

@@ -1,7 +1,7 @@
 # VoidMagic（捻じれた魔術）システム解説
 
 > 実装メモとして、ファイル構成と設計意図を中心に扱う。
-> 現時点では**繋がりシステムのみ**が実装されており、段階（tier）に紐づく超能力の中身は空（ダミー）。
+> 繋がりシステムに加え、**サイトスティーラーの段階（tier）だけが中身入り**。既定テンプレートの段階は今も空（ダミー）。
 
 ## 一言でいうと
 
@@ -34,6 +34,7 @@ flowchart TB
 | 役割 | パス |
 |------|------|
 | 繋がりの定義（既定テンプレート） | [`Defs/VoidAwake_VoidMagicDefs/VoidMagics_VoidAwake.xml`](../Defs/VoidAwake_VoidMagicDefs/VoidMagics_VoidAwake.xml) / [`VoidAwake_VoidMagicDef.cs`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_VoidMagicDef.cs) |
+| サイトスティーラー専用の段階 | [`VoidMagics_Sightstealer.xml`](../Defs/VoidAwake_VoidMagicDefs/VoidMagics_Sightstealer.xml) + [`Abilities_Sightstealer.xml`](../Defs/AbilityDefs/Abilities_Sightstealer.xml) + [`Hediffs_Sightstealer.xml`](../Defs/HediffDefs/Hediffs_Sightstealer.xml) |
 | Def 解決・アノマリー判定 | [`VoidAwake_VoidMagicUtility.cs`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_VoidMagicUtility.cs) |
 | 入植者ごとの繋がり保存・減衰・段階付与 | [`VoidAwake_CompVoidMagic.cs`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_CompVoidMagic.cs) |
 | 瞑想スポット | [`Buildings_VoidMeditationSpot.xml`](../Defs/ThingDefs_Buildings/Buildings_VoidMeditationSpot.xml) + [`VoidAwake_Building_VoidMeditationSpot.cs`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_Building_VoidMeditationSpot.cs) |
@@ -55,7 +56,7 @@ Def を 1 体ずつ書く必要はない。`VoidAwake_VoidMagicUtility.IsLinkabl
 
 という順で解決する。つまり Anomaly DLC の収容可能エンティティは**追加作業なしで全種が対象**になる。人型を除外しているのは、シャンブラーやクリープジョイナーが `Human` ThingDef になり「human との繋がり」という表示になってしまうため。
 
-個別に数値や段階を変えたい場合は、`entityDef` を指定した Def を追加するだけでよい。
+個別に数値や段階を変えたい場合は、`entityDef` を指定した Def を追加するだけでよい。実例は[サイトスティーラーの段階](#サイトスティーラーの段階)を参照。
 
 ```xml
 <VoidAwake.VoidAwake_VoidMagicDef>
@@ -111,7 +112,35 @@ sequenceDiagram
 
 収容状況の判定は `VoidAwake_VoidMagicUtility.ContainedEntityDefsNow()` が全プレイヤーマップの収容プラットフォームを 600 tick キャッシュで走査する。繋がりが 0 まで落ちた行はリストから削除され、タブから消える。
 
-段階が上下すると `ApplyTierContent` が走り、解放済み段階の `abilities` / `hediff` を付与、失った段階のものを剥奪する。**現状は段階に中身が無いため実質何もしない**が、Def を埋めればそのまま機能する。段階の増減時は入植者に対してメッセージが出る。
+段階が上下すると `ApplyTierContent` が走り、解放済み段階の `abilities` / `hediff` を付与、失った段階のものを剥奪する。既定テンプレートは段階に中身が無いため実質何もしないが、サイトスティーラーのように中身を書いた Def ではそのまま能力の増減になる。段階の増減時は入植者に対してメッセージが出る。
+
+---
+
+## サイトスティーラーの段階
+
+`VoidAwake_VoidMagic_Sightstealer` が `entityDef` に `Sightstealer` を指定して既定テンプレートを上書きしている。段階に中身を入れた唯一の Def で、C# の追加は無く Def だけで成立している。
+
+| 段階 | 閾値 | 中身 |
+|------|------|------|
+| 夜目 | 25 | 常時 hediff `VoidAwake_NightEyes`。移動速度 +0.3 / 近接回避 +4 / 精神感応度 +0.2 |
+| 気配を盗む | 50 | 能力 `VoidAwake_StealPresence`。自身に `PsychicInvisibility` を 20 秒、CD 30000 tick |
+| 狩りの叫び | 75 | 能力 `VoidAwake_HuntingScream`。指定地点の半径 4.9 の敵に `TerrifyingHallucinations`、CD 15000 tick |
+| 群れの帳 | 100 | 能力 `VoidAwake_VeilOfThePack`。自分中心 9.9 の入植者を 30 秒まとめて透明化、CD 60000 tick |
+
+- 喪失減衰だけ既定の 6.0 から 4.0 に緩めてある。対象を一時的に失っただけで能力まで消えるのを避けるため。
+- `Ability_Duration` の単位は秒（60 tick）で、術者の精神感応度が倍率としてかかる。夜目で感応度が上がるので透明化の時間も自然に伸びる。
+- 狩りの叫びは範囲攻撃だが、`CompAbilityEffect_OnlyTargetHostiles` を挟んでいるので味方は巻き込まない。
+- 群れの帳は 2 段構え。術者に付くオーラ hediff `VoidAwake_VeilOfThePack` の `HediffCompProperties_GiveHediffsInRange` が、範囲内の入植者へ透明化 hediff `VoidAwake_VeiledPack` を配る。範囲外に出た味方は `VoidAwake_VeiledPack` 側の `HediffCompProperties_Link`（`maxDistance` 10）が剥がすため、追従処理を自前で持つ必要がない。Ideology の `CombatCommand` と同じ作りだが、使っている comp は本体側（Assembly-CSharp）にあるので Ideology は不要。
+
+```mermaid
+flowchart LR
+  Ability["能力: 群れの帳"] --> Aura["オーラ hediff<br/>VoidAwake_VeilOfThePack"]
+  Aura -->|"GiveHediffsInRange 9.9"| Buff["VoidAwake_VeiledPack"]
+  Buff -->|"HediffCompProperties_Invisibility"| Hidden["味方が透明化"]
+  Buff -->|"Link maxDistance 10"| Removed["範囲外で解除"]
+```
+
+- アイコンは暫定でバニラの `UI/Abilities/RevenantInvisibility` と `UI/Abilities/VoidTerror` を流用している。専用テクスチャは未着手。
 
 ---
 
@@ -138,12 +167,15 @@ sequenceDiagram
 | 放置の猶予 | 3 日 | `idleGraceDays` |
 | 放置時の減衰 | 1.0 / 日 | `decayPerDayIdle` |
 | 収容状況キャッシュ | 600 tick | `VoidAwake_VoidMagicUtility.ContainedScanIntervalTicks` |
-| 段階の閾値 | 25 / 50 / 75 / 100 | 微かな共鳴 / 共振 / 深き共鳴 / 同化。能力は未設定 |
+| 段階の閾値 | 25 / 50 / 75 / 100 | 既定は 微かな共鳴 / 共振 / 深き共鳴 / 同化。能力は未設定 |
+| サイトスティーラーの喪失減衰 | 4.0 / 日 | 既定より緩い。それ以外の数値は既定と同じ |
 
 ---
 
 ## 未実装（拡張ポイント）
 
-- 段階に紐づく超能力そのもの。`VoidAwake_VoidMagicTier.abilities`（`AbilityDef` のリスト）と `hediff` を埋めれば、`VoidAwake_CompVoidMagic.ApplyTierContent` の付与・剥奪がそのまま動く。
+- サイトスティーラー以外のアノマリーの超能力。`VoidAwake_VoidMagicTier.abilities`（`AbilityDef` のリスト）と `hediff` を埋めれば、`VoidAwake_CompVoidMagic.ApplyTierContent` の付与・剥奪がそのまま動く。
+- 繋がりの数値に応じた連続的な効果スケーリング。今の Def 構造は段階単位の付与しか表現できないため、必要なら C# 側の拡張が要る。
 - 繋がりのデメリット（Void 侵食・精神への影響）、研究前提、放射状（星座風）グラフ表示。
+- 超能力の専用アイコン。
 - 瞑想スポットの専用テクスチャ（現在はバニラの `Things/Building/Misc/PartySpot` を暫定利用）。

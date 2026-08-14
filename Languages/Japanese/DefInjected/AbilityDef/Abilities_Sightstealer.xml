@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+  <VoidAwake_StealPresence.label>気配を盗む</VoidAwake_StealPresence.label>
+  <VoidAwake_StealPresence.description>サイトスティーラーの心霊の帳を借り、短い間だけ姿を消す。周囲の目は像を受け取っているのに、心がそれを捉えられなくなる。</VoidAwake_StealPresence.description>
+
+  <VoidAwake_HuntingScream.label>狩りの叫び</VoidAwake_HuntingScream.label>
+  <VoidAwake_HuntingScream.description>サイトスティーラーの狩りの叫びを指定地点へ放つ。声の届いた敵は恐ろしい幻覚に飲まれ、正気を失う。</VoidAwake_HuntingScream.description>
+
+  <VoidAwake_VeilOfThePack.label>群れの帳</VoidAwake_VeilOfThePack.label>
+  <VoidAwake_VeilOfThePack.description>サイトスティーラーの心霊の帳を自分と周囲の入植者へ広げ、固まっている間、集団ごと姿を隠す。</VoidAwake_VeilOfThePack.description>
+
+</LanguageData>

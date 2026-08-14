@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<PawnKindDef>
+		<defName>VoidAwake_Ghost</defName>
+		<label>亡霊</label>
+		<race>Human</race>
+		<mutant>VoidAwake_GhostMutant</mutant>
+		<combatPower>65</combatPower>
+		<isFighter>true</isFighter>
+		<defaultFactionDef>Entities</defaultFactionDef>
+		<chemicalAddictionChance>0</chemicalAddictionChance>
+		<invNutrition>0</invNutrition>
+		<itemQuality>Normal</itemQuality>
+		<forceNormalGearQuality>true</forceNormalGearQuality>
+		<apparelIgnorePollution>true</apparelIgnorePollution>
+		<weaponMoney>0~0</weaponMoney>
+		<apparelMoney>0~0</apparelMoney>
+		<techHediffsChance>0</techHediffsChance>
+		<minGenerationAge>20</minGenerationAge>
+		<maxGenerationAge>60</maxGenerationAge>
+		<initialWillRange>0~1</initialWillRange>
+		<initialResistanceRange>7~12</initialResistanceRange>
+		<generateInitialNonFamilyRelations>false</generateInitialNonFamilyRelations>
+		<xenotypeSet>
+			<xenotypeChances>
+				<Baseliner MayRequire="Ludeon.RimWorld.Biotech">1</Baseliner>
+			</xenotypeChances>
+		</xenotypeSet>
+	</PawnKindDef>
+
+</Defs>
