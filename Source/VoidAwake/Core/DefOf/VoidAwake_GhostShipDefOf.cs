@@ -13,6 +13,7 @@ namespace VoidAwake
 		public static ThingDef VoidAwake_GhostShipWall;
 		public static MapGeneratorDef VoidAwake_GhostShipInterior;
 		public static TerrainDef VoidAwake_GhostShipStairs;
+		public static TerrainDef VoidAwake_OceanFlood;
 		public static PawnKindDef VoidAwake_Ghost;
 		public static PawnKindDef VoidAwake_GhostMusket;
 		public static PawnKindDef VoidAwake_GhostAcid;

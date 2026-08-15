@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -10,32 +9,15 @@ namespace VoidAwake
 {
 	public static class VoidAwake_GhostShipOceanUtility
 	{
-		/// <summary>確認用の速さ。1 tick に 1 セル。</summary>
-		public const int TicksPerOceanCell = 1;
+		/// <summary>何 tick ごとに浸食を進めるか（Odyssey マグマは 5）。</summary>
+		public const int TicksPerOceanPulse = 1;
 
-		/// <summary>見た目更新の間隔（セル数）。毎回 WholeMapChanged は重い。</summary>
-		public const int MeshRefreshEveryCells = 64;
+		/// <summary>1 パルスあたりのセル数。一時地形化は軽いのでまとめて進める。</summary>
+		public const int CellsPerPulse = 8;
 
-		private static FieldInfo fogGridField;
-
-		public static List<VoidAwake_OceanCellSnapshot> CreateSnapshots(Map map)
+		public static List<IntVec3> CollectFloodCells(Map map)
 		{
-			List<IntVec3> cells = CollectEdgeCellsOuterFirst(map);
-			var snaps = new List<VoidAwake_OceanCellSnapshot>(cells.Count);
-			for (int i = 0; i < cells.Count; i++)
-			{
-				IntVec3 c = cells[i];
-				snaps.Add(new VoidAwake_OceanCellSnapshot
-				{
-					cell = c,
-					terrain = map.terrainGrid.TerrainAt(c),
-					underTerrain = map.terrainGrid.UnderTerrainAt(c),
-					naturalRockDef = FindNaturalRockDef(c, map),
-					wasFogged = map.fogGrid.IsFogged(c),
-				});
-			}
-
-			return snaps;
+			return CollectEdgeCellsOuterFirst(map);
 		}
 
 		/// <summary>中心から遠いセルを先に（外側から浸食）。角は丸めて岸線を曲線にする。</summary>
@@ -302,43 +284,98 @@ namespace VoidAwake
 			return true;
 		}
 
-		public static void ConvertCell(Map map, VoidAwake_OceanCellSnapshot snap)
+		public static void ConvertCell(Map map, IntVec3 c, List<VoidAwake_OceanRockRestore> rockRestores)
 		{
-			if (snap == null)
-			{
-				return;
-			}
-
-			IntVec3 c = snap.cell;
 			if (!c.InBounds(map))
 			{
 				return;
 			}
 
 			EvacuatePawnIfAny(c, map);
+
+			ThingDef rockDef = FindNaturalRockDef(c, map);
+			if (rockDef != null)
+			{
+				// 岩・鉱石は恒久的に海へ置き換え、復元用にだけ記録する
+				if (rockRestores != null)
+				{
+					rockRestores.Add(new VoidAwake_OceanRockRestore
+					{
+						cell = c,
+						terrain = map.terrainGrid.TerrainAt(c),
+						underTerrain = map.terrainGrid.UnderTerrainAt(c),
+						naturalRockDef = rockDef,
+					});
+				}
+
+				DestroyCellContents(c, map);
+				map.terrainGrid.SetTerrain(c, TerrainDefOf.WaterOceanDeep);
+				return;
+			}
+
+			// それ以外は Odyssey マグマと同様に一時地形のみ。植物・建造物・落ち物は破棄し記録しない
 			DestroyCellContents(c, map);
-			map.terrainGrid.SetTerrain(c, TerrainDefOf.WaterOceanDeep);
+			TerrainDef flood = VoidAwake_GhostShipDefOf.VoidAwake_OceanFlood ?? TerrainDefOf.WaterOceanDeep;
+			if (flood.temporary)
+			{
+				map.terrainGrid.SetTempTerrain(c, flood);
+			}
+			else
+			{
+				map.terrainGrid.SetTerrain(c, flood);
+			}
 		}
 
-		public static void Restore(Map map, List<VoidAwake_OceanCellSnapshot> snaps, int convertedCount)
+		public static void Restore(Map map, List<IntVec3> floodCells, int convertedCount, List<VoidAwake_OceanRockRestore> rockRestores)
 		{
-			if (snaps == null || convertedCount <= 0)
+			if (floodCells == null || convertedCount <= 0)
 			{
 				return;
 			}
 
-			int count = Mathf.Min(convertedCount, snaps.Count);
-			for (int i = 0; i < count; i++)
+			Dictionary<IntVec3, VoidAwake_OceanRockRestore> rockByCell = null;
+			if (rockRestores != null && rockRestores.Count > 0)
 			{
-				RestoreCell(map, snaps[i]);
+				rockByCell = new Dictionary<IntVec3, VoidAwake_OceanRockRestore>(rockRestores.Count);
+				for (int i = 0; i < rockRestores.Count; i++)
+				{
+					VoidAwake_OceanRockRestore rock = rockRestores[i];
+					if (rock != null)
+					{
+						rockByCell[rock.cell] = rock;
+					}
+				}
 			}
 
-			map.mapDrawer.WholeMapChanged(MapMeshFlagDefOf.Terrain);
-			map.mapDrawer.WholeMapChanged(MapMeshFlagDefOf.Things);
-			map.mapDrawer.WholeMapChanged(MapMeshFlagDefOf.FogOfWar);
+			int count = Mathf.Min(convertedCount, floodCells.Count);
+			for (int i = 0; i < count; i++)
+			{
+				IntVec3 c = floodCells[i];
+				if (rockByCell != null && rockByCell.TryGetValue(c, out VoidAwake_OceanRockRestore rock))
+				{
+					RestoreRockCell(map, rock);
+				}
+				else
+				{
+					RestoreTempOceanCell(map, c);
+				}
+			}
 		}
 
-		public static void RestoreCell(Map map, VoidAwake_OceanCellSnapshot snap)
+		public static void RestoreTempOceanCell(Map map, IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return;
+			}
+
+			if (map.terrainGrid.TempTerrainAt(c) != null)
+			{
+				map.terrainGrid.RemoveTempTerrain(c);
+			}
+		}
+
+		public static void RestoreRockCell(Map map, VoidAwake_OceanRockRestore snap)
 		{
 			if (snap == null)
 			{
@@ -349,6 +386,11 @@ namespace VoidAwake
 			if (!c.InBounds(map))
 			{
 				return;
+			}
+
+			if (map.terrainGrid.TempTerrainAt(c) != null)
+			{
+				map.terrainGrid.RemoveTempTerrain(c, doLeavings: false, preventDestroyEffects: true);
 			}
 
 			map.terrainGrid.SetTerrain(c, snap.terrain ?? TerrainDefOf.Soil);
@@ -362,8 +404,6 @@ namespace VoidAwake
 				DestroyCellContents(c, map);
 				GenSpawn.Spawn(snap.naturalRockDef, c, map);
 			}
-
-			SetFogged(map, c, snap.wasFogged);
 		}
 
 		public static ThingDef FindNaturalRockDef(IntVec3 c, Map map)
@@ -389,50 +429,6 @@ namespace VoidAwake
 			}
 
 			return t.def.building.isNaturalRock || t.def.building.isResourceRock;
-		}
-
-		public static void SetFogged(Map map, IntVec3 c, bool fogged)
-		{
-			if (!c.InBounds(map))
-			{
-				return;
-			}
-
-			bool currentlyFogged = map.fogGrid.IsFogged(c);
-			if (currentlyFogged == fogged)
-			{
-				return;
-			}
-
-			if (!fogged)
-			{
-				map.fogGrid.Unfog(c);
-				return;
-			}
-
-			// FogGrid に公開の再霧 API が無いため、内部配列を直接戻す
-			if (fogGridField == null)
-			{
-				fogGridField = typeof(FogGrid).GetField("fogGrid", BindingFlags.Instance | BindingFlags.NonPublic);
-			}
-
-			if (fogGridField == null)
-			{
-				return;
-			}
-
-			if (!(fogGridField.GetValue(map.fogGrid) is bool[] grid))
-			{
-				return;
-			}
-
-			int index = map.cellIndices.CellToIndex(c);
-			if (index < 0 || index >= grid.Length)
-			{
-				return;
-			}
-
-			grid[index] = true;
 		}
 
 		private static void EvacuatePawnIfAny(IntVec3 c, Map map)
@@ -465,7 +461,7 @@ namespace VoidAwake
 				out result);
 		}
 
-		/// <summary>植物・天然岩・遺跡などの建造物・その他非ポーンを破壊（復元しない）。</summary>
+		/// <summary>植物・建造物・落ち物などを破棄。岩の復元以外は記録しない。</summary>
 		private static void DestroyCellContents(IntVec3 c, Map map)
 		{
 			List<Thing> things = c.GetThingList(map);
@@ -482,13 +478,13 @@ namespace VoidAwake
 		}
 	}
 
-	public class VoidAwake_OceanCellSnapshot : IExposable
+	/// <summary>岩・鉱石セルのみ復元用。通常セルは一時地形の下に元地形が残る。</summary>
+	public class VoidAwake_OceanRockRestore : IExposable
 	{
 		public IntVec3 cell;
 		public TerrainDef terrain;
 		public TerrainDef underTerrain;
 		public ThingDef naturalRockDef;
-		public bool wasFogged;
 
 		public void ExposeData()
 		{
@@ -496,7 +492,6 @@ namespace VoidAwake
 			Scribe_Defs.Look(ref terrain, "terrain");
 			Scribe_Defs.Look(ref underTerrain, "underTerrain");
 			Scribe_Defs.Look(ref naturalRockDef, "naturalRockDef");
-			Scribe_Values.Look(ref wasFogged, "wasFogged", false);
 		}
 	}
 
@@ -508,7 +503,8 @@ namespace VoidAwake
 
 		private bool oceanActive;
 		private bool oceanFloodComplete;
-		private List<VoidAwake_OceanCellSnapshot> oceanSnapshots;
+		private List<IntVec3> floodCells;
+		private List<VoidAwake_OceanRockRestore> rockRestores;
 		private int nextCellIndex;
 		private int tickAccumulator;
 
@@ -545,10 +541,11 @@ namespace VoidAwake
 				return false;
 			}
 
-			oceanSnapshots = VoidAwake_GhostShipOceanUtility.CreateSnapshots(map);
+			floodCells = VoidAwake_GhostShipOceanUtility.CollectFloodCells(map);
+			rockRestores = new List<VoidAwake_OceanRockRestore>();
 			nextCellIndex = 0;
 			tickAccumulator = 0;
-			oceanFloodComplete = oceanSnapshots.Count == 0;
+			oceanFloodComplete = floodCells.Count == 0;
 			oceanActive = true;
 			phase = VoidAwake_GhostShipPhase.OceanFlooding;
 			if (oceanFloodComplete)
@@ -567,8 +564,9 @@ namespace VoidAwake
 				return;
 			}
 
-			VoidAwake_GhostShipOceanUtility.Restore(map, oceanSnapshots, nextCellIndex);
-			oceanSnapshots = null;
+			VoidAwake_GhostShipOceanUtility.Restore(map, floodCells, nextCellIndex, rockRestores);
+			floodCells = null;
+			rockRestores = null;
 			nextCellIndex = 0;
 			tickAccumulator = 0;
 			oceanFloodComplete = false;
@@ -589,14 +587,13 @@ namespace VoidAwake
 
 			if (!oceanFloodComplete)
 			{
-				while (oceanSnapshots != null && nextCellIndex < oceanSnapshots.Count)
+				while (floodCells != null && nextCellIndex < floodCells.Count)
 				{
-					VoidAwake_GhostShipOceanUtility.ConvertCell(map, oceanSnapshots[nextCellIndex]);
+					VoidAwake_GhostShipOceanUtility.ConvertCell(map, floodCells[nextCellIndex], rockRestores);
 					nextCellIndex++;
 				}
 
 				oceanFloodComplete = true;
-				RefreshMapMeshes();
 			}
 
 			if (phase == VoidAwake_GhostShipPhase.ShipOrbiting || phase == VoidAwake_GhostShipPhase.ShipUnlocked)
@@ -618,37 +615,36 @@ namespace VoidAwake
 
 		private void TickOceanFlood()
 		{
-			if (!oceanActive || oceanFloodComplete || oceanSnapshots == null)
+			if (!oceanActive || oceanFloodComplete || floodCells == null)
 			{
 				return;
 			}
 
 			tickAccumulator++;
-			if (tickAccumulator < VoidAwake_GhostShipOceanUtility.TicksPerOceanCell)
+			if (tickAccumulator < VoidAwake_GhostShipOceanUtility.TicksPerOceanPulse)
 			{
 				return;
 			}
 
 			tickAccumulator = 0;
-			if (nextCellIndex >= oceanSnapshots.Count)
+			if (nextCellIndex >= floodCells.Count)
 			{
 				oceanFloodComplete = true;
-				RefreshMapMeshes();
 				OnOceanFloodCompleted();
 				return;
 			}
 
-			VoidAwake_GhostShipOceanUtility.ConvertCell(map, oceanSnapshots[nextCellIndex]);
-			nextCellIndex++;
-			if (nextCellIndex >= oceanSnapshots.Count)
+			int end = Mathf.Min(nextCellIndex + VoidAwake_GhostShipOceanUtility.CellsPerPulse, floodCells.Count);
+			while (nextCellIndex < end)
+			{
+				VoidAwake_GhostShipOceanUtility.ConvertCell(map, floodCells[nextCellIndex], rockRestores);
+				nextCellIndex++;
+			}
+
+			if (nextCellIndex >= floodCells.Count)
 			{
 				oceanFloodComplete = true;
-				RefreshMapMeshes();
 				OnOceanFloodCompleted();
-			}
-			else if (nextCellIndex % VoidAwake_GhostShipOceanUtility.MeshRefreshEveryCells == 0)
-			{
-				RefreshMapMeshes();
 			}
 		}
 
@@ -1013,20 +1009,14 @@ namespace VoidAwake
 			orbitCellsAdvanced = 0;
 		}
 
-		private void RefreshMapMeshes()
-		{
-			map.mapDrawer.WholeMapChanged(MapMeshFlagDefOf.Terrain);
-			map.mapDrawer.WholeMapChanged(MapMeshFlagDefOf.Things);
-			map.mapDrawer.WholeMapChanged(MapMeshFlagDefOf.FogOfWar);
-		}
-
 		public override void ExposeData()
 		{
 			Scribe_Values.Look(ref oceanActive, "oceanActive", false);
 			Scribe_Values.Look(ref oceanFloodComplete, "oceanFloodComplete", false);
 			Scribe_Values.Look(ref nextCellIndex, "nextCellIndex", 0);
 			Scribe_Values.Look(ref tickAccumulator, "tickAccumulator", 0);
-			Scribe_Collections.Look(ref oceanSnapshots, "oceanSnapshots", LookMode.Deep);
+			Scribe_Collections.Look(ref floodCells, "floodCells", LookMode.Value);
+			Scribe_Collections.Look(ref rockRestores, "rockRestores", LookMode.Deep);
 
 			Scribe_Values.Look(ref phase, "phase", VoidAwake_GhostShipPhase.None);
 			Scribe_References.Look(ref ship, "ship");
@@ -1042,9 +1032,14 @@ namespace VoidAwake
 
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
-				if (oceanSnapshots == null)
+				if (floodCells == null)
 				{
-					oceanSnapshots = new List<VoidAwake_OceanCellSnapshot>();
+					floodCells = new List<IntVec3>();
+				}
+
+				if (rockRestores == null)
+				{
+					rockRestores = new List<VoidAwake_OceanRockRestore>();
 				}
 
 				if (releasedGhosts == null)

@@ -17,4 +17,19 @@
 		<constructEffect>ConstructWood</constructEffect>
 	</TerrainDef>
 
+	<!-- Odyssey マグマ流れと同様の一時地形。下の地形は保持し、RemoveTempTerrain で戻る。
+	     WaterOceanDeep は Name が無いので WaterDeepBase を親にする。 -->
+	<TerrainDef ParentName="WaterDeepBase">
+		<defName>VoidAwake_OceanFlood</defName>
+		<label>浸食された海</label>
+		<renderPrecedence>397</renderPrecedence>
+		<waterBodyType>Saltwater</waterBodyType>
+		<temporary>true</temporary>
+		<driesTo />
+		<canFreeze>false</canFreeze>
+		<tags>
+			<li>Ocean</li>
+		</tags>
+	</TerrainDef>
+
 </Defs>

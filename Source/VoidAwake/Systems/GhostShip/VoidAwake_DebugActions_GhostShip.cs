@@ -57,7 +57,7 @@ namespace VoidAwake
 			}
 
 			comp.RestoreOcean();
-			Messages.Message("Restored flooded edge cells (terrain + natural rock).", MessageTypeDefOf.TaskCompletion, false);
+			Messages.Message("Restored flooded edge cells (temp ocean + natural rock).", MessageTypeDefOf.TaskCompletion, false);
 		}
 
 		[DebugAction("VoidAwake", "GhostShip arrival", false, false, false, false, false, 0, false,
