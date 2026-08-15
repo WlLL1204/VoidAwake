@@ -19,7 +19,7 @@
 		<respectsAllowedArea>false</respectsAllowedArea>
 		<tameable>false</tameable>
 		<defaultFaction>Entities</defaultFaction>
-		<deathOnDownedChance>0.35</deathOnDownedChance>
+		<deathOnDownedChance>1</deathOnDownedChance>
 		<anomalyKnowledgeOffset>2</anomalyKnowledgeOffset>
 		<knowledgeCategory>Advanced</knowledgeCategory>
 		<codexEntry>VoidAwake_GhostPirates</codexEntry>

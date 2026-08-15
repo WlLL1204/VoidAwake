@@ -11,6 +11,7 @@
 	<VoidAwake_GhostShip_DevViewInteriorFailed>Could not generate the ship interior map.</VoidAwake_GhostShip_DevViewInteriorFailed>
 	<VoidAwake_GhostShip_OrbitStarted>A ghost ship circles the flooded shore, releasing the dead and firing its guns.</VoidAwake_GhostShip_OrbitStarted>
 	<VoidAwake_GhostShip_Unlocked>The ghost ship completes its circuit and drifts in. Boarding is unlocked.</VoidAwake_GhostShip_Unlocked>
+	<VoidAwake_GhostShip_ResurrectionWave>The docked ship releases a resurrection wave. The living refuse death once more, and the fallen rise.</VoidAwake_GhostShip_ResurrectionWave>
 	<VoidAwake_GhostShip_AssaultStarted>The released ghosts surge inland as one.</VoidAwake_GhostShip_AssaultStarted>
 
 </LanguageData>

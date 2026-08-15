@@ -28,4 +28,65 @@
 		</stages>
 	</HediffDef>
 
+	<HediffDef>
+		<defName>VoidAwake_Mortal</defName>
+		<label>死すべき者</label>
+		<description>死を重ねるほど鋭く、同時に脆くなる呪い。死亡するたびに戦闘能力が上がり、受ける傷も深くなる。三度死ぬと覚醒する。</description>
+		<hediffClass>VoidAwake.VoidAwake_Hediff_Mortal</hediffClass>
+		<isBad>false</isBad>
+		<everCurableByItem>false</everCurableByItem>
+		<duplicationAllowed>false</duplicationAllowed>
+		<keepOnBodyPartRestoration>true</keepOnBodyPartRestoration>
+		<initialSeverity>0.01</initialSeverity>
+		<minSeverity>0</minSeverity>
+		<maxSeverity>3</maxSeverity>
+		<stages>
+			<li>
+				<label>未覚醒</label>
+			</li>
+			<li>
+				<minSeverity>1</minSeverity>
+				<label>一度目の死</label>
+				<statOffsets>
+					<MoveSpeed>0.5</MoveSpeed>
+					<MeleeHitChance>4</MeleeHitChance>
+				</statOffsets>
+				<statFactors>
+					<MeleeCooldownFactor>0.85</MeleeCooldownFactor>
+					<AimingDelayFactor>0.85</AimingDelayFactor>
+					<RangedCooldownFactor>0.85</RangedCooldownFactor>
+					<IncomingDamageFactor>1.25</IncomingDamageFactor>
+				</statFactors>
+			</li>
+			<li>
+				<minSeverity>2</minSeverity>
+				<label>二度目の死</label>
+				<statOffsets>
+					<MoveSpeed>1.0</MoveSpeed>
+					<MeleeHitChance>8</MeleeHitChance>
+				</statOffsets>
+				<statFactors>
+					<MeleeCooldownFactor>0.7</MeleeCooldownFactor>
+					<AimingDelayFactor>0.7</AimingDelayFactor>
+					<RangedCooldownFactor>0.7</RangedCooldownFactor>
+					<IncomingDamageFactor>1.5</IncomingDamageFactor>
+				</statFactors>
+			</li>
+			<li>
+				<minSeverity>3</minSeverity>
+				<label>覚醒</label>
+				<statOffsets>
+					<MoveSpeed>1.8</MoveSpeed>
+					<MeleeHitChance>8</MeleeHitChance>
+				</statOffsets>
+				<statFactors>
+					<MeleeCooldownFactor>0.5</MeleeCooldownFactor>
+					<AimingDelayFactor>0.7</AimingDelayFactor>
+					<RangedCooldownFactor>0.7</RangedCooldownFactor>
+					<IncomingDamageFactor>1.5</IncomingDamageFactor>
+				</statFactors>
+			</li>
+		</stages>
+	</HediffDef>
+
 </Defs>

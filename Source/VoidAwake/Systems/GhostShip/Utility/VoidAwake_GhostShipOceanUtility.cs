@@ -62,8 +62,213 @@ namespace VoidAwake
 
 		public static bool ShouldBecomeOcean(IntVec3 c, Map map, int edge)
 		{
-			// 島＝角を丸めた矩形。その外を海洋にする（角で両辺が滑らかにつながる）
-			return !IsInsideRoundedLandIsland(c, map, edge, edge);
+			// 建築不可帯の最も内側 1 マスは足場として残す（角の丸みにも追従）
+			int landInset = GetLandInset(edge);
+			return !IsInsideRoundedLandIsland(c, map, landInset, landInset);
+		}
+
+		/// <summary>海洋にしない島の inset。建築不可幅より 1 マス内側まで陸＝岸の足場。</summary>
+		public static int GetLandInset(int noBuildEdgeWidth)
+		{
+			return Mathf.Max(0, noBuildEdgeWidth - 1);
+		}
+
+		/// <summary>建築不可帯の最内周 1 マス（丸み含む）を外側から順に集める。</summary>
+		public static List<IntVec3> CollectFootingCells(Map map)
+		{
+			int edge = GetNoBuildEdgeWidth(map);
+			int landInset = GetLandInset(edge);
+			IntVec3 center = map.Center;
+			var cells = new List<IntVec3>();
+			foreach (IntVec3 c in map.AllCells)
+			{
+				if (IsShoreFootingCell(c, map, edge, landInset))
+				{
+					cells.Add(c);
+				}
+			}
+
+			cells.Sort((a, b) =>
+			{
+				int da = a.DistanceToSquared(center);
+				int db = b.DistanceToSquared(center);
+				int cmp = db.CompareTo(da);
+				if (cmp != 0)
+				{
+					return cmp;
+				}
+
+				cmp = a.x.CompareTo(b.x);
+				if (cmp != 0)
+				{
+					return cmp;
+				}
+
+				return a.z.CompareTo(b.z);
+			});
+			return cells;
+		}
+
+		public static bool IsShoreFootingCell(IntVec3 c, Map map)
+		{
+			int edge = GetNoBuildEdgeWidth(map);
+			return IsShoreFootingCell(c, map, edge, GetLandInset(edge));
+		}
+
+		private static bool IsShoreFootingCell(IntVec3 c, Map map, int edge, int landInset)
+		{
+			// 新・島の中かつ旧・島の外＝削った最内周 1 マス（角丸も同じ形）
+			return IsInsideRoundedLandIsland(c, map, landInset, landInset)
+				&& !IsInsideRoundedLandIsland(c, map, edge, edge);
+		}
+
+		/// <summary>
+		/// 足場セルを立てられるようにする。隣が海になってから呼ぶ。
+		/// 岩・鉱石は復元用に記録し、岩盤（岩壁・岩屋根）と通行を塞ぐブロックを消す。
+		/// </summary>
+		public static void ConvertFootingCell(Map map, IntVec3 c, List<VoidAwake_OceanRockRestore> rockRestores)
+		{
+			if (!c.InBounds(map))
+			{
+				return;
+			}
+
+			EvacuatePawnIfAny(c, map);
+
+			ThingDef rockDef = FindNaturalRockDef(c, map);
+			TryRecordBedrock(map, c, rockDef, false, rockRestores);
+
+			ClearFootingCell(c, map);
+			RemoveBedrock(map, c);
+		}
+
+		/// <summary>外側の隣マスが既に海洋なら、この足場セルを作り始めてよい。</summary>
+		public static bool HasAdjacentOcean(Map map, IntVec3 c)
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				IntVec3 n = c + GenAdj.AdjacentCells[i];
+				if (n.InBounds(map) && IsOceanTerrain(n.GetTerrain(map)))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// WaterOceanDeep は tags が Ocean のみで IsWater が false になるため、海判定はこれを使う。
+		/// </summary>
+		public static bool IsOceanTerrain(TerrainDef terrain)
+		{
+			if (terrain == null)
+			{
+				return false;
+			}
+
+			if (terrain.IsWater || terrain.HasTag("Ocean"))
+			{
+				return true;
+			}
+
+			if (terrain == TerrainDefOf.WaterOceanDeep)
+			{
+				return true;
+			}
+
+			return VoidAwake_GhostShipDefOf.VoidAwake_OceanFlood != null
+				&& terrain == VoidAwake_GhostShipDefOf.VoidAwake_OceanFlood;
+		}
+
+		public static RoofDef FindRockRoof(IntVec3 c, Map map)
+		{
+			RoofDef roof = map.roofGrid.RoofAt(c);
+			if (roof == null)
+			{
+				return null;
+			}
+
+			if (roof.isNatural || roof.isThickRoof || roof == RoofDefOf.RoofRockThin || roof == RoofDefOf.RoofRockThick)
+			{
+				return roof;
+			}
+
+			return null;
+		}
+
+		public static void TryRecordBedrock(Map map, IntVec3 c, ThingDef rockDef, bool restoreTerrain, List<VoidAwake_OceanRockRestore> rockRestores)
+		{
+			if (rockRestores == null)
+			{
+				return;
+			}
+
+			RoofDef roof = FindRockRoof(c, map);
+			if (rockDef == null && roof == null)
+			{
+				return;
+			}
+
+			rockRestores.Add(new VoidAwake_OceanRockRestore
+			{
+				cell = c,
+				terrain = map.terrainGrid.TerrainAt(c),
+				underTerrain = map.terrainGrid.UnderTerrainAt(c),
+				naturalRockDef = rockDef,
+				rockRoof = roof,
+				restoreTerrain = restoreTerrain,
+			});
+		}
+
+		private static void ClearFootingCell(IntVec3 c, Map map)
+		{
+			List<Thing> things = c.GetThingList(map);
+			for (int i = things.Count - 1; i >= 0; i--)
+			{
+				Thing t = things[i];
+				if (t == null || t.Destroyed || t is Pawn)
+				{
+					continue;
+				}
+
+				if (IsNaturalOrResourceRock(t)
+					|| (t.def.passability == Traversability.Impassable)
+					|| (t.def.category == ThingCategory.Building && t.def.Fillage == FillCategory.Full))
+				{
+					t.Destroy(DestroyMode.Vanish);
+				}
+			}
+		}
+
+		/// <summary>岩屋根と、残った岩盤地形を除去する。</summary>
+		public static void RemoveBedrock(Map map, IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return;
+			}
+
+			RoofDef roof = map.roofGrid.RoofAt(c);
+			if (roof != null && (roof.isThickRoof || roof == RoofDefOf.RoofRockThin || roof == RoofDefOf.RoofRockThick))
+			{
+				map.roofGrid.SetRoof(c, null);
+			}
+
+			List<Thing> things = c.GetThingList(map);
+			for (int i = things.Count - 1; i >= 0; i--)
+			{
+				Thing t = things[i];
+				if (t == null || t.Destroyed || t is Pawn)
+				{
+					continue;
+				}
+
+				if (IsNaturalOrResourceRock(t))
+				{
+					t.Destroy(DestroyMode.Vanish);
+				}
+			}
 		}
 
 		public static int GetNoBuildEdgeWidth(Map map)
@@ -294,27 +499,16 @@ namespace VoidAwake
 			EvacuatePawnIfAny(c, map);
 
 			ThingDef rockDef = FindNaturalRockDef(c, map);
+			TryRecordBedrock(map, c, rockDef, rockDef != null, rockRestores);
+
+			DestroyCellContents(c, map);
+			RemoveBedrock(map, c);
 			if (rockDef != null)
 			{
-				// 岩・鉱石は恒久的に海へ置き換え、復元用にだけ記録する
-				if (rockRestores != null)
-				{
-					rockRestores.Add(new VoidAwake_OceanRockRestore
-					{
-						cell = c,
-						terrain = map.terrainGrid.TerrainAt(c),
-						underTerrain = map.terrainGrid.UnderTerrainAt(c),
-						naturalRockDef = rockDef,
-					});
-				}
-
-				DestroyCellContents(c, map);
 				map.terrainGrid.SetTerrain(c, TerrainDefOf.WaterOceanDeep);
 				return;
 			}
 
-			// それ以外は Odyssey マグマと同様に一時地形のみ。植物・建造物・落ち物は破棄し記録しない
-			DestroyCellContents(c, map);
 			TerrainDef flood = VoidAwake_GhostShipDefOf.VoidAwake_OceanFlood ?? TerrainDefOf.WaterOceanDeep;
 			if (flood.temporary)
 			{
@@ -328,36 +522,53 @@ namespace VoidAwake
 
 		public static void Restore(Map map, List<IntVec3> floodCells, int convertedCount, List<VoidAwake_OceanRockRestore> rockRestores)
 		{
-			if (floodCells == null || convertedCount <= 0)
-			{
-				return;
-			}
-
-			Dictionary<IntVec3, VoidAwake_OceanRockRestore> rockByCell = null;
+			Dictionary<IntVec3, VoidAwake_OceanRockRestore> oceanRockByCell = null;
+			List<VoidAwake_OceanRockRestore> footingRocks = null;
 			if (rockRestores != null && rockRestores.Count > 0)
 			{
-				rockByCell = new Dictionary<IntVec3, VoidAwake_OceanRockRestore>(rockRestores.Count);
+				oceanRockByCell = new Dictionary<IntVec3, VoidAwake_OceanRockRestore>();
+				footingRocks = new List<VoidAwake_OceanRockRestore>();
 				for (int i = 0; i < rockRestores.Count; i++)
 				{
 					VoidAwake_OceanRockRestore rock = rockRestores[i];
-					if (rock != null)
+					if (rock == null)
 					{
-						rockByCell[rock.cell] = rock;
+						continue;
+					}
+
+					if (rock.restoreTerrain)
+					{
+						oceanRockByCell[rock.cell] = rock;
+					}
+					else
+					{
+						footingRocks.Add(rock);
 					}
 				}
 			}
 
-			int count = Mathf.Min(convertedCount, floodCells.Count);
-			for (int i = 0; i < count; i++)
+			if (floodCells != null && convertedCount > 0)
 			{
-				IntVec3 c = floodCells[i];
-				if (rockByCell != null && rockByCell.TryGetValue(c, out VoidAwake_OceanRockRestore rock))
+				int count = Mathf.Min(convertedCount, floodCells.Count);
+				for (int i = 0; i < count; i++)
 				{
-					RestoreRockCell(map, rock);
+					IntVec3 c = floodCells[i];
+					if (oceanRockByCell != null && oceanRockByCell.TryGetValue(c, out VoidAwake_OceanRockRestore rock))
+					{
+						RestoreRockCell(map, rock);
+					}
+					else
+					{
+						RestoreTempOceanCell(map, c);
+					}
 				}
-				else
+			}
+
+			if (footingRocks != null)
+			{
+				for (int i = 0; i < footingRocks.Count; i++)
 				{
-					RestoreTempOceanCell(map, c);
+					RestoreBedrock(map, footingRocks[i]);
 				}
 			}
 		}
@@ -393,16 +604,43 @@ namespace VoidAwake
 				map.terrainGrid.RemoveTempTerrain(c, doLeavings: false, preventDestroyEffects: true);
 			}
 
-			map.terrainGrid.SetTerrain(c, snap.terrain ?? TerrainDefOf.Soil);
-			if (snap.underTerrain != null)
+			if (snap.restoreTerrain)
 			{
-				map.terrainGrid.SetUnderTerrain(c, snap.underTerrain);
+				map.terrainGrid.SetTerrain(c, snap.terrain ?? TerrainDefOf.Soil);
+				if (snap.underTerrain != null)
+				{
+					map.terrainGrid.SetUnderTerrain(c, snap.underTerrain);
+				}
 			}
 
 			if (snap.naturalRockDef != null)
 			{
 				DestroyCellContents(c, map);
 				GenSpawn.Spawn(snap.naturalRockDef, c, map);
+			}
+
+			if (snap.rockRoof != null)
+			{
+				map.roofGrid.SetRoof(c, snap.rockRoof);
+			}
+		}
+
+		public static void RestoreBedrock(Map map, VoidAwake_OceanRockRestore snap)
+		{
+			if (snap == null || !snap.cell.InBounds(map))
+			{
+				return;
+			}
+
+			if (snap.naturalRockDef != null)
+			{
+				DestroyCellContents(snap.cell, map);
+				GenSpawn.Spawn(snap.naturalRockDef, snap.cell, map);
+			}
+
+			if (snap.rockRoof != null)
+			{
+				map.roofGrid.SetRoof(snap.cell, snap.rockRoof);
 			}
 		}
 
@@ -478,13 +716,16 @@ namespace VoidAwake
 		}
 	}
 
-	/// <summary>岩・鉱石セルのみ復元用。通常セルは一時地形の下に元地形が残る。</summary>
+	/// <summary>岩・鉱石セルの復元用。通常の海洋セルは一時地形の下に元地形が残る。</summary>
 	public class VoidAwake_OceanRockRestore : IExposable
 	{
 		public IntVec3 cell;
 		public TerrainDef terrain;
 		public TerrainDef underTerrain;
 		public ThingDef naturalRockDef;
+		public RoofDef rockRoof;
+		/// <summary>true=海洋で地形ごと置き換えたセル。false=足場でブロックだけ消したセル。</summary>
+		public bool restoreTerrain = true;
 
 		public void ExposeData()
 		{
@@ -492,6 +733,8 @@ namespace VoidAwake
 			Scribe_Defs.Look(ref terrain, "terrain");
 			Scribe_Defs.Look(ref underTerrain, "underTerrain");
 			Scribe_Defs.Look(ref naturalRockDef, "naturalRockDef");
+			Scribe_Defs.Look(ref rockRoof, "rockRoof");
+			Scribe_Values.Look(ref restoreTerrain, "restoreTerrain", true);
 		}
 	}
 
@@ -504,8 +747,10 @@ namespace VoidAwake
 		private bool oceanActive;
 		private bool oceanFloodComplete;
 		private List<IntVec3> floodCells;
+		private List<IntVec3> footingCells;
 		private List<VoidAwake_OceanRockRestore> rockRestores;
 		private int nextCellIndex;
+		private int nextFootingIndex;
 		private int tickAccumulator;
 
 		private VoidAwake_GhostShipPhase phase = VoidAwake_GhostShipPhase.None;
@@ -519,6 +764,7 @@ namespace VoidAwake
 		private List<Pawn> releasedGhosts;
 		private int orbitCellsAdvanced;
 		private Lord ghostLord;
+		private bool startedGrayPall;
 
 		public VoidAwake_MapComponent_GhostShip(Map map) : base(map)
 		{
@@ -542,12 +788,15 @@ namespace VoidAwake
 			}
 
 			floodCells = VoidAwake_GhostShipOceanUtility.CollectFloodCells(map);
+			footingCells = VoidAwake_GhostShipOceanUtility.CollectFootingCells(map);
 			rockRestores = new List<VoidAwake_OceanRockRestore>();
 			nextCellIndex = 0;
+			nextFootingIndex = 0;
 			tickAccumulator = 0;
-			oceanFloodComplete = floodCells.Count == 0;
+			oceanFloodComplete = floodCells.Count == 0 && footingCells.Count == 0;
 			oceanActive = true;
 			phase = VoidAwake_GhostShipPhase.OceanFlooding;
+			EnsureGrayPall();
 			if (oceanFloodComplete)
 			{
 				OnOceanFloodCompleted();
@@ -566,12 +815,15 @@ namespace VoidAwake
 
 			VoidAwake_GhostShipOceanUtility.Restore(map, floodCells, nextCellIndex, rockRestores);
 			floodCells = null;
+			footingCells = null;
 			rockRestores = null;
 			nextCellIndex = 0;
+			nextFootingIndex = 0;
 			tickAccumulator = 0;
 			oceanFloodComplete = false;
 			oceanActive = false;
 			phase = VoidAwake_GhostShipPhase.None;
+			EndGrayPallIfStarted();
 		}
 
 		/// <summary>海洋が既に完了している想定で船を出し周回を始める（Dev 用）。</summary>
@@ -593,6 +845,12 @@ namespace VoidAwake
 					nextCellIndex++;
 				}
 
+				while (footingCells != null && nextFootingIndex < footingCells.Count)
+				{
+					VoidAwake_GhostShipOceanUtility.ConvertFootingCell(map, footingCells[nextFootingIndex], rockRestores);
+					nextFootingIndex++;
+				}
+
 				oceanFloodComplete = true;
 			}
 
@@ -606,16 +864,41 @@ namespace VoidAwake
 
 		public override void MapComponentTick()
 		{
+			if (oceanActive || phase != VoidAwake_GhostShipPhase.None)
+			{
+				EnsureGrayPall();
+			}
+
 			TickOceanFlood();
 			if (phase == VoidAwake_GhostShipPhase.ShipOrbiting)
 			{
 				TickShipOrbit();
 			}
+
+			if (phase == VoidAwake_GhostShipPhase.ShipOrbiting || phase == VoidAwake_GhostShipPhase.ShipUnlocked)
+			{
+				if (Find.TickManager.TicksGame % 10 == 0)
+				{
+					List<Map> maps = Find.Maps;
+					for (int i = 0; i < maps.Count; i++)
+					{
+						VoidAwake_GhostUtility.TickGhostCorpses(maps[i]);
+					}
+
+					if (releasedGhosts != null)
+					{
+						for (int i = 0; i < releasedGhosts.Count; i++)
+						{
+							VoidAwake_GhostUtility.TickGhostCorpse(releasedGhosts[i]);
+						}
+					}
+				}
+			}
 		}
 
 		private void TickOceanFlood()
 		{
-			if (!oceanActive || oceanFloodComplete || floodCells == null)
+			if (!oceanActive || oceanFloodComplete)
 			{
 				return;
 			}
@@ -627,21 +910,51 @@ namespace VoidAwake
 			}
 
 			tickAccumulator = 0;
-			if (nextCellIndex >= floodCells.Count)
+
+			bool floodDone = floodCells == null || nextCellIndex >= floodCells.Count;
+			bool footingDone = footingCells == null || nextFootingIndex >= footingCells.Count;
+			if (floodDone && footingDone)
 			{
 				oceanFloodComplete = true;
 				OnOceanFloodCompleted();
 				return;
 			}
 
-			int end = Mathf.Min(nextCellIndex + VoidAwake_GhostShipOceanUtility.CellsPerPulse, floodCells.Count);
-			while (nextCellIndex < end)
+			int pulse = VoidAwake_GhostShipOceanUtility.CellsPerPulse;
+			if (!floodDone)
 			{
-				VoidAwake_GhostShipOceanUtility.ConvertCell(map, floodCells[nextCellIndex], rockRestores);
-				nextCellIndex++;
+				int end = Mathf.Min(nextCellIndex + pulse, floodCells.Count);
+				while (nextCellIndex < end)
+				{
+					VoidAwake_GhostShipOceanUtility.ConvertCell(map, floodCells[nextCellIndex], rockRestores);
+					nextCellIndex++;
+				}
 			}
 
-			if (nextCellIndex >= floodCells.Count)
+			if (!footingDone)
+			{
+				int converted = 0;
+				bool floodFinished = floodCells == null || nextCellIndex >= floodCells.Count;
+				for (int i = nextFootingIndex; i < footingCells.Count && converted < pulse; i++)
+				{
+					IntVec3 cell = footingCells[i];
+					if (!floodFinished && !VoidAwake_GhostShipOceanUtility.HasAdjacentOcean(map, cell))
+					{
+						continue;
+					}
+
+					VoidAwake_GhostShipOceanUtility.ConvertFootingCell(map, cell, rockRestores);
+					IntVec3 swap = footingCells[nextFootingIndex];
+					footingCells[nextFootingIndex] = footingCells[i];
+					footingCells[i] = swap;
+					nextFootingIndex++;
+					converted++;
+				}
+			}
+
+			floodDone = floodCells == null || nextCellIndex >= floodCells.Count;
+			footingDone = footingCells == null || nextFootingIndex >= footingCells.Count;
+			if (floodDone && footingDone)
 			{
 				oceanFloodComplete = true;
 				OnOceanFloodCompleted();
@@ -803,10 +1116,34 @@ namespace VoidAwake
 
 			VoidAwake_LordJob_GhostHoldLanding holdJob = ghostLord.LordJob as VoidAwake_LordJob_GhostHoldLanding;
 			holdJob?.SetLanding(ghost, stagingCell);
+			AssignGhostToLord(ghost, ghostLord);
+		}
 
-			if (!ghostLord.ownedPawns.Contains(ghost))
+		private void AssignGhostToLord(Pawn ghost, Lord lord)
+		{
+			if (ghost == null || ghost.Destroyed || lord == null)
 			{
-				ghostLord.AddPawn(ghost);
+				return;
+			}
+
+			Lord current = ghost.GetLord();
+			if (current == lord)
+			{
+				return;
+			}
+
+			if (current != null)
+			{
+				current.RemovePawn(ghost);
+				if (current.ownedPawns.Count == 0 && map.lordManager.lords.Contains(current))
+				{
+					map.lordManager.RemoveLord(current);
+				}
+			}
+
+			if (!lord.ownedPawns.Contains(ghost))
+			{
+				lord.AddPawn(ghost);
 			}
 		}
 
@@ -885,6 +1222,8 @@ namespace VoidAwake
 		private void OnFirstOrbitComplete()
 		{
 			UnlockShip();
+			VoidAwake_GhostUtility.ReleaseResurrectionWave(releasedGhosts);
+			Messages.Message("VoidAwake_GhostShip_ResurrectionWave".Translate(), ship, MessageTypeDefOf.ThreatBig, false);
 			StartGhostAssault();
 		}
 
@@ -962,7 +1301,44 @@ namespace VoidAwake
 				return;
 			}
 
-			releasedGhosts.RemoveAll(VoidAwake_GhostUtility.IsGhostInactive);
+			releasedGhosts.RemoveAll(p => p == null || p.Destroyed || (p.Dead && VoidAwake_GhostUtility.GetDeathRefusalUses(p) <= 0));
+		}
+
+		public void NotifyGhostReturned(Pawn pawn)
+		{
+			if (pawn == null || pawn.Destroyed || pawn.Dead)
+			{
+				return;
+			}
+
+			if (releasedGhosts == null)
+			{
+				releasedGhosts = new List<Pawn>();
+			}
+
+			if (!releasedGhosts.Contains(pawn))
+			{
+				releasedGhosts.Add(pawn);
+			}
+
+			if (phase == VoidAwake_GhostShipPhase.ShipOrbiting)
+			{
+				IntVec3 cell = pawn.Spawned ? pawn.Position : IntVec3.Invalid;
+				if (!cell.IsValid || !cell.Standable(map) || VoidAwake_GhostShipOceanUtility.IsOceanTerrain(cell.GetTerrain(map)))
+				{
+					cell = VoidAwake_GhostShipOceanUtility.FindLandSpawnNear(map, cell.IsValid ? cell : map.Center);
+				}
+
+				AddGhostToStagingLord(pawn, cell);
+				return;
+			}
+
+			if (ghostLord == null || !map.lordManager.lords.Contains(ghostLord))
+			{
+				return;
+			}
+
+			AssignGhostToLord(pawn, ghostLord);
 		}
 
 		private void ClearShipAndGhosts()
@@ -1009,13 +1385,59 @@ namespace VoidAwake
 			orbitCellsAdvanced = 0;
 		}
 
+		private void EnsureGrayPall()
+		{
+			GameConditionDef def = DefDatabase<GameConditionDef>.GetNamedSilentFail("GrayPall");
+			if (def == null || map?.GameConditionManager == null)
+			{
+				return;
+			}
+
+			if (map.GameConditionManager.ConditionIsActive(def))
+			{
+				return;
+			}
+
+			GameCondition condition = GameConditionMaker.MakeConditionPermanent(def);
+			if (condition == null)
+			{
+				return;
+			}
+
+			map.GameConditionManager.RegisterCondition(condition);
+			startedGrayPall = true;
+		}
+
+		private void EndGrayPallIfStarted()
+		{
+			if (!startedGrayPall)
+			{
+				return;
+			}
+
+			startedGrayPall = false;
+			GameConditionDef def = DefDatabase<GameConditionDef>.GetNamedSilentFail("GrayPall");
+			if (def == null || map?.GameConditionManager == null)
+			{
+				return;
+			}
+
+			GameCondition condition = map.GameConditionManager.GetActiveCondition(def);
+			if (condition != null && !condition.Expired)
+			{
+				condition.End();
+			}
+		}
+
 		public override void ExposeData()
 		{
 			Scribe_Values.Look(ref oceanActive, "oceanActive", false);
 			Scribe_Values.Look(ref oceanFloodComplete, "oceanFloodComplete", false);
 			Scribe_Values.Look(ref nextCellIndex, "nextCellIndex", 0);
+			Scribe_Values.Look(ref nextFootingIndex, "nextFootingIndex", 0);
 			Scribe_Values.Look(ref tickAccumulator, "tickAccumulator", 0);
 			Scribe_Collections.Look(ref floodCells, "floodCells", LookMode.Value);
+			Scribe_Collections.Look(ref footingCells, "footingCells", LookMode.Value);
 			Scribe_Collections.Look(ref rockRestores, "rockRestores", LookMode.Deep);
 
 			Scribe_Values.Look(ref phase, "phase", VoidAwake_GhostShipPhase.None);
@@ -1029,12 +1451,18 @@ namespace VoidAwake
 			Scribe_Values.Look(ref orbitCellsAdvanced, "orbitCellsAdvanced", 0);
 			Scribe_Collections.Look(ref releasedGhosts, "releasedGhosts", LookMode.Reference);
 			Scribe_References.Look(ref ghostLord, "ghostLord");
+			Scribe_Values.Look(ref startedGrayPall, "startedGrayPall", false);
 
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)
 			{
 				if (floodCells == null)
 				{
 					floodCells = new List<IntVec3>();
+				}
+
+				if (footingCells == null)
+				{
+					footingCells = new List<IntVec3>();
 				}
 
 				if (rockRestores == null)

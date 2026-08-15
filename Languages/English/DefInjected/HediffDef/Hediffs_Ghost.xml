@@ -3,5 +3,11 @@
 
 	<VoidAwake_Ghost.label>ghost</VoidAwake_Ghost.label>
 	<VoidAwake_Ghost.description>A skeletal ghost bound by the void. It feels no pain.</VoidAwake_Ghost.description>
+	<VoidAwake_Mortal.label>mortal</VoidAwake_Mortal.label>
+	<VoidAwake_Mortal.description>A curse that sharpens the dead each time they fall. At first it does nothing, but every death makes them faster and more lethal — and more fragile. The third death awakens it.</VoidAwake_Mortal.description>
+	<VoidAwake_Mortal.stages.0.label>dormant</VoidAwake_Mortal.stages.0.label>
+	<VoidAwake_Mortal.stages.1.label>first death</VoidAwake_Mortal.stages.1.label>
+	<VoidAwake_Mortal.stages.2.label>second death</VoidAwake_Mortal.stages.2.label>
+	<VoidAwake_Mortal.stages.3.label>awakened</VoidAwake_Mortal.stages.3.label>
 
 </LanguageData>

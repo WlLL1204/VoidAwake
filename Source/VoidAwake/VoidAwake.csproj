@@ -450,6 +450,9 @@
     <Compile Include="Systems\GhostShip\VoidAwake_Projectile_AcidFlask.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_DebugActions_GhostShip.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_IncidentWorker_GhostShipArrival.cs" />
+    <Compile Include="Systems\GhostShip\VoidAwake_Hediff_Mortal.cs" />
+    <Compile Include="Systems\GhostShip\Patches\VoidAwake_Patch_Pawn_Kill_GhostCorpse.cs" />
+    <Compile Include="Systems\GhostShip\Patches\VoidAwake_Patch_Hediff_DeathRefusal_GhostResurrect.cs" />
     <Compile Include="Systems\PsychicRituals\VoidAwake_PsychicRitualDef_CreateChimera.cs" />
     <Compile Include="Systems\PsychicRituals\VoidAwake_PsychicRitualToil_CreateChimera.cs" />
     <Compile Include="Systems\SpasmGas\VoidAwake_CompSpasmGasRelease.cs" />

@@ -23,6 +23,7 @@ namespace VoidAwake
 		public static ThingDef VoidAwake_Weapon_AcidFlask;
 		public static ThingDef VoidAwake_AcidSlick;
 		public static ThingDef Bullet_Shell_HighExplosive;
+		public static HediffDef VoidAwake_Mortal;
 		public static DutyDef VoidAwake_GhostHoldLanding;
 		public static DutyDef VoidAwake_GhostShipWander;
 
