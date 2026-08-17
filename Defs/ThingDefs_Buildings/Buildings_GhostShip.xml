@@ -4,7 +4,7 @@
 	<ThingDef ParentName="BuildingBase">
 		<defName>VoidAwake_GhostShip</defName>
 		<label>幽霊船</label>
-		<description>ヴォイドの海を周回する幽霊船。亡霊を放ち、大砲で砲撃する。</description>
+		<description>浸食された海を渡り、陸と海の境目へ接岸して亡霊を一気に放つ幽霊船。大砲で砲撃する。</description>
 		<thingClass>VoidAwake.VoidAwake_Building_GhostShip</thingClass>
 		<category>Building</category>
 		<graphicData>

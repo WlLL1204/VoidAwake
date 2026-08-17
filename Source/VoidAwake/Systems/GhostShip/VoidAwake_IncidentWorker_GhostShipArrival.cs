@@ -24,7 +24,13 @@ namespace VoidAwake
 			}
 
 			VoidAwake_MapComponent_GhostShip comp = map.GetComponent<VoidAwake_MapComponent_GhostShip>();
-			if (comp == null || !comp.TryStartOcean())
+			float points = parms.points;
+			if (points <= 0f)
+			{
+				points = StorytellerUtility.DefaultThreatPointsNow(map);
+			}
+
+			if (comp == null || !comp.TryStartOcean(points))
 			{
 				return false;
 			}

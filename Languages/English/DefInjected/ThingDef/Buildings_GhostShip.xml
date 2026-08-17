@@ -2,7 +2,7 @@
 <LanguageData>
 
 	<VoidAwake_GhostShip.label>ghost ship</VoidAwake_GhostShip.label>
-	<VoidAwake_GhostShip.description>A void-touched vessel that orbits the flooded shore, releasing ghosts and firing its guns.</VoidAwake_GhostShip.description>
+	<VoidAwake_GhostShip.description>A void-touched vessel that steers to the erosion shore, dumps ghosts in a single wave, and fires its guns.</VoidAwake_GhostShip.description>
 	<VoidAwake_GhostShip.portal.enteredLetterLabel>Ghost ship interior</VoidAwake_GhostShip.portal.enteredLetterLabel>
 	<VoidAwake_GhostShip.portal.enteredLetterText>Through the mist, a rotting deck stretches out. This is a placeholder interior.</VoidAwake_GhostShip.portal.enteredLetterText>
 	<VoidAwake_GhostShipExit.label>ship exit</VoidAwake_GhostShipExit.label>

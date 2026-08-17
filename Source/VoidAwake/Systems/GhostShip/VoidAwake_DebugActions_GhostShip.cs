@@ -30,7 +30,7 @@ namespace VoidAwake
 				return;
 			}
 
-			Messages.Message("Started gradual ocean flood on map edge.", MessageTypeDefOf.TaskCompletion, false);
+			Messages.Message("Started map-edge ocean flood.", MessageTypeDefOf.TaskCompletion, false);
 		}
 
 		[DebugAction("VoidAwake", "GhostShip: restore ocean edge", false, false, false, false, false, 0, false,
@@ -102,11 +102,11 @@ namespace VoidAwake
 
 			if (!comp.TryForceSpawnShip())
 			{
-				Messages.Message("Failed to spawn ghost ship (orbit path empty?).", MessageTypeDefOf.RejectInput, false);
+				Messages.Message("Failed to spawn ghost ship (shore path empty?).", MessageTypeDefOf.RejectInput, false);
 				return;
 			}
 
-			Messages.Message("Ghost ship spawned and orbiting.", MessageTypeDefOf.TaskCompletion, false);
+			Messages.Message("Ghost ship spawned and wandering the sea.", MessageTypeDefOf.TaskCompletion, false);
 		}
 
 		[DebugAction("VoidAwake", "GhostShip: spawn ghost near", false, false, false, false, false, 0, false,

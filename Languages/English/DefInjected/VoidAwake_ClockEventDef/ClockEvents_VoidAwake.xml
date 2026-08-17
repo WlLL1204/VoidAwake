@@ -2,6 +2,6 @@
 <LanguageData>
 
   <VoidAwake_ClockEvent_Fixed_Hour4.label>Ghost ship arrival</VoidAwake_ClockEvent_Fixed_Hour4.label>
-  <VoidAwake_ClockEvent_Fixed_Hour4.description>The Void Clock points to hour 4. The colony's outer edge turns to sea, and a ghost ship draws near.</VoidAwake_ClockEvent_Fixed_Hour4.description>
+  <VoidAwake_ClockEvent_Fixed_Hour4.description>The Void Clock points to hour 4. The sea erodes inward from the map edge, shoving anyone on that land toward the shore. A ghost ship steers to that shore to dump the dead.</VoidAwake_ClockEvent_Fixed_Hour4.description>
 
 </LanguageData>

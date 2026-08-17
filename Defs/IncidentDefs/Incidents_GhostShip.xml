@@ -5,7 +5,7 @@
 		<defName>VoidAwake_GhostShipArrival</defName>
 		<label>幽霊船の襲来</label>
 		<letterLabel>幽霊船の襲来</letterLabel>
-		<letterText>突如としてコロニーの外周が海へと変化しました。霧の向こうから、幽霊船が近づいてくるようです。</letterText>
+		<letterText>マップの端から海が浸食し始めました。陸にいた者は岸へ押し出されます。霧の向こうから、幽霊船が近づいてくるようです。</letterText>
 		<letterDef>ThreatBig</letterDef>
 		<targetTags>
 			<li>Map_PlayerHome</li>

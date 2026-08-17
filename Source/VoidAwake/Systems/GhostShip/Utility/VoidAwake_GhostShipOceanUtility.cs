@@ -12,134 +12,54 @@ namespace VoidAwake
 		/// <summary>何 tick ごとに浸食を進めるか（Odyssey マグマは 5）。</summary>
 		public const int TicksPerOceanPulse = 1;
 
-		/// <summary>1 パルスあたりのセル数。一時地形化は軽いのでまとめて進める。</summary>
-		public const int CellsPerPulse = 8;
-
-		public static List<IntVec3> CollectFloodCells(Map map)
-		{
-			return CollectEdgeCellsOuterFirst(map);
-		}
-
-		/// <summary>中心から遠いセルを先に（外側から浸食）。角は丸めて岸線を曲線にする。</summary>
-		public static List<IntVec3> CollectEdgeCellsOuterFirst(Map map)
-		{
-			IntVec3 center = map.Center;
-			int edge = GetNoBuildEdgeWidth(map);
-			var cells = new List<IntVec3>();
-			foreach (IntVec3 c in map.AllCells)
-			{
-				if (ShouldBecomeOcean(c, map, edge))
-				{
-					cells.Add(c);
-				}
-			}
-
-			cells.Sort((a, b) =>
-			{
-				int da = a.DistanceToSquared(center);
-				int db = b.DistanceToSquared(center);
-				int cmp = db.CompareTo(da);
-				if (cmp != 0)
-				{
-					return cmp;
-				}
-
-				cmp = a.x.CompareTo(b.x);
-				if (cmp != 0)
-				{
-					return cmp;
-				}
-
-				return a.z.CompareTo(b.z);
-			});
-			return cells;
-		}
+		/// <summary>1 パルスあたりのセル数。一時地形の重ね置きなのでまとめて進める。</summary>
+		public const int CellsPerPulse = 24;
 
 		public static bool ShouldBecomeOcean(IntVec3 c, Map map)
 		{
-			return ShouldBecomeOcean(c, map, GetNoBuildEdgeWidth(map));
-		}
-
-		public static bool ShouldBecomeOcean(IntVec3 c, Map map, int edge)
-		{
-			// 建築不可帯の最も内側 1 マスは足場として残す（角の丸みにも追従）
-			int landInset = GetLandInset(edge);
-			return !IsInsideRoundedLandIsland(c, map, landInset, landInset);
-		}
-
-		/// <summary>海洋にしない島の inset。建築不可幅より 1 マス内側まで陸＝岸の足場。</summary>
-		public static int GetLandInset(int noBuildEdgeWidth)
-		{
-			return Mathf.Max(0, noBuildEdgeWidth - 1);
-		}
-
-		/// <summary>建築不可帯の最内周 1 マス（丸み含む）を外側から順に集める。</summary>
-		public static List<IntVec3> CollectFootingCells(Map map)
-		{
-			int edge = GetNoBuildEdgeWidth(map);
-			int landInset = GetLandInset(edge);
-			IntVec3 center = map.Center;
-			var cells = new List<IntVec3>();
-			foreach (IntVec3 c in map.AllCells)
+			if (map == null || !c.InBounds(map))
 			{
-				if (IsShoreFootingCell(c, map, edge, landInset))
-				{
-					cells.Add(c);
-				}
+				return false;
 			}
 
-			cells.Sort((a, b) =>
-			{
-				int da = a.DistanceToSquared(center);
-				int db = b.DistanceToSquared(center);
-				int cmp = db.CompareTo(da);
-				if (cmp != 0)
-				{
-					return cmp;
-				}
-
-				cmp = a.x.CompareTo(b.x);
-				if (cmp != 0)
-				{
-					return cmp;
-				}
-
-				return a.z.CompareTo(b.z);
-			});
-			return cells;
-		}
-
-		public static bool IsShoreFootingCell(IntVec3 c, Map map)
-		{
-			int edge = GetNoBuildEdgeWidth(map);
-			return IsShoreFootingCell(c, map, edge, GetLandInset(edge));
-		}
-
-		private static bool IsShoreFootingCell(IntVec3 c, Map map, int edge, int landInset)
-		{
-			// 新・島の中かつ旧・島の外＝削った最内周 1 マス（角丸も同じ形）
-			return IsInsideRoundedLandIsland(c, map, landInset, landInset)
-				&& !IsInsideRoundedLandIsland(c, map, edge, edge);
+			VoidAwake_MapComponent_GhostShip comp = map.GetComponent<VoidAwake_MapComponent_GhostShip>();
+			return comp != null && comp.IsPlannedOcean(c);
 		}
 
 		/// <summary>
-		/// 足場セルを立てられるようにする。隣が海になってから呼ぶ。
-		/// 岩・鉱石は復元用に記録し、岩盤（岩壁・岩屋根）と通行を塞ぐブロックを消す。
+		/// 建物・岩などのエディフィスが無いマスだけ、一時地形の海を重ねられる。
+		/// </summary>
+		public static bool CanOverlayOcean(Map map, IntVec3 c)
+		{
+			if (map == null || !c.InBounds(map))
+			{
+				return false;
+			}
+
+			if (c.GetEdifice(map) != null)
+			{
+				return false;
+			}
+
+			if (IsOceanTerrain(map.terrainGrid.TerrainAt(c)))
+			{
+				return false;
+			}
+
+			TerrainDef existingTemp = map.terrainGrid.TempTerrainAt(c);
+			if (existingTemp != null)
+			{
+				return false;
+			}
+
+			return true;
+		}
+
+		/// <summary>
+		/// 足場用。岩は壊さない（上陸は既存の通行可能マスを使う）。
 		/// </summary>
 		public static void ConvertFootingCell(Map map, IntVec3 c, List<VoidAwake_OceanRockRestore> rockRestores)
 		{
-			if (!c.InBounds(map))
-			{
-				return;
-			}
-
-			EvacuatePawnIfAny(c, map);
-
-			ThingDef rockDef = FindNaturalRockDef(c, map);
-			TryRecordBedrock(map, c, rockDef, false, rockRestores);
-
-			ClearFootingCell(c, map);
-			RemoveBedrock(map, c);
 		}
 
 		/// <summary>外側の隣マスが既に海洋なら、この足場セルを作り始めてよい。</summary>
@@ -271,72 +191,6 @@ namespace VoidAwake
 			}
 		}
 
-		public static int GetNoBuildEdgeWidth(Map map)
-		{
-			int z = map.Size.z / 2;
-			int w = 0;
-			int max = map.Size.x / 2;
-			while (w < max && new IntVec3(w, 0, z).InNoBuildEdgeArea(map))
-			{
-				w++;
-			}
-
-			return Mathf.Max(1, w);
-		}
-
-		/// <summary>
-		/// 海洋帯の中央リング（幅 5 なら外側から 3 マス目）を、中心まわりの角度順に並べた周回パス。
-		/// </summary>
-		public static List<IntVec3> BuildShoreOrbitPath(Map map)
-		{
-			int edge = GetNoBuildEdgeWidth(map);
-			int targetDist = Mathf.Max(1, (edge + 1) / 2);
-			IntVec3 center = map.Center;
-			var ring = new List<IntVec3>();
-			foreach (IntVec3 c in map.AllCells)
-			{
-				if (!ShouldBecomeOcean(c, map, edge))
-				{
-					continue;
-				}
-
-				if (ChebyshevDistToLand(c, map, edge) == targetDist)
-				{
-					ring.Add(c);
-				}
-			}
-
-			if (ring.Count == 0)
-			{
-				foreach (IntVec3 c in map.AllCells)
-				{
-					if (!ShouldBecomeOcean(c, map, edge))
-					{
-						continue;
-					}
-
-					if (ChebyshevDistToLand(c, map, edge) == 1)
-					{
-						ring.Add(c);
-					}
-				}
-			}
-
-			ring.Sort((a, b) =>
-			{
-				float aa = Mathf.Atan2(a.z - center.z, a.x - center.x);
-				float ba = Mathf.Atan2(b.z - center.z, b.x - center.x);
-				int cmp = aa.CompareTo(ba);
-				if (cmp != 0)
-				{
-					return cmp;
-				}
-
-				return a.DistanceToSquared(center).CompareTo(b.DistanceToSquared(center));
-			});
-			return ThinOrbitPath(ring);
-		}
-
 		/// <summary>船の論理位置（3×3 ならパスセルが中心になるよう SW へずらす）。</summary>
 		public static IntVec3 ShipPositionForPathCell(IntVec3 pathCell, IntVec2 size, Map map)
 		{
@@ -349,63 +203,36 @@ namespace VoidAwake
 			return pos;
 		}
 
-		private static List<IntVec3> ThinOrbitPath(List<IntVec3> ring)
+		public static IntVec3 FindLandSpawnNear(Map map, IntVec3 near, int maxRadius = 48)
 		{
-			if (ring.Count < 3)
+			foreach (IntVec3 c in GenRadial.RadialCellsAround(near, maxRadius, true))
 			{
-				return ring;
-			}
-
-			var thinned = new List<IntVec3>(ring.Count);
-			for (int i = 0; i < ring.Count; i++)
-			{
-				IntVec3 c = ring[i];
-				if (thinned.Count > 0 && thinned[thinned.Count - 1] == c)
+				if (!c.InBounds(map) || ShouldBecomeOcean(c, map) || IsOceanTerrain(c.GetTerrain(map)))
 				{
 					continue;
 				}
 
-				thinned.Add(c);
-			}
-
-			if (thinned.Count > 1 && thinned[0] == thinned[thinned.Count - 1])
-			{
-				thinned.RemoveAt(thinned.Count - 1);
-			}
-
-			return thinned.Count >= 3 ? thinned : ring;
-		}
-
-		private static int ChebyshevDistToLand(IntVec3 c, Map map, int edge)
-		{
-			int max = edge + 2;
-			int best = max + 1;
-			for (int dx = -max; dx <= max; dx++)
-			{
-				for (int dz = -max; dz <= max; dz++)
+				if (c.Standable(map) && c.GetFirstPawn(map) == null)
 				{
-					int cheb = Mathf.Max(Mathf.Abs(dx), Mathf.Abs(dz));
-					if (cheb == 0 || cheb >= best)
-					{
-						continue;
-					}
-
-					IntVec3 n = new IntVec3(c.x + dx, 0, c.z + dz);
-					if (n.InBounds(map) && !ShouldBecomeOcean(n, map, edge))
-					{
-						best = cheb;
-					}
+					return c;
 				}
 			}
 
-			return best;
-		}
-
-		public static IntVec3 FindLandSpawnNear(Map map, IntVec3 near, int maxRadius = 14)
-		{
-			foreach (IntVec3 c in GenRadial.RadialCellsAround(near, maxRadius, true))
+			IntVec3 dest = map.Center;
+			Vector3 from = near.ToVector3Shifted();
+			Vector3 to = dest.ToVector3Shifted();
+			Vector3 delta = to - from;
+			int steps = Mathf.Max(map.Size.x, map.Size.z);
+			if (delta.sqrMagnitude < 0.01f)
 			{
-				if (!c.InBounds(map) || ShouldBecomeOcean(c, map))
+				return IntVec3.Invalid;
+			}
+
+			delta.Normalize();
+			for (int i = 1; i <= steps; i++)
+			{
+				IntVec3 c = (from + delta * i).ToIntVec3();
+				if (!c.InBounds(map) || ShouldBecomeOcean(c, map) || IsOceanTerrain(c.GetTerrain(map)))
 				{
 					continue;
 				}
@@ -419,156 +246,55 @@ namespace VoidAwake
 			return IntVec3.Invalid;
 		}
 
-		/// <summary>
-		/// 角丸矩形の陸地（島）。直線の岸と、角では半径 radius の四分円でつなぐ。
-		/// 円を角に食い込ませるのではなく、直角の岸同士を外側へそらせて接続する。
-		/// </summary>
-		private static bool IsInsideRoundedLandIsland(IntVec3 c, Map map, int inset, int radius)
-		{
-			int sx = map.Size.x;
-			int sz = map.Size.z;
-			float x = c.x + 0.5f;
-			float z = c.z + 0.5f;
-			float left = inset;
-			float right = sx - inset;
-			float bottom = inset;
-			float top = sz - inset;
-			float r = radius;
-
-			// 外枠より外 → 海
-			if (x < left || x >= right || z < bottom || z >= top)
-			{
-				return false;
-			}
-
-			// 角を除く帯 → 陸
-			if (x >= left + r && x < right - r)
-			{
-				return true;
-			}
-
-			if (z >= bottom + r && z < top - r)
-			{
-				return true;
-			}
-
-			float rSq = r * r;
-
-			// SW: 中心 (left+r, bottom+r)
-			if (x < left + r && z < bottom + r)
-			{
-				float dx = x - (left + r);
-				float dz = z - (bottom + r);
-				return dx * dx + dz * dz <= rSq;
-			}
-
-			// SE: 中心 (right-r, bottom+r)
-			if (x >= right - r && z < bottom + r)
-			{
-				float dx = x - (right - r);
-				float dz = z - (bottom + r);
-				return dx * dx + dz * dz <= rSq;
-			}
-
-			// NW: 中心 (left+r, top-r)
-			if (x < left + r && z >= top - r)
-			{
-				float dx = x - (left + r);
-				float dz = z - (top - r);
-				return dx * dx + dz * dz <= rSq;
-			}
-
-			// NE: 中心 (right-r, top-r)
-			if (x >= right - r && z >= top - r)
-			{
-				float dx = x - (right - r);
-				float dz = z - (top - r);
-				return dx * dx + dz * dz <= rSq;
-			}
-
-			return true;
-		}
-
 		public static void ConvertCell(Map map, IntVec3 c, List<VoidAwake_OceanRockRestore> rockRestores)
 		{
-			if (!c.InBounds(map))
+			if (!CanOverlayOcean(map, c))
 			{
 				return;
 			}
 
 			EvacuatePawnIfAny(c, map);
 
-			ThingDef rockDef = FindNaturalRockDef(c, map);
-			TryRecordBedrock(map, c, rockDef, rockDef != null, rockRestores);
-
-			DestroyCellContents(c, map);
-			RemoveBedrock(map, c);
-			if (rockDef != null)
+			TerrainDef flood = VoidAwake_GhostShipDefOf.VoidAwake_OceanFlood;
+			if (flood == null || !flood.temporary)
 			{
-				map.terrainGrid.SetTerrain(c, TerrainDefOf.WaterOceanDeep);
 				return;
 			}
 
-			TerrainDef flood = VoidAwake_GhostShipDefOf.VoidAwake_OceanFlood ?? TerrainDefOf.WaterOceanDeep;
-			if (flood.temporary)
-			{
-				map.terrainGrid.SetTempTerrain(c, flood);
-			}
-			else
-			{
-				map.terrainGrid.SetTerrain(c, flood);
-			}
+			map.terrainGrid.SetTempTerrain(c, flood);
 		}
 
 		public static void Restore(Map map, List<IntVec3> floodCells, int convertedCount, List<VoidAwake_OceanRockRestore> rockRestores)
 		{
-			Dictionary<IntVec3, VoidAwake_OceanRockRestore> oceanRockByCell = null;
-			List<VoidAwake_OceanRockRestore> footingRocks = null;
-			if (rockRestores != null && rockRestores.Count > 0)
-			{
-				oceanRockByCell = new Dictionary<IntVec3, VoidAwake_OceanRockRestore>();
-				footingRocks = new List<VoidAwake_OceanRockRestore>();
-				for (int i = 0; i < rockRestores.Count; i++)
-				{
-					VoidAwake_OceanRockRestore rock = rockRestores[i];
-					if (rock == null)
-					{
-						continue;
-					}
-
-					if (rock.restoreTerrain)
-					{
-						oceanRockByCell[rock.cell] = rock;
-					}
-					else
-					{
-						footingRocks.Add(rock);
-					}
-				}
-			}
-
 			if (floodCells != null && convertedCount > 0)
 			{
 				int count = Mathf.Min(convertedCount, floodCells.Count);
 				for (int i = 0; i < count; i++)
 				{
-					IntVec3 c = floodCells[i];
-					if (oceanRockByCell != null && oceanRockByCell.TryGetValue(c, out VoidAwake_OceanRockRestore rock))
-					{
-						RestoreRockCell(map, rock);
-					}
-					else
-					{
-						RestoreTempOceanCell(map, c);
-					}
+					RestoreTempOceanCell(map, floodCells[i]);
 				}
 			}
 
-			if (footingRocks != null)
+			if (rockRestores == null || rockRestores.Count == 0)
 			{
-				for (int i = 0; i < footingRocks.Count; i++)
+				return;
+			}
+
+			for (int i = 0; i < rockRestores.Count; i++)
+			{
+				VoidAwake_OceanRockRestore rock = rockRestores[i];
+				if (rock == null)
 				{
-					RestoreBedrock(map, footingRocks[i]);
+					continue;
+				}
+
+				if (rock.restoreTerrain)
+				{
+					RestoreRockCell(map, rock);
+				}
+				else
+				{
+					RestoreBedrock(map, rock);
 				}
 			}
 		}
@@ -679,7 +405,7 @@ namespace VoidAwake
 					continue;
 				}
 
-				if (!TryFindEvacuateCell(map, c, out IntVec3 dest))
+				if (!TryFindPushToShoreCell(map, c, out IntVec3 dest))
 				{
 					dest = map.Center;
 				}
@@ -689,8 +415,63 @@ namespace VoidAwake
 			}
 		}
 
-		private static bool TryFindEvacuateCell(Map map, IntVec3 from, out IntVec3 result)
+		private static bool TryFindPushToShoreCell(Map map, IntVec3 from, out IntVec3 result)
 		{
+			result = IntVec3.Invalid;
+			if (map == null || !from.InBounds(map))
+			{
+				return false;
+			}
+
+			int n = map.cellIndices.NumGridCells;
+			bool[] seen = new bool[n];
+			var q = new Queue<IntVec3>();
+			q.Enqueue(from);
+			seen[map.cellIndices.CellToIndex(from)] = true;
+			IntVec3 occupiedFallback = IntVec3.Invalid;
+
+			while (q.Count > 0)
+			{
+				IntVec3 c = q.Dequeue();
+				if (c != from && !ShouldBecomeOcean(c, map) && c.Standable(map))
+				{
+					if (c.GetFirstPawn(map) == null)
+					{
+						result = c;
+						return true;
+					}
+
+					if (!occupiedFallback.IsValid)
+					{
+						occupiedFallback = c;
+					}
+				}
+
+				for (int d = 0; d < 4; d++)
+				{
+					IntVec3 nb = c + GenAdj.CardinalDirections[d];
+					if (!nb.InBounds(map))
+					{
+						continue;
+					}
+
+					int idx = map.cellIndices.CellToIndex(nb);
+					if (seen[idx])
+					{
+						continue;
+					}
+
+					seen[idx] = true;
+					q.Enqueue(nb);
+				}
+			}
+
+			if (occupiedFallback.IsValid)
+			{
+				result = occupiedFallback;
+				return true;
+			}
+
 			return CellFinder.TryFindRandomCellNear(
 				from,
 				map,
@@ -740,8 +521,10 @@ namespace VoidAwake
 
 	public class VoidAwake_MapComponent_GhostShip : MapComponent
 	{
-		public const int ShipMoveIntervalTicks = 30;
-		public const int GhostSpawnIntervalTicks = 240;
+		public const int ShipMoveIntervalTicks = VoidAwake_GhostShipWanderUtility.TicksPerCell;
+		public const int WaveIntervalTicks = GenDate.TicksPerHour * 6;
+		public const int DepartShoreDelayTicks = GenDate.TicksPerHour * 3;
+		public const int DepartShoreMinDistance = 24;
 		public const int BombardIntervalTicks = 900;
 
 		private bool oceanActive;
@@ -752,6 +535,7 @@ namespace VoidAwake
 		private int nextCellIndex;
 		private int nextFootingIndex;
 		private int tickAccumulator;
+		private HashSet<IntVec3> plannedOcean;
 
 		private VoidAwake_GhostShipPhase phase = VoidAwake_GhostShipPhase.None;
 		private VoidAwake_Building_GhostShip ship;
@@ -762,9 +546,16 @@ namespace VoidAwake
 		private int bombardTicks;
 		private int ghostsReleased;
 		private List<Pawn> releasedGhosts;
-		private int orbitCellsAdvanced;
 		private Lord ghostLord;
 		private bool startedGrayPall;
+		private float raidPoints;
+		private float spawnedPoints;
+		private bool assaultAnnounced;
+		private bool approachingShore;
+		private bool departingShore;
+		private int waitingUntilTick;
+		private int waveDumpTick;
+		private IntVec3 approachShoreCell = IntVec3.Invalid;
 
 		public VoidAwake_MapComponent_GhostShip(Map map) : base(map)
 		{
@@ -780,20 +571,61 @@ namespace VoidAwake
 
 		public VoidAwake_GhostShipPhase Phase => phase;
 
-		public bool TryStartOcean()
+		public bool IsPlannedOcean(IntVec3 c)
+		{
+			if (plannedOcean == null)
+			{
+				RebuildPlannedOcean();
+			}
+
+			return plannedOcean != null && plannedOcean.Contains(c);
+		}
+
+		private void RebuildPlannedOcean()
+		{
+			plannedOcean = new HashSet<IntVec3>();
+			if (floodCells == null)
+			{
+				return;
+			}
+
+			for (int i = 0; i < floodCells.Count; i++)
+			{
+				plannedOcean.Add(floodCells[i]);
+			}
+		}
+
+		public bool TryStartOcean(float points = -1f)
 		{
 			if (oceanActive)
 			{
 				return false;
 			}
 
-			floodCells = VoidAwake_GhostShipOceanUtility.CollectFloodCells(map);
-			footingCells = VoidAwake_GhostShipOceanUtility.CollectFootingCells(map);
+			if (!VoidAwake_GhostShipFloodPlanner.TryBuildPlan(map, out VoidAwake_GhostShipFloodPlan plan))
+			{
+				Log.Warning("[VoidAwake] Ghost ship flood plan failed.");
+				return false;
+			}
+
+			floodCells = plan.FloodCells ?? new List<IntVec3>();
+			footingCells = plan.FootingCells ?? new List<IntVec3>();
+			orbitPath = new List<IntVec3>();
+			RebuildPlannedOcean();
 			rockRestores = new List<VoidAwake_OceanRockRestore>();
 			nextCellIndex = 0;
 			nextFootingIndex = 0;
 			tickAccumulator = 0;
-			oceanFloodComplete = floodCells.Count == 0 && footingCells.Count == 0;
+			orbitIndex = 0;
+			raidPoints = points > 0f ? points : StorytellerUtility.DefaultThreatPointsNow(map);
+			spawnedPoints = 0f;
+			assaultAnnounced = false;
+			approachingShore = false;
+			departingShore = false;
+			waitingUntilTick = 0;
+			waveDumpTick = 0;
+			approachShoreCell = IntVec3.Invalid;
+			oceanFloodComplete = floodCells.Count == 0;
 			oceanActive = true;
 			phase = VoidAwake_GhostShipPhase.OceanFlooding;
 			EnsureGrayPall();
@@ -817,16 +649,27 @@ namespace VoidAwake
 			floodCells = null;
 			footingCells = null;
 			rockRestores = null;
+			plannedOcean = null;
+			orbitPath = null;
 			nextCellIndex = 0;
 			nextFootingIndex = 0;
 			tickAccumulator = 0;
+			orbitIndex = 0;
+			raidPoints = 0f;
+			spawnedPoints = 0f;
+			assaultAnnounced = false;
+			approachingShore = false;
+			departingShore = false;
+			waitingUntilTick = 0;
+			waveDumpTick = 0;
+			approachShoreCell = IntVec3.Invalid;
 			oceanFloodComplete = false;
 			oceanActive = false;
 			phase = VoidAwake_GhostShipPhase.None;
 			EndGrayPallIfStarted();
 		}
 
-		/// <summary>海洋が既に完了している想定で船を出し周回を始める（Dev 用）。</summary>
+		/// <summary>海洋が既に完了している想定で船を出し、浸食境目への接近を始める（Dev 用）。</summary>
 		public bool TryForceSpawnShip()
 		{
 			if (!oceanActive)
@@ -845,12 +688,6 @@ namespace VoidAwake
 					nextCellIndex++;
 				}
 
-				while (footingCells != null && nextFootingIndex < footingCells.Count)
-				{
-					VoidAwake_GhostShipOceanUtility.ConvertFootingCell(map, footingCells[nextFootingIndex], rockRestores);
-					nextFootingIndex++;
-				}
-
 				oceanFloodComplete = true;
 			}
 
@@ -859,7 +696,7 @@ namespace VoidAwake
 				return ship != null && ship.Spawned;
 			}
 
-			return TrySpawnShipAndStartOrbit();
+			return TrySpawnShipOnFloodedOcean(true);
 		}
 
 		public override void MapComponentTick()
@@ -912,8 +749,7 @@ namespace VoidAwake
 			tickAccumulator = 0;
 
 			bool floodDone = floodCells == null || nextCellIndex >= floodCells.Count;
-			bool footingDone = footingCells == null || nextFootingIndex >= footingCells.Count;
-			if (floodDone && footingDone)
+			if (floodDone)
 			{
 				oceanFloodComplete = true;
 				OnOceanFloodCompleted();
@@ -921,40 +757,16 @@ namespace VoidAwake
 			}
 
 			int pulse = VoidAwake_GhostShipOceanUtility.CellsPerPulse;
-			if (!floodDone)
+			int end = Mathf.Min(nextCellIndex + pulse, floodCells.Count);
+			while (nextCellIndex < end)
 			{
-				int end = Mathf.Min(nextCellIndex + pulse, floodCells.Count);
-				while (nextCellIndex < end)
-				{
-					VoidAwake_GhostShipOceanUtility.ConvertCell(map, floodCells[nextCellIndex], rockRestores);
-					nextCellIndex++;
-				}
+				VoidAwake_GhostShipOceanUtility.ConvertCell(map, floodCells[nextCellIndex], rockRestores);
+				nextCellIndex++;
 			}
 
-			if (!footingDone)
-			{
-				int converted = 0;
-				bool floodFinished = floodCells == null || nextCellIndex >= floodCells.Count;
-				for (int i = nextFootingIndex; i < footingCells.Count && converted < pulse; i++)
-				{
-					IntVec3 cell = footingCells[i];
-					if (!floodFinished && !VoidAwake_GhostShipOceanUtility.HasAdjacentOcean(map, cell))
-					{
-						continue;
-					}
+			TrySpawnShipOnFloodedOcean(false);
 
-					VoidAwake_GhostShipOceanUtility.ConvertFootingCell(map, cell, rockRestores);
-					IntVec3 swap = footingCells[nextFootingIndex];
-					footingCells[nextFootingIndex] = footingCells[i];
-					footingCells[i] = swap;
-					nextFootingIndex++;
-					converted++;
-				}
-			}
-
-			floodDone = floodCells == null || nextCellIndex >= floodCells.Count;
-			footingDone = footingCells == null || nextFootingIndex >= footingCells.Count;
-			if (floodDone && footingDone)
+			if (nextCellIndex >= floodCells.Count)
 			{
 				oceanFloodComplete = true;
 				OnOceanFloodCompleted();
@@ -968,42 +780,80 @@ namespace VoidAwake
 				return;
 			}
 
-			TrySpawnShipAndStartOrbit();
+			TrySpawnShipOnFloodedOcean(true);
 		}
 
-		private bool TrySpawnShipAndStartOrbit()
+		private bool TrySpawnShipOnFloodedOcean(bool startOrbit)
 		{
-			orbitPath = VoidAwake_GhostShipOceanUtility.BuildShoreOrbitPath(map);
-			if (orbitPath == null || orbitPath.Count == 0)
+			if (ship != null && ship.Spawned)
 			{
-				Log.Warning("[VoidAwake] Ghost ship orbit path empty; cannot spawn ship.");
+				if (startOrbit)
+				{
+					StartShipOrbit();
+				}
+
+				return true;
+			}
+
+			IntVec2 shipSize = VoidAwake_GhostShipDefOf.VoidAwake_GhostShip.Size;
+			int converted = oceanFloodComplete
+				? (floodCells != null ? floodCells.Count : 0)
+				: nextCellIndex;
+			if (!VoidAwake_GhostShipWanderUtility.TryFindNavigableInConvertedFlood(
+				map, shipSize, floodCells, converted, out IntVec3 spawnCenter))
+			{
+				if (startOrbit)
+				{
+					Log.Warning("[VoidAwake] Ghost ship has no eroded ocean cells; cannot spawn ship.");
+				}
+
 				return false;
 			}
 
-			if (ship != null && ship.Spawned)
-			{
-				ship.Destroy();
-			}
-
-			orbitIndex = 0;
-			IntVec2 shipSize = VoidAwake_GhostShipDefOf.VoidAwake_GhostShip.Size;
-			IntVec3 spawnCell = VoidAwake_GhostShipOceanUtility.ShipPositionForPathCell(orbitPath[0], shipSize, map);
+			IntVec3 spawnCell = VoidAwake_GhostShipOceanUtility.ShipPositionForPathCell(spawnCenter, shipSize, map);
 			ship = (VoidAwake_Building_GhostShip)ThingMaker.MakeThing(VoidAwake_GhostShipDefOf.VoidAwake_GhostShip);
 			ship.CanEnter = false;
-			Rot4 spawnRot = OrbitRotationAt(0);
-			GenSpawn.Spawn(ship, spawnCell, map, spawnRot, WipeMode.Vanish);
-			ship.SetOrbitDraw(spawnCell.ToVector3Shifted(), spawnRot);
+			GenSpawn.Spawn(ship, spawnCell, map, Rot4.North, WipeMode.Vanish);
+			ship.SetOrbitDraw(spawnCell.ToVector3Shifted(), Rot4.North);
 
+			orbitPath = new List<IntVec3>();
+			orbitIndex = 0;
 			shipMoveTicks = 0;
 			ghostSpawnTicks = 0;
 			bombardTicks = 0;
 			ghostsReleased = 0;
-			orbitCellsAdvanced = 0;
+			spawnedPoints = 0f;
+			assaultAnnounced = false;
 			releasedGhosts = new List<Pawn>();
 			ghostLord = null;
-			phase = VoidAwake_GhostShipPhase.ShipOrbiting;
-			Messages.Message("VoidAwake_GhostShip_OrbitStarted".Translate(), ship, MessageTypeDefOf.ThreatBig, false);
+			waitingUntilTick = 0;
+			waveDumpTick = 0;
+			departingShore = false;
+			approachingShore = false;
+
+			if (startOrbit)
+			{
+				StartShipOrbit();
+			}
+
 			return true;
+		}
+
+		private void StartShipOrbit()
+		{
+			if (ship == null || !ship.Spawned)
+			{
+				return;
+			}
+
+			if (phase == VoidAwake_GhostShipPhase.ShipOrbiting)
+			{
+				return;
+			}
+
+			phase = VoidAwake_GhostShipPhase.ShipOrbiting;
+			BeginApproachToRandomShore();
+			Messages.Message("VoidAwake_GhostShip_OrbitStarted".Translate(), ship, MessageTypeDefOf.ThreatBig, false);
 		}
 
 		private void TickShipOrbit()
@@ -1016,22 +866,81 @@ namespace VoidAwake
 
 			PruneReleasedGhosts();
 			TickShipMove();
-			TickGhostRelease();
 			TickBombard();
 		}
 
 		private void TickShipMove()
 		{
-			if (orbitPath == null || orbitPath.Count < 2)
+			if (ship == null || !ship.Spawned)
 			{
 				return;
 			}
 
-			int next = (orbitIndex + 1) % orbitPath.Count;
+			int now = Find.TickManager.TicksGame;
+			if (approachingShore || departingShore)
+			{
+				FollowShipPath();
+				return;
+			}
+
+			if (waitingUntilTick > now)
+			{
+				return;
+			}
+
+			if (waveDumpTick > 0 && now < waveDumpTick + WaveIntervalTicks)
+			{
+				if (now >= waveDumpTick + DepartShoreDelayTicks)
+				{
+					if (!BeginDepartFromShore())
+					{
+						waitingUntilTick = waveDumpTick + WaveIntervalTicks;
+					}
+
+					return;
+				}
+
+				waitingUntilTick = waveDumpTick + DepartShoreDelayTicks;
+				return;
+			}
+
+			BeginApproachToRandomShore();
+		}
+
+		private void FollowShipPath()
+		{
 			IntVec2 shipSize = ship.def.Size;
-			IntVec3 fromPos = VoidAwake_GhostShipOceanUtility.ShipPositionForPathCell(orbitPath[orbitIndex], shipSize, map);
-			IntVec3 toPos = VoidAwake_GhostShipOceanUtility.ShipPositionForPathCell(orbitPath[next], shipSize, map);
-			Rot4 rot = OrbitRotationAt(orbitIndex);
+			if (orbitPath == null || orbitPath.Count == 0)
+			{
+				OnPathArrived();
+				return;
+			}
+
+			if (orbitPath.Count < 2 || orbitIndex >= orbitPath.Count - 1)
+			{
+				OnPathArrived();
+				return;
+			}
+
+			int next = orbitIndex + 1;
+			IntVec3 nextCenter = orbitPath[next];
+			if (!VoidAwake_GhostShipWanderUtility.IsShipNavigable(map, nextCenter, shipSize))
+			{
+				if (approachingShore)
+				{
+					BeginApproachToRandomShore();
+				}
+				else
+				{
+					BeginDepartFromShore();
+				}
+
+				return;
+			}
+
+			IntVec3 fromPos = ship.Position;
+			IntVec3 toPos = VoidAwake_GhostShipOceanUtility.ShipPositionForPathCell(nextCenter, shipSize, map);
+			Rot4 rot = Rot4.FromAngleFlat((orbitPath[next] - orbitPath[orbitIndex]).AngleFlat);
 
 			shipMoveTicks++;
 			float t = Mathf.Clamp01(shipMoveTicks / (float)ShipMoveIntervalTicks);
@@ -1045,7 +954,6 @@ namespace VoidAwake
 
 			shipMoveTicks = 0;
 			orbitIndex = next;
-			orbitCellsAdvanced++;
 			if (ship.Position != toPos)
 			{
 				ship.Position = toPos;
@@ -1054,52 +962,240 @@ namespace VoidAwake
 			ship.Rotation = rot;
 			ship.SetOrbitDraw(toPos.ToVector3Shifted(), rot);
 
-			if (orbitCellsAdvanced >= orbitPath.Count)
+			if (orbitIndex >= orbitPath.Count - 1)
 			{
-				OnFirstOrbitComplete();
+				OnPathArrived();
 			}
 		}
 
-		private Rot4 OrbitRotationAt(int index)
+		private void OnPathArrived()
 		{
-			if (orbitPath == null || orbitPath.Count < 2)
+			if (approachingShore)
 			{
-				return Rot4.North;
+				OnArrivedAtShore();
 			}
-
-			IntVec3 from = orbitPath[index];
-			IntVec3 to = orbitPath[(index + 1) % orbitPath.Count];
-			return Rot4.FromAngleFlat((to - from).AngleFlat);
+			else if (departingShore)
+			{
+				OnArrivedOffshore();
+			}
 		}
 
-		private void TickGhostRelease()
+		private void BeginApproachToRandomShore()
 		{
-			ghostSpawnTicks++;
-			if (ghostSpawnTicks < GhostSpawnIntervalTicks)
+			if (ship == null || !ship.Spawned)
 			{
 				return;
 			}
 
-			ghostSpawnTicks = 0;
-			IntVec3 land = VoidAwake_GhostShipOceanUtility.FindLandSpawnNear(map, ship.OccupiedRect().CenterCell);
-			if (!land.IsValid)
+			departingShore = false;
+			IntVec2 shipSize = ship.def.Size;
+			IntVec3 from = ship.OccupiedRect().CenterCell;
+			if (orbitPath == null)
 			{
+				orbitPath = new List<IntVec3>();
+			}
+
+			List<IntVec3> shores = CollectApproachShores();
+			shores.Shuffle();
+			int tries = Mathf.Min(12, shores.Count);
+			for (int i = 0; i < tries; i++)
+			{
+				IntVec3 shore = shores[i];
+				if (!VoidAwake_GhostShipWanderUtility.TryFindNavigableNear(map, shore, shipSize, out IntVec3 dest))
+				{
+					continue;
+				}
+
+				if (!VoidAwake_GhostShipWanderUtility.TryFindPath(map, from, dest, shipSize, orbitPath))
+				{
+					continue;
+				}
+
+				approachShoreCell = shore;
+				orbitIndex = 0;
+				shipMoveTicks = 0;
+				approachingShore = true;
 				return;
 			}
 
-			Pawn ghost = VoidAwake_GhostUtility.TrySpawnGhost(map, land);
-			if (ghost == null)
-			{
-				return;
-			}
-
-			VoidAwake_GhostUtility.LeapFrom(ghost, ship.DrawPos, land);
-			releasedGhosts.Add(ghost);
-			ghostsReleased++;
-			AddGhostToStagingLord(ghost, land);
+			orbitPath.Clear();
+			approachingShore = false;
 		}
 
-		private void AddGhostToStagingLord(Pawn ghost, IntVec3 stagingCell)
+		private List<IntVec3> CollectApproachShores()
+		{
+			var shores = new List<IntVec3>();
+			if (footingCells != null)
+			{
+				for (int i = 0; i < footingCells.Count; i++)
+				{
+					IntVec3 c = footingCells[i];
+					if (c.InBounds(map) && c.Standable(map))
+					{
+						shores.Add(c);
+					}
+				}
+
+				if (shores.Count > 0)
+				{
+					return shores;
+				}
+
+				for (int i = 0; i < footingCells.Count; i++)
+				{
+					IntVec3 c = footingCells[i];
+					if (c.InBounds(map))
+					{
+						shores.Add(c);
+					}
+				}
+
+				if (shores.Count > 0)
+				{
+					return shores;
+				}
+			}
+
+			if (VoidAwake_GhostShipWanderUtility.TryFindRandomShoreCell(map, out IntVec3 fallback))
+			{
+				shores.Add(fallback);
+			}
+
+			return shores;
+		}
+
+		private bool BeginDepartFromShore()
+		{
+			if (ship == null || !ship.Spawned)
+			{
+				return false;
+			}
+
+			approachingShore = false;
+			IntVec2 shipSize = ship.def.Size;
+			IntVec3 from = ship.OccupiedRect().CenterCell;
+			IntVec3 awayFrom = approachShoreCell.IsValid ? approachShoreCell : from;
+			if (orbitPath == null)
+			{
+				orbitPath = new List<IntVec3>();
+			}
+
+			for (int i = 0; i < 8; i++)
+			{
+				if (!VoidAwake_GhostShipWanderUtility.TryFindRandomNavigableCell(
+					map, shipSize, out IntVec3 dest, awayFrom, DepartShoreMinDistance))
+				{
+					break;
+				}
+
+				if (!VoidAwake_GhostShipWanderUtility.TryFindPath(map, from, dest, shipSize, orbitPath))
+				{
+					continue;
+				}
+
+				orbitIndex = 0;
+				shipMoveTicks = 0;
+				departingShore = true;
+				return true;
+			}
+
+			orbitPath.Clear();
+			departingShore = false;
+			return false;
+		}
+
+		private void OnArrivedAtShore()
+		{
+			approachingShore = false;
+			departingShore = false;
+			DumpGhostWave();
+			waveDumpTick = Find.TickManager.TicksGame;
+			waitingUntilTick = waveDumpTick + DepartShoreDelayTicks;
+		}
+
+		private void OnArrivedOffshore()
+		{
+			departingShore = false;
+			int nextWave = waveDumpTick + WaveIntervalTicks;
+			waitingUntilTick = nextWave > Find.TickManager.TicksGame
+				? nextWave
+				: Find.TickManager.TicksGame;
+		}
+
+		private void DumpGhostWave()
+		{
+			if (ship == null || !ship.Spawned)
+			{
+				return;
+			}
+
+			if (releasedGhosts == null)
+			{
+				releasedGhosts = new List<Pawn>();
+			}
+
+			assaultAnnounced = false;
+			float budget = raidPoints > 0f ? raidPoints : StorytellerUtility.DefaultThreatPointsNow(map);
+			if (budget <= 0f)
+			{
+				budget = 350f;
+			}
+
+			IntVec3 anchor = approachShoreCell;
+			if (!anchor.IsValid || !anchor.InBounds(map) || !anchor.Standable(map)
+				|| VoidAwake_GhostShipOceanUtility.IsOceanTerrain(anchor.GetTerrain(map)))
+			{
+				anchor = VoidAwake_GhostShipOceanUtility.FindLandSpawnNear(map, ship.OccupiedRect().CenterCell, 24);
+			}
+
+			if (!anchor.IsValid)
+			{
+				VoidAwake_GhostShipWanderUtility.TryFindRandomShoreCell(map, out anchor);
+			}
+
+			if (!anchor.IsValid)
+			{
+				return;
+			}
+
+			float spent = 0f;
+			int spawned = 0;
+			const int maxGhosts = 40;
+			while (spent < budget && spawned < maxGhosts)
+			{
+				IntVec3 land = CellFinder.RandomClosewalkCellNear(anchor, map, 10);
+				if (!land.IsValid || VoidAwake_GhostShipOceanUtility.IsOceanTerrain(land.GetTerrain(map)))
+				{
+					land = VoidAwake_GhostShipOceanUtility.FindLandSpawnNear(map, anchor, 16);
+				}
+
+				if (!land.IsValid)
+				{
+					break;
+				}
+
+				Pawn ghost = VoidAwake_GhostUtility.TrySpawnGhost(map, land);
+				if (ghost == null)
+				{
+					break;
+				}
+
+				VoidAwake_GhostUtility.LeapFrom(ghost, ship.DrawPos, land);
+				releasedGhosts.Add(ghost);
+				ghostsReleased++;
+				spawned++;
+				if (ghost.kindDef != null)
+				{
+					spent += ghost.kindDef.combatPower;
+				}
+
+				AddGhostToAssaultLord(ghost);
+			}
+
+			spawnedPoints += spent;
+		}
+
+		private void AddGhostToAssaultLord(Pawn ghost)
 		{
 			if (ghost == null || ghost.Destroyed)
 			{
@@ -1110,13 +1206,16 @@ namespace VoidAwake
 			{
 				ghostLord = LordMaker.MakeNewLord(
 					Faction.OfEntities,
-					new VoidAwake_LordJob_GhostHoldLanding(),
+					new LordJob_AssaultColony(Faction.OfEntities, false, false, false, true, false),
 					map);
 			}
 
-			VoidAwake_LordJob_GhostHoldLanding holdJob = ghostLord.LordJob as VoidAwake_LordJob_GhostHoldLanding;
-			holdJob?.SetLanding(ghost, stagingCell);
 			AssignGhostToLord(ghost, ghostLord);
+			if (!assaultAnnounced)
+			{
+				assaultAnnounced = true;
+				Messages.Message("VoidAwake_GhostShip_AssaultStarted".Translate(), ghost, MessageTypeDefOf.ThreatBig, false);
+			}
 		}
 
 		private void AssignGhostToLord(Pawn ghost, Lord lord)
@@ -1237,7 +1336,7 @@ namespace VoidAwake
 			}
 
 			Messages.Message("VoidAwake_GhostShip_Unlocked".Translate(), ship, MessageTypeDefOf.PositiveEvent, false);
-			Log.Message("[VoidAwake] Ghost ship docked after one orbit (portal stub).");
+			Log.Message("[VoidAwake] Ghost ship docked after one ocean ellipse.");
 		}
 
 		private void StartGhostAssault()
@@ -1321,24 +1420,21 @@ namespace VoidAwake
 				releasedGhosts.Add(pawn);
 			}
 
-			if (phase == VoidAwake_GhostShipPhase.ShipOrbiting)
+			if (phase == VoidAwake_GhostShipPhase.ShipOrbiting || phase == VoidAwake_GhostShipPhase.ShipUnlocked)
 			{
 				IntVec3 cell = pawn.Spawned ? pawn.Position : IntVec3.Invalid;
 				if (!cell.IsValid || !cell.Standable(map) || VoidAwake_GhostShipOceanUtility.IsOceanTerrain(cell.GetTerrain(map)))
 				{
 					cell = VoidAwake_GhostShipOceanUtility.FindLandSpawnNear(map, cell.IsValid ? cell : map.Center);
+					if (cell.IsValid && pawn.Spawned)
+					{
+						pawn.Position = cell;
+						pawn.Notify_Teleported(true, false);
+					}
 				}
 
-				AddGhostToStagingLord(pawn, cell);
-				return;
+				AddGhostToAssaultLord(pawn);
 			}
-
-			if (ghostLord == null || !map.lordManager.lords.Contains(ghostLord))
-			{
-				return;
-			}
-
-			AssignGhostToLord(pawn, ghostLord);
 		}
 
 		private void ClearShipAndGhosts()
@@ -1376,13 +1472,12 @@ namespace VoidAwake
 			}
 
 			ship = null;
-			orbitPath = null;
 			orbitIndex = 0;
 			shipMoveTicks = 0;
 			ghostSpawnTicks = 0;
 			bombardTicks = 0;
 			ghostsReleased = 0;
-			orbitCellsAdvanced = 0;
+			spawnedPoints = 0f;
 		}
 
 		private void EnsureGrayPall()
@@ -1448,7 +1543,14 @@ namespace VoidAwake
 			Scribe_Values.Look(ref ghostSpawnTicks, "ghostSpawnTicks", 0);
 			Scribe_Values.Look(ref bombardTicks, "bombardTicks", 0);
 			Scribe_Values.Look(ref ghostsReleased, "ghostsReleased", 0);
-			Scribe_Values.Look(ref orbitCellsAdvanced, "orbitCellsAdvanced", 0);
+			Scribe_Values.Look(ref raidPoints, "raidPoints", 0f);
+			Scribe_Values.Look(ref spawnedPoints, "spawnedPoints", 0f);
+			Scribe_Values.Look(ref assaultAnnounced, "assaultAnnounced", false);
+			Scribe_Values.Look(ref approachingShore, "approachingShore", false);
+			Scribe_Values.Look(ref departingShore, "departingShore", false);
+			Scribe_Values.Look(ref waitingUntilTick, "waitingUntilTick", 0);
+			Scribe_Values.Look(ref waveDumpTick, "waveDumpTick", 0);
+			Scribe_Values.Look(ref approachShoreCell, "approachShoreCell", IntVec3.Invalid);
 			Scribe_Collections.Look(ref releasedGhosts, "releasedGhosts", LookMode.Reference);
 			Scribe_References.Look(ref ghostLord, "ghostLord");
 			Scribe_Values.Look(ref startedGrayPall, "startedGrayPall", false);
@@ -1479,6 +1581,8 @@ namespace VoidAwake
 				{
 					orbitPath = new List<IntVec3>();
 				}
+
+				RebuildPlannedOcean();
 			}
 		}
 	}

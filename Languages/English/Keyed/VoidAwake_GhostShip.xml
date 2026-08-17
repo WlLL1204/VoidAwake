@@ -3,13 +3,13 @@
 
 	<VoidAwake_GhostShip_Enter>Enter ghost ship</VoidAwake_GhostShip_Enter>
 	<VoidAwake_GhostShip_EnterDesc>Send colonists into the ghost ship's interior.</VoidAwake_GhostShip_EnterDesc>
-	<VoidAwake_GhostShip_EnterLocked>The ship is still circling. Entry unlocks after one full orbit.</VoidAwake_GhostShip_EnterLocked>
-	<VoidAwake_GhostShip_StatusOrbiting>Orbiting — entry locked until the ship completes one circuit.</VoidAwake_GhostShip_StatusOrbiting>
+	<VoidAwake_GhostShip_EnterLocked>The ship is heading for the erosion shore. Boarding is not available yet.</VoidAwake_GhostShip_EnterLocked>
+	<VoidAwake_GhostShip_StatusOrbiting>Approaching the erosion shore — boarding locked.</VoidAwake_GhostShip_StatusOrbiting>
 	<VoidAwake_GhostShip_StatusUnlocked>Docked — boarding unlocked.</VoidAwake_GhostShip_StatusUnlocked>
 	<VoidAwake_GhostShip_DevViewInterior>View interior (Dev)</VoidAwake_GhostShip_DevViewInterior>
 	<VoidAwake_GhostShip_DevViewInteriorDesc>Generate the pocket map and jump the camera inside the ship.</VoidAwake_GhostShip_DevViewInteriorDesc>
 	<VoidAwake_GhostShip_DevViewInteriorFailed>Could not generate the ship interior map.</VoidAwake_GhostShip_DevViewInteriorFailed>
-	<VoidAwake_GhostShip_OrbitStarted>A ghost ship circles the flooded shore, releasing the dead and firing its guns.</VoidAwake_GhostShip_OrbitStarted>
+	<VoidAwake_GhostShip_OrbitStarted>A ghost ship steers toward the first erosion shore, dumps the dead in a single wave, then withdraws offshore after 3 hours. It repeats this every 6 hours.</VoidAwake_GhostShip_OrbitStarted>
 	<VoidAwake_GhostShip_Unlocked>The ghost ship completes its circuit and drifts in. Boarding is unlocked.</VoidAwake_GhostShip_Unlocked>
 	<VoidAwake_GhostShip_ResurrectionWave>The docked ship releases a resurrection wave. The living refuse death once more, and the fallen rise.</VoidAwake_GhostShip_ResurrectionWave>
 	<VoidAwake_GhostShip_AssaultStarted>The released ghosts surge inland as one.</VoidAwake_GhostShip_AssaultStarted>

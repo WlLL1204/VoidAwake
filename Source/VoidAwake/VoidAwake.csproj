@@ -386,6 +386,7 @@
     <Compile Include="Core\DefOf\VoidAwake_GhostShipDefOf.cs" />
     <Compile Include="Core\DefOf\VoidAwake_TrapperDefOf.cs" />
     <Compile Include="Core\DefOf\VoidAwake_VoidMagicDefOf.cs" />
+    <Compile Include="Core\VoidAwake_DebugActions_LavaFlow.cs" />
     <Compile Include="Core\VoidAwake_HarmonyInit.cs" />
     <Compile Include="Core\VoidAwake_Mod.cs" />
     <Compile Include="Core\VoidAwake_Patch_PlaySettings.cs" />
@@ -436,6 +437,8 @@
     <Compile Include="Systems\Containment\VoidAwake_EscapeEventWorker.cs" />
     <Compile Include="Systems\Containment\VoidAwake_Patch_ContainmentEscape.cs" />
     <Compile Include="Systems\Endgame\VoidAwake_Patch_EscapeShipFindTile.cs" />
+    <Compile Include="Systems\GhostShip\Utility\VoidAwake_GhostShipFloodPlanner.cs" />
+    <Compile Include="Systems\GhostShip\Utility\VoidAwake_GhostShipWanderUtility.cs" />
     <Compile Include="Systems\GhostShip\Utility\VoidAwake_GhostShipOceanUtility.cs" />
     <Compile Include="Systems\GhostShip\Utility\VoidAwake_GhostShipMapUtility.cs" />
     <Compile Include="Systems\GhostShip\Utility\VoidAwake_GhostUtility.cs" />

@@ -34,7 +34,7 @@
 	<VoidAwake.VoidAwake_ClockEventDef>
 		<defName>VoidAwake_ClockEvent_Fixed_Hour4</defName>
 		<label>幽霊船の襲来</label>
-		<description>ヴォイドの時計が時4を指した。コロニー外周が海へと変わり、幽霊船が近づいてくる。</description>
+		<description>ヴォイドの時計が時4を指した。マップ端から海が浸食し、陸にいた者は岸へ押し出される。幽霊船が境目へ向かい、亡霊を一気に放つ。</description>
 		<fixedHour>4</fixedHour>
 		<level>2</level>
 		<weight>0</weight>
