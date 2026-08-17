@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- 全アノマリー種の繋がり％合計が 50 ごとに 1 スタック（上限なし）。心情は C# 側で -2 × スタック。 -->
+	<ThoughtDef>
+		<defName>VoidAwake_TwistedBondStrain</defName>
+		<thoughtClass>VoidAwake.VoidAwake_Thought_TwistedBondStrain</thoughtClass>
+		<workerClass>VoidAwake.VoidAwake_ThoughtWorker_TwistedBondStrain</workerClass>
+		<validWhileDespawned>true</validWhileDespawned>
+		<stackLimit>99999</stackLimit>
+		<stackedEffectMultiplier>1</stackedEffectMultiplier>
+		<stages>
+			<li>
+				<label>twisted bonds</label>
+				<description>The twisted bonds with contained anomalies weigh on this person's mind. Every 50% of total connection across all anomalies adds another layer of strain.</description>
+				<baseMoodEffect>-2</baseMoodEffect>
+			</li>
+		</stages>
+	</ThoughtDef>
+
+</Defs>

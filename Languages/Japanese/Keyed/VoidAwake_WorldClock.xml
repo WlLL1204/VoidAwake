@@ -5,11 +5,11 @@
   <VoidAwake_WorldClockTipControls>左ドラッグで移動できます。\n右クリックで浸食の基点へジャンプします。</VoidAwake_WorldClockTipControls>
   <VoidAwake_JumpOriginMissing>浸食基点がまだありません。</VoidAwake_JumpOriginMissing>
 
-  <VoidAwake_WorldClockFlavor_0>ヴォイドはまだ眠っています、脱出するか立ち向かう準備をしましょう</VoidAwake_WorldClockFlavor_0>
-  <VoidAwake_WorldClockFlavor_1>ヴォイドの浸食が始まりました、手遅れになる前に行動しましょう</VoidAwake_WorldClockFlavor_1>
-  <VoidAwake_WorldClockFlavor_4>浸食は確実に広がっている。獣の声が、夜ごとに少しずつ歪んでいく。</VoidAwake_WorldClockFlavor_4>
-  <VoidAwake_WorldClockFlavor_7>虚無はもはや噂ではない。集落が消え、道が折れ、空の色が変わる。</VoidAwake_WorldClockFlavor_7>
-  <VoidAwake_WorldClockFlavor_10>世界の大部分が吞まれた。残された土地は、針の影の中で息をひそめている。</VoidAwake_WorldClockFlavor_10>
-  <VoidAwake_WorldClockFlavor_12>世界はヴォイドに支配されました</VoidAwake_WorldClockFlavor_12>
+  <VoidAwake_WorldClockPhaseLabel>フェーズ {0}</VoidAwake_WorldClockPhaseLabel>
+  <VoidAwake_WorldClockPhaseDesc_0>ヴォイドはまだ眠っています、脱出するか立ち向かう準備をしましょう</VoidAwake_WorldClockPhaseDesc_0>
+  <VoidAwake_WorldClockPhaseDesc_1>ヴォイドの浸食が始まりました、手遅れになる前に行動しましょう</VoidAwake_WorldClockPhaseDesc_1>
+  <VoidAwake_WorldClockPhaseDesc_2>浸食は確実に広がっている。獣の声が、夜ごとに少しずつ歪んでいく。</VoidAwake_WorldClockPhaseDesc_2>
+  <VoidAwake_WorldClockPhaseDesc_3>虚無はもはや噂ではない。集落が消え、道が折れ、空の色が変わる。</VoidAwake_WorldClockPhaseDesc_3>
+  <VoidAwake_WorldClockPhaseDesc_4>世界の大部分が吞まれた。残された土地は、針の影の中で息をひそめている。</VoidAwake_WorldClockPhaseDesc_4>
 
 </LanguageData>

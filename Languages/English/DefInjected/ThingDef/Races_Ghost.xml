@@ -2,10 +2,10 @@
 <LanguageData>
 
 	<VoidAwake_Ghost.label>ghost</VoidAwake_Ghost.label>
-	<VoidAwake_Ghost.description>A skeletal ghost that fights with a longsword and feels no pain.</VoidAwake_Ghost.description>
+	<VoidAwake_Ghost.description>A skeletal ghost that fights with a longsword, feels no pain, and charges the living. It is vulnerable to explosives.</VoidAwake_Ghost.description>
 	<VoidAwake_GhostMusket.label>musket ghost</VoidAwake_GhostMusket.label>
-	<VoidAwake_GhostMusket.description>A skeletal ghost armed with a musket. Long range, slow to fire.</VoidAwake_GhostMusket.description>
+	<VoidAwake_GhostMusket.description>A skeletal ghost armed with a musket. Long range, slow to fire. It is vulnerable to explosives.</VoidAwake_GhostMusket.description>
 	<VoidAwake_GhostAcid.label>acid-flask ghost</VoidAwake_GhostAcid.label>
-	<VoidAwake_GhostAcid.description>A skeletal ghost that throws acid flasks, scorching the ground around the impact.</VoidAwake_GhostAcid.description>
+	<VoidAwake_GhostAcid.description>A skeletal ghost that throws acid flasks, scorching the ground around the impact. It is vulnerable to explosives.</VoidAwake_GhostAcid.description>
 
 </LanguageData>

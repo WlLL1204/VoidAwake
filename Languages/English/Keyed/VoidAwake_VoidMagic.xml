@@ -13,6 +13,9 @@
   <VoidAwake_VoidMagicAbilityPending>ability not implemented yet</VoidAwake_VoidMagicAbilityPending>
   <VoidAwake_VoidMagicTooltipGain>Meditation: +{0} per hour (split between anomalies in range)</VoidAwake_VoidMagicTooltipGain>
   <VoidAwake_VoidMagicTooltipDecay>Decay: -{0}/day while the anomaly is not contained, -{2}/day after {1} days without meditating</VoidAwake_VoidMagicTooltipDecay>
+  <VoidAwake_TwistedBondStrainLabel>twisted bonds x{0}</VoidAwake_TwistedBondStrainLabel>
+  <VoidAwake_VoidMagicDebugRaise>Debug: raise bond by one tier</VoidAwake_VoidMagicDebugRaise>
+  <VoidAwake_VoidMagicDebugLower>Debug: lower bond by one tier</VoidAwake_VoidMagicDebugLower>
 
   <!-- Tier changes -->
   <VoidAwake_VoidMagicTierGained>{0} deepened a twisted bond with {1}: {2}.</VoidAwake_VoidMagicTierGained>

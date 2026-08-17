@@ -12,6 +12,7 @@ namespace VoidAwake
         private const float IconSize = 40f;
         private const float BarHeight = 20f;
         private const float StatusWidth = 150f;
+        private const float DebugButtonSize = 22f;
 
         // テクスチャ生成はメインスレッド限定。このタブは Def 解決中にロードスレッドから
         // インスタンス化されるため、描画時まで生成を遅延させる。
@@ -150,7 +151,8 @@ namespace VoidAwake
             Widgets.ThingIcon(iconRect, entityDef);
 
             float textX = iconRect.xMax + 8f;
-            float textWidth = inner.xMax - StatusWidth - 8f - textX;
+            float debugButtonsWidth = Prefs.DevMode ? (DebugButtonSize * 2f + 6f) : 0f;
+            float textWidth = inner.xMax - StatusWidth - 8f - textX - debugButtonsWidth;
 
             Rect labelRect = new Rect(textX, inner.y, textWidth, 22f);
             Widgets.Label(labelRect, VoidAwake_VoidMagicUtility.EntityLabel(entityDef));
@@ -158,8 +160,17 @@ namespace VoidAwake
             Rect barRect = new Rect(textX, labelRect.yMax + 2f, textWidth, BarHeight);
             DrawConnectionBar(barRect, magicDef, connection, tierIndex);
 
-            Rect statusRect = new Rect(inner.xMax - StatusWidth, inner.y, StatusWidth, inner.height);
+            Rect statusRect = new Rect(
+                inner.xMax - StatusWidth - debugButtonsWidth,
+                inner.y,
+                StatusWidth,
+                inner.height);
             DrawStatus(statusRect, comp, link, magicDef, tierIndex);
+
+            if (Prefs.DevMode)
+            {
+                DrawDebugTierButtons(inner, comp, entityDef, magicDef, tierIndex);
+            }
 
             TooltipHandler.TipRegion(rect, () => BuildTooltip(magicDef, connection, tierIndex), entityDef.shortHash + 91337);
         }
@@ -232,6 +243,33 @@ namespace VoidAwake
             GUI.color = Color.white;
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.UpperLeft;
+        }
+
+        private static void DrawDebugTierButtons(Rect inner, VoidAwake_CompVoidMagic comp,
+            ThingDef entityDef, VoidAwake_VoidMagicDef magicDef, int tierIndex)
+        {
+            float y = inner.y + (inner.height - DebugButtonSize) / 2f;
+            Rect plusRect = new Rect(inner.xMax - DebugButtonSize, y, DebugButtonSize, DebugButtonSize);
+            Rect minusRect = new Rect(plusRect.x - DebugButtonSize - 2f, y, DebugButtonSize, DebugButtonSize);
+
+            bool canLower = tierIndex >= 0;
+            bool canRaise = tierIndex < magicDef.TierCount - 1;
+
+            GUI.color = canLower ? Color.white : new Color(1f, 1f, 1f, 0.35f);
+            if (Widgets.ButtonText(minusRect, "-") && canLower)
+            {
+                comp.StepTier(entityDef, -1);
+            }
+
+            GUI.color = canRaise ? Color.white : new Color(1f, 1f, 1f, 0.35f);
+            if (Widgets.ButtonText(plusRect, "+") && canRaise)
+            {
+                comp.StepTier(entityDef, 1);
+            }
+
+            GUI.color = Color.white;
+            TooltipHandler.TipRegion(minusRect, "VoidAwake_VoidMagicDebugLower".Translate());
+            TooltipHandler.TipRegion(plusRect, "VoidAwake_VoidMagicDebugRaise".Translate());
         }
 
         private static string BuildTooltip(VoidAwake_VoidMagicDef magicDef, float connection, int tierIndex)

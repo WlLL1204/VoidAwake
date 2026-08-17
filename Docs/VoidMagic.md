@@ -1,7 +1,7 @@
 # VoidMagic（捻じれた魔術）システム解説
 
-> 実装メモとして、ファイル構成と設計意図を中心に扱う。
-> 繋がりシステムに加え、**サイトスティーラーの段階（tier）だけが中身入り**。既定テンプレートの段階は今も空（ダミー）。
+> 開発の出発点。繋がり Def が対象・数値・得られるアビリティを決め、アビリティ側が効果を持つ。
+> 段階に中身があるのは **サイトスティーラーだけ**。他種族は既定ダミー [`VoidAwake_VoidMagicDefault`](../Defs/VoidAwake_VoidMagicDefs/VoidMagics_VoidAwake.xml) に落ち、タブは「能力は未実装」と出す。
 
 ## 一言でいうと
 
@@ -56,17 +56,106 @@ Def を 1 体ずつ書く必要はない。`VoidAwake_VoidMagicUtility.IsLinkabl
 
 という順で解決する。つまり Anomaly DLC の収容可能エンティティは**追加作業なしで全種が対象**になる。人型を除外しているのは、シャンブラーやクリープジョイナーが `Human` ThingDef になり「human との繋がり」という表示になってしまうため。
 
-個別に数値や段階を変えたい場合は、`entityDef` を指定した Def を追加するだけでよい。実例は[サイトスティーラーの段階](#サイトスティーラーの段階)を参照。
+個別に数値や段階を変えたい場合は、`entityDef` を指定した Def を追加する。書き方は次節。完成例は[サイトスティーラーの段階](#サイトスティーラーの段階)。
+
+---
+
+## Def テンプレート仕様
+
+繋がり Def が「誰に・いつ・どの AbilityDef / HediffDef を渡すか」を決め、アビリティ側が効果を持つ。効果は XML のバニラ comps が基本で、独自 C# は必要なときだけ足す。
+
+```mermaid
+flowchart LR
+  MagicDef["VoidAwake_VoidMagicDef"]
+  Tier["tiers"]
+  Ability["AbilityDef"]
+  Hediff["HediffDef"]
+  Comp["ApplyTierContent"]
+  MagicDef -->|"entityDef 数値"| Tier
+  Tier -->|"abilities"| Ability
+  Tier -->|"hediff"| Hediff
+  Comp -->|"GainAbility / AddHediff"| Ability
+```
+
+### 繋がり Def（`VoidAwake_VoidMagicDef`）
+
+[`VoidAwake_VoidMagicDef.cs`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_VoidMagicDef.cs) のフィールド。ルート XML は `VoidAwake.VoidAwake_VoidMagicDef`。`defName` は `VoidAwake_VoidMagic_<Entity>`。
+
+| フィールド | 役割 |
+|-----------|------|
+| `entityDef` | 対象アノマリーの ThingDef。省略すると既定ダミーになる |
+| `maxConnection` | 繋がり上限 |
+| `connectionPerHourMeditating` | 瞑想 1 時間あたりの獲得 |
+| `decayPerDayLost` | 対象が収容されていないときの 1 日あたり減衰 |
+| `decayPerDayIdle` | 収容中だが瞑想放置の 1 日あたり減衰 |
+| `idleGraceDays` | 放置減衰が始まるまでの猶予日数 |
+| `tiers` | 段階リスト。`threshold` 昇順に解決される |
+
+各段階（`VoidAwake_VoidMagicTier`）:
+
+| フィールド | 型 | 役割 |
+|-----------|----|------|
+| `label` | string | 段階名 |
+| `threshold` | float | 繋がりがこの値以上で解放 |
+| `abilities` | `AbilityDef` のリスト | 解放中は `GainAbility`、閾値割れで `RemoveAbility` |
+| `hediff` | `HediffDef` 1 つ | 解放中は常時付与、閾値割れで除去 |
+
+`abilities` も `hediff` も空でよい。両方同時も可。`HasContent` はどちらかがあれば true。
+
+付与・剥奪は [`VoidAwake_CompVoidMagic.ApplyTierContent`](../Source/VoidAwake/Systems/VoidMagic/VoidAwake_CompVoidMagic.cs) が Def のリストをそのまま使う。どの能力かを C# 側で選んではいない。
+
+### 既定ダミー
+
+専用 Def が無いアノマリーは全部 [`VoidAwake_VoidMagicDefault`](../Defs/VoidAwake_VoidMagicDefs/VoidMagics_VoidAwake.xml) を共有する。種族ごとのプレースホルダは無い。
+
+- `entityDef` なし
+- 数値と段階名（25 / 50 / 75 / 100、微かな共鳴 / 共振 / 深き共鳴 / 同化）だけ
+- `abilities` / `hediff` は空 → タブツールチップは「能力は未実装」
+
+### アビリティ側
+
+繋がり Def が知っているのは **AbilityDef の defName** だけ。効果は別ファイルの `AbilityDef`（必要なら `HediffDef`）に置く。
+
+- サイトスティーラーは **XML のバニラ comps のみ**（`CompProperties_AbilityGiveHediff` など）。VoidAwake 独自クラスは付いていない
+- 独自挙動が要るときだけ `verbClass` や自前 `CompAbilityEffect` を書く
+
+完成例: [`VoidMagics_Sightstealer.xml`](../Defs/VoidAwake_VoidMagicDefs/VoidMagics_Sightstealer.xml) + [`Abilities_Sightstealer.xml`](../Defs/AbilityDefs/Abilities_Sightstealer.xml) + [`Hediffs_Sightstealer.xml`](../Defs/HediffDefs/Hediffs_Sightstealer.xml)
+
+### 新規アノマリーのファイルセット
+
+Sightstealer をコピーして `entityDef` と defName を差し替える。
+
+- `Defs/VoidAwake_VoidMagicDefs/VoidMagics_<主題>.xml` — 繋がり Def（必須）
+- `Defs/AbilityDefs/Abilities_<主題>.xml` — 段階で使う能力があれば
+- `Defs/HediffDefs/Hediffs_<主題>.xml` — 常時効果があれば
+- `Languages/Japanese/DefInjected/VoidAwake_VoidMagicDef/VoidMagics_<主題>.xml` — 段階名など。AbilityDef / HediffDef も必要なら同様
+- C# の `<Compile Include>` は、独自クラスを足すときだけ。Def とバニラ comps だけなら不要
+
+雛形:
 
 ```xml
 <VoidAwake.VoidAwake_VoidMagicDef>
 	<defName>VoidAwake_VoidMagic_Revenant</defName>
+	<label>revenant resonance</label>
+	<description>...</description>
 	<entityDef>Revenant</entityDef>
-	<connectionPerHourMeditating>3</connectionPerHourMeditating>
+	<maxConnection>100</maxConnection>
+	<connectionPerHourMeditating>5</connectionPerHourMeditating>
+	<decayPerDayLost>6</decayPerDayLost>
+	<decayPerDayIdle>1</decayPerDayIdle>
+	<idleGraceDays>3</idleGraceDays>
 	<tiers>
 		<li>
 			<label>faint resonance</label>
-			<threshold>40</threshold>
+			<threshold>25</threshold>
+			<hediff>VoidAwake_SomeHediff</hediff>
+		</li>
+		<li>
+			<label>second tier</label>
+			<threshold>50</threshold>
+			<abilities>
+				<li>VoidAwake_SomeAbility</li>
+			</abilities>
 		</li>
 	</tiers>
 </VoidAwake.VoidAwake_VoidMagicDef>
@@ -114,33 +203,33 @@ sequenceDiagram
 
 段階が上下すると `ApplyTierContent` が走り、解放済み段階の `abilities` / `hediff` を付与、失った段階のものを剥奪する。既定テンプレートは段階に中身が無いため実質何もしないが、サイトスティーラーのように中身を書いた Def ではそのまま能力の増減になる。段階の増減時は入植者に対してメッセージが出る。
 
+種類を問わず、全繋がりの％合計が **50 ごとに心情 -2** が重なる（`VoidAwake_TwistedBondStrain`）。スタックに上限はない。サイトスティーラー 75% とキメラ 25% なら合計 100% で 2 スタック（-4）。49% 以下では付かない。
+
 ---
 
 ## サイトスティーラーの段階
 
-`VoidAwake_VoidMagic_Sightstealer` が `entityDef` に `Sightstealer` を指定して既定テンプレートを上書きしている。段階に中身を入れた唯一の Def で、C# の追加は無く Def だけで成立している。
+`VoidAwake_VoidMagic_Sightstealer` が `entityDef` に `Sightstealer` を指定して既定テンプレートを上書きしている。段階に中身を入れた唯一の Def で、C# の追加は無く Def だけで成立している。得られるアビリティは **2 つ**（サイトスティール / 不可視の帳）。夜目は常時 hediff。
 
 | 段階 | 閾値 | 中身 |
 |------|------|------|
 | 夜目 | 25 | 常時 hediff `VoidAwake_NightEyes`。移動速度 +0.3 / 近接回避 +4 / 精神感応度 +0.2 |
-| 気配を盗む | 50 | 能力 `VoidAwake_StealPresence`。自身に `PsychicInvisibility` を 20 秒、CD 30000 tick |
-| 狩りの叫び | 75 | 能力 `VoidAwake_HuntingScream`。指定地点の半径 4.9 の敵に `TerrifyingHallucinations`、CD 15000 tick |
-| 群れの帳 | 100 | 能力 `VoidAwake_VeilOfThePack`。自分中心 9.9 の入植者を 30 秒まとめて透明化、CD 60000 tick |
+| サイトスティール | 50 | 能力 `VoidAwake_StealPresence`。自分だけ 20 秒透明化（`PsychicInvisibility`）。CD 30000 tick |
+| 不可視の帳 | 100 | 能力 `VoidAwake_VeilOfThePack`。自分と周囲 9.9 の味方を 30 秒まとめて透明化。CD 60000 tick |
 
 - 喪失減衰だけ既定の 6.0 から 4.0 に緩めてある。対象を一時的に失っただけで能力まで消えるのを避けるため。
 - `Ability_Duration` の単位は秒（60 tick）で、術者の精神感応度が倍率としてかかる。夜目で感応度が上がるので透明化の時間も自然に伸びる。
-- 狩りの叫びは範囲攻撃だが、`CompAbilityEffect_OnlyTargetHostiles` を挟んでいるので味方は巻き込まない。
-- 群れの帳は 2 段構え。術者に付くオーラ hediff `VoidAwake_VeilOfThePack` の `HediffCompProperties_GiveHediffsInRange` が、範囲内の入植者へ透明化 hediff `VoidAwake_VeiledPack` を配る。範囲外に出た味方は `VoidAwake_VeiledPack` 側の `HediffCompProperties_Link`（`maxDistance` 10）が剥がすため、追従処理を自前で持つ必要がない。Ideology の `CombatCommand` と同じ作りだが、使っている comp は本体側（Assembly-CSharp）にあるので Ideology は不要。
+- 不可視の帳は 2 段構え。術者に付くオーラ hediff `VoidAwake_VeilOfThePack` の `HediffCompProperties_GiveHediffsInRange` が、範囲内の入植者へ透明化 hediff `VoidAwake_VeiledPack` を配る。範囲外に出た味方は `VoidAwake_VeiledPack` 側の `HediffCompProperties_Link`（`maxDistance` 10）が剥がすため、追従処理を自前で持つ必要がない。Ideology の `CombatCommand` と同じ作りだが、使っている comp は本体側（Assembly-CSharp）にあるので Ideology は不要。
 
 ```mermaid
 flowchart LR
-  Ability["能力: 群れの帳"] --> Aura["オーラ hediff<br/>VoidAwake_VeilOfThePack"]
+  Ability["能力: 不可視の帳"] --> Aura["オーラ hediff<br/>VoidAwake_VeilOfThePack"]
   Aura -->|"GiveHediffsInRange 9.9"| Buff["VoidAwake_VeiledPack"]
   Buff -->|"HediffCompProperties_Invisibility"| Hidden["味方が透明化"]
   Buff -->|"Link maxDistance 10"| Removed["範囲外で解除"]
 ```
 
-- アイコンは暫定でバニラの `UI/Abilities/RevenantInvisibility` と `UI/Abilities/VoidTerror` を流用している。専用テクスチャは未着手。
+- アイコンは暫定でバニラの `UI/Abilities/RevenantInvisibility` を流用している。専用テクスチャは未着手。
 
 ---
 
@@ -174,8 +263,9 @@ flowchart LR
 
 ## 未実装（拡張ポイント）
 
-- サイトスティーラー以外のアノマリーの超能力。`VoidAwake_VoidMagicTier.abilities`（`AbilityDef` のリスト）と `hediff` を埋めれば、`VoidAwake_CompVoidMagic.ApplyTierContent` の付与・剥奪がそのまま動く。
+- サイトスティーラー以外の種族専用 Def。既定ダミーのままなので、[Def テンプレート仕様](#def-テンプレート仕様) に従って `entityDef` 付き Def と Ability / Hediff を足す。
+- 繋がりのデメリット：全アノマリー種の繋がり％を合計し、**50% ごとに心情 -2 が 1 スタック（上限なし）**（例: サイトスティーラー 75% + キメラ 25% = 100% → 2 スタックで -4）。種類は問わない。
 - 繋がりの数値に応じた連続的な効果スケーリング。今の Def 構造は段階単位の付与しか表現できないため、必要なら C# 側の拡張が要る。
-- 繋がりのデメリット（Void 侵食・精神への影響）、研究前提、放射状（星座風）グラフ表示。
+- 研究前提、放射状（星座風）グラフ表示。
 - 超能力の専用アイコン。
 - 瞑想スポットの専用テクスチャ（現在はバニラの `Things/Building/Misc/PartySpot` を暫定利用）。

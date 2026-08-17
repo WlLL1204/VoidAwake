@@ -24,12 +24,12 @@
 		</comps>
 	</HediffDef>
 
-	<!-- 「群れの帳」のオーラ本体。術者に付き、範囲内の入植者へ VoidAwake_VeiledPack を配る。 -->
+	<!-- 「不可視の帳」のオーラ本体。術者に付き、範囲内の味方へ VoidAwake_VeiledPack を配る。 -->
 	<HediffDef>
 		<hediffClass>HediffWithComps</hediffClass>
 		<defName>VoidAwake_VeilOfThePack</defName>
-		<label>veil of the pack</label>
-		<description>This person is stretching a sightstealer's psychic veil over everyone around them. Nearby minds refuse to register the sight of the group.</description>
+		<label>unseen veil</label>
+		<description>This person is stretching a sightstealer's psychic veil over nearby allies. Nearby minds refuse to register the sight of the group.</description>
 		<defaultLabelColor>(0.55, 0.4, 0.85)</defaultLabelColor>
 		<isBad>false</isBad>
 		<comps>
@@ -53,7 +53,7 @@
 		</comps>
 	</HediffDef>
 
-	<!-- 「群れの帳」で味方に配られる透明化。範囲外に出ると Link が剥がす。 -->
+	<!-- 「不可視の帳」で味方に配られる透明化。範囲外に出ると Link が剥がす。 -->
 	<HediffDef>
 		<hediffClass>HediffWithComps</hediffClass>
 		<defName>VoidAwake_VeiledPack</defName>

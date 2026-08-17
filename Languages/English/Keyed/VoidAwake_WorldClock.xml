@@ -5,11 +5,11 @@
   <VoidAwake_WorldClockTipControls>Left-drag to move.\nRight-click to jump to the void erosion origin.</VoidAwake_WorldClockTipControls>
   <VoidAwake_JumpOriginMissing>The erosion origin does not exist yet.</VoidAwake_JumpOriginMissing>
 
-  <VoidAwake_WorldClockFlavor_0>The void still sleeps. Prepare to flee—or to stand against it.</VoidAwake_WorldClockFlavor_0>
-  <VoidAwake_WorldClockFlavor_1>Void erosion has begun. Act before it is too late.</VoidAwake_WorldClockFlavor_1>
-  <VoidAwake_WorldClockFlavor_4>The erosion spreads without fail. Each night, the beasts' voices twist a little more.</VoidAwake_WorldClockFlavor_4>
-  <VoidAwake_WorldClockFlavor_7>The void is no longer rumor. Settlements vanish, roads break, and the sky changes color.</VoidAwake_WorldClockFlavor_7>
-  <VoidAwake_WorldClockFlavor_10>Most of the world has been swallowed. What land remains holds its breath in the needle's shadow.</VoidAwake_WorldClockFlavor_10>
-  <VoidAwake_WorldClockFlavor_12>The world has fallen to the void.</VoidAwake_WorldClockFlavor_12>
+  <VoidAwake_WorldClockPhaseLabel>Phase {0}</VoidAwake_WorldClockPhaseLabel>
+  <VoidAwake_WorldClockPhaseDesc_0>The void still sleeps. Prepare to flee—or to stand against it.</VoidAwake_WorldClockPhaseDesc_0>
+  <VoidAwake_WorldClockPhaseDesc_1>Void erosion has begun. Act before it is too late.</VoidAwake_WorldClockPhaseDesc_1>
+  <VoidAwake_WorldClockPhaseDesc_2>The erosion spreads without fail. Each night, the beasts' voices twist a little more.</VoidAwake_WorldClockPhaseDesc_2>
+  <VoidAwake_WorldClockPhaseDesc_3>The void is no longer rumor. Settlements vanish, roads break, and the sky changes color.</VoidAwake_WorldClockPhaseDesc_3>
+  <VoidAwake_WorldClockPhaseDesc_4>Most of the world has been swallowed. What land remains holds its breath in the needle's shadow.</VoidAwake_WorldClockPhaseDesc_4>
 
 </LanguageData>

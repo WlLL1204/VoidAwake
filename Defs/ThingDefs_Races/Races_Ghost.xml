@@ -17,20 +17,20 @@
 	<ThingDef ParentName="VoidAwake_GhostRaceBase">
 		<defName>VoidAwake_Ghost</defName>
 		<label>亡霊</label>
-		<description>白骨と化した亡霊。長剣を持ち、痛みを感じずに襲ってくる。</description>
+		<description>白骨と化した亡霊。長剣を持ち、痛みを感じずに突撃してくる。爆発には脆い。</description>
 	</ThingDef>
 
 	<ThingDef ParentName="VoidAwake_GhostRaceBase">
 		<defName>VoidAwake_GhostMusket</defName>
 		<label>マスケットの亡霊</label>
-		<description>マスケットを持つ白骨の亡霊。射程は長いが、撃つまでに時間がかかる。</description>
+		<description>マスケットを持つ白骨の亡霊。射程は長いが、撃つまでに時間がかかる。爆発には脆い。</description>
 		<uiIconPath>Entities/Pirate/Gun</uiIconPath>
 	</ThingDef>
 
 	<ThingDef ParentName="VoidAwake_GhostRaceBase">
 		<defName>VoidAwake_GhostAcid</defName>
 		<label>硫酸瓶の亡霊</label>
-		<description>硫酸瓶を投げる白骨の亡霊。着弾地点の周囲を短時間ただれさせる。</description>
+		<description>硫酸瓶を投げる白骨の亡霊。着弾地点の周囲を短時間ただれさせる。爆発には脆い。</description>
 		<uiIconPath>Things/Item/Equipment/WeaponRanged/Molotov</uiIconPath>
 	</ThingDef>
 

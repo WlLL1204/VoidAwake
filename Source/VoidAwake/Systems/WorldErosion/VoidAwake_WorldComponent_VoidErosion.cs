@@ -73,6 +73,7 @@ namespace VoidAwake
             lastDay = GenDate.DaysPassed; // 同期後なら上書きしてOK
             EnsureMarker();
             lastClockHour = ErosionClockHour;
+            ApplyCurrentClockPhase(fromLoad);
         }
         public override void ExposeData()
         {
@@ -99,6 +100,7 @@ namespace VoidAwake
 
             // 日替わり処理の外でも、針が進んだか毎回見る
             TryFireClockHourEvent();
+            VoidAwake_ClockPhaseUtility.WorkerFor(ErosionClockPhase).Tick();
         }
 
         private void TryFireClockHourEvent()
@@ -126,6 +128,54 @@ namespace VoidAwake
                 sound.PlayOneShotOnCamera();
 
             VoidAwake_ClockEventUtility.TryFireRandomEvent(hour);
+            NotifyClockPhaseChanged(hour);
+        }
+
+        /// <summary>時がフェーズ境界を跨いだら前フェーズを終了し、新フェーズを開始する。</summary>
+        private void NotifyClockPhaseChanged(int hour)
+        {
+            VoidAwake_ClockPhase newPhase = VoidAwake_ClockPhaseUtility.HourToPhase(hour);
+            VoidAwake_ClockPhase oldPhase = VoidAwake_ClockPhaseUtility.HourToPhase(hour - 1);
+            if (newPhase == oldPhase)
+                return;
+
+            VoidAwake_ClockPhaseUtility.WorkerFor(oldPhase).OnExited(hour);
+            VoidAwake_ClockPhaseEffectWorker worker = VoidAwake_ClockPhaseUtility.WorkerFor(newPhase);
+            worker.OnEntered(hour, fromLoad: false);
+            ApplyClockPhaseToAllMaps(worker);
+            Log.Message($"[VoidAwake] ClockPhase {oldPhase} -> {newPhase} at hour {hour}");
+        }
+
+        /// <summary>ロード／新規開始時。現在フェーズだけ適用し、スキップした時の単発イベントは再実行しない。</summary>
+        private void ApplyCurrentClockPhase(bool fromLoad)
+        {
+            VoidAwake_ClockPhase phase = ErosionClockPhase;
+            VoidAwake_ClockPhaseEffectWorker worker = VoidAwake_ClockPhaseUtility.WorkerFor(phase);
+            worker.OnEntered(ErosionClockHour, fromLoad);
+            ApplyClockPhaseToAllMaps(worker);
+            Log.Message($"[VoidAwake] ClockPhase {phase} applied at hour {ErosionClockHour} (fromLoad={fromLoad})");
+        }
+
+        private static void ApplyClockPhaseToAllMaps(VoidAwake_ClockPhaseEffectWorker worker)
+        {
+            List<Map> maps = Find.Maps;
+            if (maps == null)
+                return;
+            for (int i = 0; i < maps.Count; i++)
+            {
+                Map map = maps[i];
+                if (map.IsPocketMap)
+                    continue;
+                worker.ApplyToMap(map);
+            }
+        }
+
+        /// <summary>マップ生成直後に現在フェーズを適用する。</summary>
+        public void NotifyMapReadyForClockPhase(Map map)
+        {
+            if (map == null || map.IsPocketMap)
+                return;
+            VoidAwake_ClockPhaseUtility.WorkerFor(ErosionClockPhase).ApplyToMap(map);
         }
         public override void WorldComponentUpdate()
         {
@@ -346,6 +396,10 @@ namespace VoidAwake
                 return Mathf.Clamp(Mathf.FloorToInt(ErosionRate * 12f), 0, 12);
             }
         }
+
+        /// <summary>時 0–12 をフェーズ 0–4 にまとめた区分。</summary>
+        public VoidAwake_ClockPhase ErosionClockPhase => VoidAwake_ClockPhaseUtility.HourToPhase(ErosionClockHour);
+
         public float ErosionClockAngle => ErosionClockHour * 30f;
         public override void WorldComponentOnGUI()
         {
@@ -430,36 +484,30 @@ namespace VoidAwake
 
         private string GetWorldClockTooltip()
         {
+            VoidAwake_ClockPhase phase = ErosionClockPhase;
             return "VoidAwake_WorldClockTitle".Translate()
                 + "\n"
-                + GetWorldClockFlavor(ErosionClockHour)
+                + "VoidAwake_WorldClockPhaseLabel".Translate((int)phase)
+                + "\n"
+                + GetWorldClockPhaseDesc(phase)
                 + "\n\n"
                 + "VoidAwake_WorldClockTipControls".Translate();
         }
 
-        private static string GetWorldClockFlavor(int hour)
+        private static string GetWorldClockPhaseDesc(VoidAwake_ClockPhase phase)
         {
-            switch (hour)
+            switch (phase)
             {
-                case 0:
-                    return "VoidAwake_WorldClockFlavor_0".Translate();
-                case 1:
-                case 2:
-                case 3:
-                    return "VoidAwake_WorldClockFlavor_1".Translate();
-                case 4:
-                case 5:
-                case 6:
-                    return "VoidAwake_WorldClockFlavor_4".Translate();
-                case 7:
-                case 8:
-                case 9:
-                    return "VoidAwake_WorldClockFlavor_7".Translate();
-                case 10:
-                case 11:
-                    return "VoidAwake_WorldClockFlavor_10".Translate();
+                case VoidAwake_ClockPhase.Phase1:
+                    return "VoidAwake_WorldClockPhaseDesc_1".Translate();
+                case VoidAwake_ClockPhase.Phase2:
+                    return "VoidAwake_WorldClockPhaseDesc_2".Translate();
+                case VoidAwake_ClockPhase.Phase3:
+                    return "VoidAwake_WorldClockPhaseDesc_3".Translate();
+                case VoidAwake_ClockPhase.Phase4:
+                    return "VoidAwake_WorldClockPhaseDesc_4".Translate();
                 default:
-                    return "VoidAwake_WorldClockFlavor_12".Translate();
+                    return "VoidAwake_WorldClockPhaseDesc_0".Translate();
             }
         }
 

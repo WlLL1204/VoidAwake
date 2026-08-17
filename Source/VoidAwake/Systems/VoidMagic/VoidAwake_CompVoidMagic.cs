@@ -67,6 +67,31 @@ namespace VoidAwake
             return GetLink(entityDef)?.connection ?? 0f;
         }
 
+        /// <summary>全アノマリー種の繋がり％の合計。maxConnection に対する割合を足す。</summary>
+        public float TotalConnectionPercent()
+        {
+            float total = 0f;
+            for (int i = 0; i < links.Count; i++)
+            {
+                VoidAwake_VoidLink link = links[i];
+                VoidAwake_VoidMagicDef magicDef = VoidAwake_VoidMagicUtility.DefFor(link.entityDef);
+                if (magicDef == null || magicDef.maxConnection <= 0f)
+                {
+                    continue;
+                }
+
+                total += link.connection / magicDef.maxConnection * 100f;
+            }
+
+            return total;
+        }
+
+        /// <summary>合計繋がり 50% ごとに 1。上限なし。心情デバフは 1 につき -2。</summary>
+        public int BondStrainStacks()
+        {
+            return Mathf.Max(0, Mathf.FloorToInt(TotalConnectionPercent() / VoidAwake_VoidMagicUtility.BondStrainPercentPerStack));
+        }
+
         public VoidAwake_VoidLink EnsureLink(ThingDef entityDef)
         {
             VoidAwake_VoidLink link = GetLink(entityDef);
@@ -111,6 +136,31 @@ namespace VoidAwake
             VoidAwake_VoidLink link = EnsureLink(entityDef);
             link.connection = Mathf.Clamp(value, 0f, magicDef.maxConnection);
             RefreshTier(link, magicDef);
+        }
+
+        /// <summary>デバッグ用。繋がりを次／前の段階の閾値に合わせる。delta は +1 または -1。</summary>
+        public void StepTier(ThingDef entityDef, int delta)
+        {
+            VoidAwake_VoidMagicDef magicDef = VoidAwake_VoidMagicUtility.DefFor(entityDef);
+            if (magicDef == null || magicDef.TierCount <= 0 || delta == 0)
+            {
+                return;
+            }
+
+            int current = magicDef.TierIndexFor(ConnectionOn(entityDef));
+            int target = Mathf.Clamp(current + delta, -1, magicDef.TierCount - 1);
+            float value = target < 0 ? 0f : magicDef.TierAt(target).threshold;
+            SetConnection(entityDef, value);
+
+            VoidAwake_VoidLink link = GetLink(entityDef);
+            if (link != null)
+            {
+                link.lastMeditatedTick = Find.TickManager.TicksGame;
+                if (link.connection <= 0f)
+                {
+                    links.Remove(link);
+                }
+            }
         }
 
         public void ClearAllLinks()

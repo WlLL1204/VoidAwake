@@ -10,6 +10,7 @@ namespace VoidAwake
 		public const int SpawnWeightMelee = 5;
 		public const int SpawnWeightMusket = 3;
 		public const int SpawnWeightAcid = 2;
+		public const float ExplosiveIncomingDamageFactor = 2f;
 
 		private static readonly List<Pawn> tmpGhosts = new List<Pawn>();
 
@@ -101,6 +102,11 @@ namespace VoidAwake
 
 			HediffDef mortalDef = VoidAwake_GhostShipDefOf.VoidAwake_Mortal;
 			return mortalDef != null && pawn.health?.hediffSet != null && pawn.health.hediffSet.HasHediff(mortalDef);
+		}
+
+		public static bool IsExplosiveDamage(DamageDef def)
+		{
+			return def != null && def.isExplosive;
 		}
 
 		private static void PrepareGhostAppearance(Pawn pawn)
@@ -627,8 +633,6 @@ namespace VoidAwake
 			{
 				KickGhostDeathRefusal(pawn);
 			}
-
-			GetMortal(pawn)?.TryVanish();
 		}
 
 		public static void TickGhostCorpses(Map map)
@@ -646,32 +650,6 @@ namespace VoidAwake
 			}
 
 			tmpGhosts.Clear();
-		}
-
-		public static void VanishGhostWithCorpse(Pawn pawn)
-		{
-			if (pawn == null || pawn.Destroyed)
-			{
-				return;
-			}
-
-			Corpse corpse = pawn.ParentHolder as Corpse ?? pawn.Corpse;
-			if (pawn.Spawned)
-			{
-				pawn.Destroy();
-				return;
-			}
-
-			if (corpse != null && !corpse.Destroyed)
-			{
-				corpse.Destroy();
-				return;
-			}
-
-			if (!pawn.Destroyed)
-			{
-				pawn.Destroy();
-			}
 		}
 
 		public static void EquipLoadout(Pawn pawn)

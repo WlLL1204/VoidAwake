@@ -4,7 +4,7 @@
 	<MutantDef ParentName="BaseMutantEntity">
 		<defName>VoidAwake_GhostMutant</defName>
 		<label>亡霊</label>
-		<description>白骨と化した亡霊。痛みを感じず、生きた者を襲う。</description>
+		<description>白骨と化した亡霊。痛みを感じず、炎と毒を通さず、生きた者へ突撃する。爆発には脆い。</description>
 		<hediff>VoidAwake_Ghost</hediff>
 		<thinkTree>Humanlike</thinkTree>
 		<thinkTreeConstant>HumanlikeConstant</thinkTreeConstant>
@@ -20,6 +20,10 @@
 		<tameable>false</tameable>
 		<defaultFaction>Entities</defaultFaction>
 		<deathOnDownedChance>1</deathOnDownedChance>
+		<psychicShockUntargetable>true</psychicShockUntargetable>
+		<abilities>
+			<li>VoidAwake_GhostCharge</li>
+		</abilities>
 		<anomalyKnowledgeOffset>2</anomalyKnowledgeOffset>
 		<knowledgeCategory>Advanced</knowledgeCategory>
 		<codexEntry>VoidAwake_GhostPirates</codexEntry>

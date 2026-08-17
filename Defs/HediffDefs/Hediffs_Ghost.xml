@@ -4,7 +4,7 @@
 	<HediffDef>
 		<defName>VoidAwake_Ghost</defName>
 		<label>亡霊</label>
-		<description>ヴォイドに縛られた白骨の亡霊。痛みを感じない。</description>
+		<description>ヴォイドに縛られた白骨の亡霊。痛みを感じず、炎と毒を通さない。精神感応はなく、衝撃にも揺るがない。爆発には脆い。</description>
 		<hediffClass>HediffWithComps</hediffClass>
 		<everCurableByItem>false</everCurableByItem>
 		<duplicationAllowed>false</duplicationAllowed>
@@ -12,12 +12,31 @@
 		<stages>
 			<li>
 				<painFactor>0</painFactor>
+				<blocksMentalBreaks>true</blocksMentalBreaks>
+				<pctAllThoughtNullification>1</pctAllThoughtNullification>
 				<statOffsets>
 					<PainShockThreshold>10</PainShockThreshold>
 					<ToxicResistance>1</ToxicResistance>
+					<ToxicEnvironmentResistance>1</ToxicEnvironmentResistance>
+					<EMPResistance>1</EMPResistance>
 					<ComfyTemperatureMin>-100</ComfyTemperatureMin>
 					<ComfyTemperatureMax>100</ComfyTemperatureMax>
 				</statOffsets>
+				<statFactors>
+					<Flammability>0</Flammability>
+					<PsychicSensitivity>0</PsychicSensitivity>
+					<StaggerDurationFactor>0</StaggerDurationFactor>
+				</statFactors>
+				<damageFactors>
+					<Flame>0</Flame>
+					<Burn>0</Burn>
+					<ToxicBite>0</ToxicBite>
+				</damageFactors>
+				<makeImmuneTo>
+					<li>Heatstroke</li>
+					<li>ToxicBuildup</li>
+					<li>FoodPoisoning</li>
+				</makeImmuneTo>
 				<capMods>
 					<li>
 						<capacity>Talking</capacity>
@@ -83,7 +102,7 @@
 					<MeleeCooldownFactor>0.5</MeleeCooldownFactor>
 					<AimingDelayFactor>0.7</AimingDelayFactor>
 					<RangedCooldownFactor>0.7</RangedCooldownFactor>
-					<IncomingDamageFactor>1.5</IncomingDamageFactor>
+					<IncomingDamageFactor>1000</IncomingDamageFactor>
 				</statFactors>
 			</li>
 		</stages>

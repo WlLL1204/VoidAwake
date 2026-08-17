@@ -20,21 +20,14 @@
 				<hediff>VoidAwake_NightEyes</hediff>
 			</li>
 			<li>
-				<label>stolen presence</label>
+				<label>sight steal</label>
 				<threshold>50</threshold>
 				<abilities>
 					<li>VoidAwake_StealPresence</li>
 				</abilities>
 			</li>
 			<li>
-				<label>hunting cry</label>
-				<threshold>75</threshold>
-				<abilities>
-					<li>VoidAwake_HuntingScream</li>
-				</abilities>
-			</li>
-			<li>
-				<label>veil of the pack</label>
+				<label>unseen veil</label>
 				<threshold>100</threshold>
 				<abilities>
 					<li>VoidAwake_VeilOfThePack</li>

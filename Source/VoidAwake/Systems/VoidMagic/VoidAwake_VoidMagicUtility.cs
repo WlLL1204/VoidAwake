@@ -12,6 +12,12 @@ namespace VoidAwake
         /// <summary>瞑想スポット以外で瞑想した場合に収容アノマリーを探す半径。</summary>
         public const float DefaultMeditationRadius = 9.9f;
 
+        /// <summary>全繋がりの合計％がこの値ごとに心情デバフ 1 スタック（-2）。</summary>
+        public const float BondStrainPercentPerStack = 50f;
+
+        /// <summary>繋がりデバフ 1 スタックあたりの心情。</summary>
+        public const float BondStrainMoodPerStack = -2f;
+
         private const int ContainedScanIntervalTicks = 600;
 
         private static Dictionary<ThingDef, VoidAwake_VoidMagicDef> overridesByEntity;

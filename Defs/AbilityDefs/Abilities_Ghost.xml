@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<AbilityDef>
+		<defName>VoidAwake_GhostCharge</defName>
+		<label>突撃</label>
+		<description>敵めがけて飛びかかり、距離を詰める。</description>
+		<iconPath>UI/Abilities/Longjump</iconPath>
+		<cooldownTicksRange>480</cooldownTicksRange>
+		<jobDef>CastJump</jobDef>
+		<aiCanUse>true</aiCanUse>
+		<ai_IsOffensive>true</ai_IsOffensive>
+		<showOnCharacterCard>false</showOnCharacterCard>
+		<showPsycastEffects>false</showPsycastEffects>
+		<hostile>true</hostile>
+		<verbProperties>
+			<verbClass>Verb_CastAbilityJump</verbClass>
+			<label>突撃</label>
+			<warmupTime>0.25</warmupTime>
+			<range>9.9</range>
+			<minRange>2.9</minRange>
+			<requireLineOfSight>true</requireLineOfSight>
+			<soundCast MayRequire="Ludeon.RimWorld.Biotech">Longjump_Jump</soundCast>
+			<soundLanding MayRequire="Ludeon.RimWorld.Biotech">Longjump_Land</soundLanding>
+			<ai_IsWeapon>false</ai_IsWeapon>
+			<targetParams>
+				<canTargetPawns>true</canTargetPawns>
+				<canTargetLocations>true</canTargetLocations>
+				<canTargetBuildings>false</canTargetBuildings>
+				<canTargetSelf>false</canTargetSelf>
+				<neverTargetIncapacitated>true</neverTargetIncapacitated>
+			</targetParams>
+		</verbProperties>
+		<comps>
+			<li Class="VoidAwake.VoidAwake_CompProperties_AbilityRequiresMortalAwakened" />
+		</comps>
+	</AbilityDef>
+
+</Defs>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+	<VoidAwake_GhostCharge.label>charge</VoidAwake_GhostCharge.label>
+	<VoidAwake_GhostCharge.description>Leap at an enemy to close the distance.</VoidAwake_GhostCharge.description>
+	<VoidAwake_GhostCharge.verbProperties.label>charge</VoidAwake_GhostCharge.verbProperties.label>
+
+</LanguageData>

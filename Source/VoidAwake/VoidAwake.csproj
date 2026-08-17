@@ -446,12 +446,14 @@
     <Compile Include="Systems\GhostShip\Buildings\VoidAwake_Building_GhostShip.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_GenStep_GhostShipInterior.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_GenStep_GhostShipClearOceanFog.cs" />
+    <Compile Include="Systems\GhostShip\VoidAwake_CompAbilityEffect_RequiresMortalAwakened.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_Comp_AcidSlick.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_Projectile_AcidFlask.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_DebugActions_GhostShip.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_IncidentWorker_GhostShipArrival.cs" />
     <Compile Include="Systems\GhostShip\VoidAwake_Hediff_Mortal.cs" />
     <Compile Include="Systems\GhostShip\Patches\VoidAwake_Patch_Pawn_Kill_GhostCorpse.cs" />
+    <Compile Include="Systems\GhostShip\Patches\VoidAwake_Patch_Pawn_PreApplyDamage_GhostExplosion.cs" />
     <Compile Include="Systems\GhostShip\Patches\VoidAwake_Patch_Hediff_DeathRefusal_GhostResurrect.cs" />
     <Compile Include="Systems\PsychicRituals\VoidAwake_PsychicRitualDef_CreateChimera.cs" />
     <Compile Include="Systems\PsychicRituals\VoidAwake_PsychicRitualToil_CreateChimera.cs" />
@@ -464,6 +466,7 @@
     <Compile Include="Systems\VoidMagic\VoidAwake_DebugActions_VoidMagic.cs" />
     <Compile Include="Systems\VoidMagic\VoidAwake_ITab_Pawn_VoidMagic.cs" />
     <Compile Include="Systems\VoidMagic\VoidAwake_JobDriver_VoidMeditate.cs" />
+    <Compile Include="Systems\VoidMagic\VoidAwake_ThoughtWorker_TwistedBondStrain.cs" />
     <Compile Include="Systems\VoidMagic\VoidAwake_VoidMagicDef.cs" />
     <Compile Include="Systems\VoidMagic\VoidAwake_VoidMagicUtility.cs" />
     <Compile Include="Systems\VoidResearch\Extraction\VoidAwake_Designator_ExtractSample.cs" />
@@ -492,6 +495,9 @@
     <Compile Include="Systems\WorldErosion\ClockEvent\VoidAwake_ClockEventUtility.cs" />
     <Compile Include="Systems\WorldErosion\ClockEvent\VoidAwake_ClockEventWorker.cs" />
     <Compile Include="Systems\WorldErosion\ClockEvent\VoidAwake_ClockEventWorker_FixedHour.cs" />
+    <Compile Include="Systems\WorldErosion\ClockPhase\VoidAwake_ClockPhase.cs" />
+    <Compile Include="Systems\WorldErosion\ClockPhase\VoidAwake_ClockPhaseEffectWorker.cs" />
+    <Compile Include="Systems\WorldErosion\ClockPhase\VoidAwake_MapComponent_ClockPhase.cs" />
     <Compile Include="Systems\WorldErosion\GameConditions\VoidAwake_GameCondition_ErosionLevel1.cs" />
     <Compile Include="Systems\WorldErosion\GameConditions\VoidAwake_GameCondition_ErosionLevel2.cs" />
     <Compile Include="Systems\WorldErosion\GameConditions\VoidAwake_GameCondition_ErosionLevel3.cs" />

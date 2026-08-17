@@ -6,17 +6,13 @@ namespace VoidAwake
     public static class VoidAwake_ClockEventUtility
     {
         /// <summary>
-        /// 針 → イベントレベル。
+        /// 針 → イベントレベル（ClockPhase と同じ区切り）。
         /// 1-3 → Lv1 / 4-6 → Lv2 / 7-9 → Lv3 / 10-12 → Lv4
         /// hour 0 はイベントなし。
         /// </summary>
         public static int HourToEventLevel(int hour)
         {
-            if (hour <= 0) return 0;
-            if (hour <= 3) return 1;
-            if (hour <= 6) return 2;
-            if (hour <= 9) return 3;
-            return 4;
+            return (int)VoidAwake_ClockPhaseUtility.HourToPhase(hour);
         }
 
         public static void TryFireRandomEvent(int hour)

@@ -13,6 +13,9 @@
   <VoidAwake_VoidMagicAbilityPending>能力は未実装</VoidAwake_VoidMagicAbilityPending>
   <VoidAwake_VoidMagicTooltipGain>瞑想：1時間あたり +{0}（範囲内のアノマリー数で分割）</VoidAwake_VoidMagicTooltipGain>
   <VoidAwake_VoidMagicTooltipDecay>減衰：未収容の間は -{0}/日、{1}日瞑想しないと -{2}/日</VoidAwake_VoidMagicTooltipDecay>
+  <VoidAwake_TwistedBondStrainLabel>捻じれた繋がり x{0}</VoidAwake_TwistedBondStrainLabel>
+  <VoidAwake_VoidMagicDebugRaise>デバッグ：繋がりを1段階上げる</VoidAwake_VoidMagicDebugRaise>
+  <VoidAwake_VoidMagicDebugLower>デバッグ：繋がりを1段階下げる</VoidAwake_VoidMagicDebugLower>
 
   <!-- 段階の変化 -->
   <VoidAwake_VoidMagicTierGained>{0}は{1}との捻じれた繋がりを深めた：{2}。</VoidAwake_VoidMagicTierGained>
